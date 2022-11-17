@@ -1,13 +1,14 @@
 .pc-edit-card-modal {
-  position: absolute;
+  position: relative;
   display: flex;
-  & > textarea {
+  textarea {
     width: 256px;
     height: 96px;
     background-color: #fff;
     overflow-wrap: break-word;
     padding: 8px;
     box-sizing: border-box;
+    border-radius: 6px;
   }
   & > ul {
     list-style: none;

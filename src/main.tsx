@@ -2,7 +2,7 @@ import React, {Suspense, lazy} from 'react'
 import ReactDOM from 'react-dom/client'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import './common/css/base.scss'
-const Index = lazy(() => import('./pages/Index/index'))
+const Index = lazy(() => import('./pages/index/index'))
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>

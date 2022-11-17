@@ -26,10 +26,10 @@ const ContentCard: FC<PropsType> = ({ cardValue, handleCardChange }) => {
 
     const handleAddCurrentNewCard = () => { // 添加卡片操作
         if (!addCardTextValue.current) return
-        const newCard = { value: addCardTextValue.current, timestamp: (new Date).getTime()}
+        const newCard = { value: addCardTextValue.current, timestamp: (new Date).getTime() }
         addCardTextValue.current = ''
         const newValue = { ...currentCard }
-        newValue.cardItem = newValue.cardItem ? newValue.cardItem.concat(newCard) : [ newCard ]
+        newValue.cardItem = newValue.cardItem ? newValue.cardItem.concat(newCard) : [newCard]
         setCurrentCard(newValue)
         handleCardChange(newValue)
         setShowAddEdit(false)
@@ -40,23 +40,35 @@ const ContentCard: FC<PropsType> = ({ cardValue, handleCardChange }) => {
     }
 
     const handleViewDetail = () => { // 点击input弹窗详情
-        console.log('handleViewDetail------------')
+        console.log('handleViewDetail2233233------------')
     }
-
+    const dragCardStart = (e: React.DragEvent, index: number) => { // 拖拽卡片
+        e.dataTransfer.setData('cardItem',JSON.stringify(currentCard.cardItem[index]))
+        // currentCard.cardItem.splice(index, 1)
+        // setCurrentCard(JSON.parse(JSON.stringify(currentCard)))
+        console.log('dragCardStart------------', currentCard);
+    }
+    const dragCardEnd = (e: React.DragEvent, currentCard: CARD_LIST_TYPE) => { // 拖拽卡片
+        console.log('dragCardEnd------------', currentCard);
+    }
+    const dropCard = (e: React.DragEvent, currentCard: CARD_LIST_TYPE) => { // 拖拽卡片
+        console.log('dropCard------------', e);
+        console.log('dropCard------------', currentCard);
+    }
     const handleEditCard = (e: MouseEvent) => { // 每条card的编辑
         e.stopPropagation()
         const { clientX, clientY } = e
         setPositon({
             top: clientY - 32,
-            left: clientX -220
+            left: clientX - 220
         })
         setStatus('EDIT')
     }
-    
+
     const AddCardDom = useMemo(() => {
         if (showAddEdit) {
             return <>
-                <textarea defaultValue={addCardTextValue.current} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => addCardTextValue.current = e.target.value} className='pc-card-cont-text' placeholder='为这张卡片输入标题…'/>
+                <textarea defaultValue={addCardTextValue.current} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => addCardTextValue.current = e.target.value} className='pc-card-cont-text' placeholder='为这张卡片输入标题…' />
                 <div className='pc-card-cont-btns'>
                     <button onClick={handleAddCurrentNewCard}>添加卡片</button>
                     <button className='cancle' onClick={handleCancel}>取消</button>
@@ -72,8 +84,8 @@ const ContentCard: FC<PropsType> = ({ cardValue, handleCardChange }) => {
         if (currentCard.cardItem && currentCard.cardItem.length > 0) {
             return <div className='pc-card-cont-wrap'>
                 {
-                    currentCard.cardItem.map(item => <div className='item' key={item.timestamp} onClick={handleViewDetail}>
-                        <input type="text" defaultValue={item?.value} onChange={(e) => handleCurrentChange('title', e)}/>
+                    currentCard.cardItem.map((item, index) => <div className='item' key={item.timestamp} onClick={handleViewDetail} onDragStart={(e) => dragCardStart(e, index)} draggable="true" onDragEnd={(e) => dragCardEnd(e, currentCard)} onDragOver={(e)=>e.preventDefault()}  onDrop={(e)=>dropCard(e,currentCard)}>
+                        <input type="text" defaultValue={item?.value} onChange={(e) => handleCurrentChange('title', e)} />
                         <i onClick={handleEditCard}>编辑</i>
                     </div>)
                 }
@@ -85,13 +97,13 @@ const ContentCard: FC<PropsType> = ({ cardValue, handleCardChange }) => {
 
     return <div className='pc-card-cont'>
         <div className='title'>
-            <input type="text" defaultValue={currentCard?.title} onChange={(e) => handleCurrentChange('title', e)}/>
+            <input type="text" defaultValue={currentCard?.title} onChange={(e) => handleCurrentChange('title', e)} />
             {/*title operation  */}
             <BoardMoreBtns />
         </div>
         {CardItemDom}
         {AddCardDom}
-		<EditCardModal position={position} show={ status === 'EDIT' } onClose={() => setStatus('')} value='11111111111'/>
+        <EditCardModal position={position} show={status === 'EDIT'} onClose={() => setStatus('')} value='11111111111' />
     </div>
 }
 

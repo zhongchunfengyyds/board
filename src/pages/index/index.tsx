@@ -1,4 +1,5 @@
 import './index.scss'
+import ContentCard from './content-card'
 const App = () => {
     const data = [14, 2, 7]
     const addBoard = () => {
@@ -8,11 +9,16 @@ const App = () => {
     return (
         <div className="board">
             {data.map((item, index) => (
-                <div className="board-item" style={{height: 20 * item + 'px'}}>
-                    Item ${index + 1}
+                <div key={index} className="board-item" style={{height: 20 * item + 'px'}}>
+                    <div className="board-item-title"></div>
+                    <div className="board-item-content">
+                        <ContentCard data={item} />
+                    </div>
                 </div>
             ))}
-            <div className="board-add" onClick={addBoard}>添加看板</div>
+            <div className="board-add" onClick={addBoard}>
+                添加看板
+            </div>
         </div>
     )
 }

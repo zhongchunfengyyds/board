@@ -10,7 +10,6 @@ interface PropsType {
     handleCardChange: (value: CARD_LIST_TYPE, show?: boolean) => void
 }
 const ContentCard: FC<PropsType> = ({ cardValue, handleCardChange }) => {
-    // const [currentCard, setCurrentCard] = useState<CARD_LIST_TYPE>(cardValue)
     const [showAddEdit, setShowAddEdit] = useState<boolean>(false)
     const [status, setStatus] = useState<string>('')
     const currentEditIndex = useRef<number>(-1)
@@ -19,31 +18,23 @@ const ContentCard: FC<PropsType> = ({ cardValue, handleCardChange }) => {
         top: 10
     })
 
-    // useEffect(() => {
-    //     setCurrentCard(cardValue)
-    // }, [cardValue])
     const addCardTextValue = useRef<string>('')
     const handleCurrentChange = (key: keyof CARD_LIST_TYPE, e: ChangeEvent<HTMLInputElement>) => { // change default value
         const newValue = { ...cardValue, [key]: e.target.value }
-        // const newValue = { ...currentCard, [key]: e.target.value }
-        // setCurrentCard(newValue)
         handleCardChange(newValue)
     }
 
     const handleAddCurrentNewCard = () => { // 添加卡片操作
         if (!addCardTextValue.current) return
-        const newCard = { value: addCardTextValue.current, timestamp: (new Date).getTime()}
+        const newCard = { value: addCardTextValue.current, timestamp: (new Date).getTime() }
         addCardTextValue.current = ''
-        // const newValue = { ...currentCard }
         const newValue = { ...cardValue }
         newValue.cardItem = newValue.cardItem ? newValue.cardItem.concat(newCard) : [ newCard ]
-        // setCurrentCard(newValue)
         handleCardChange(newValue)
         setShowAddEdit(false)
     }
 
     const handleShowAddCardItem = () => {
-        // handleCardChange(currentCard, true)
         handleCardChange(cardValue, true)
         setShowAddEdit(true)
     }
@@ -54,7 +45,20 @@ const ContentCard: FC<PropsType> = ({ cardValue, handleCardChange }) => {
     }
 
     const handleViewDetail = () => { // 点击input弹窗详情
-        console.log('handleViewDetail------------')
+        console.log('handleViewDetail2233233------------')
+    }
+    const dragCardStart = (e: React.DragEvent, index: number) => { // 拖拽卡片
+        e.dataTransfer.setData('cardItem',JSON.stringify(cardValue.cardItem[index]))
+        // currentCard.cardItem.splice(index, 1)
+        // setCurrentCard(JSON.parse(JSON.stringify(currentCard)))
+        console.log('dragCardStart------------', cardValue);
+    }
+    const dragCardEnd = (e: React.DragEvent, currentCard: CARD_LIST_TYPE) => { // 拖拽卡片
+        console.log('dragCardEnd------------', currentCard);
+    }
+    const dropCard = (e: React.DragEvent, currentCard: CARD_LIST_TYPE) => { // 拖拽卡片
+        console.log('dropCard------------', e);
+        console.log('dropCard------------', currentCard);
     }
 
     const handleEditCard = (index: number, e: any) => { // 每条card的编辑
@@ -79,12 +83,12 @@ const ContentCard: FC<PropsType> = ({ cardValue, handleCardChange }) => {
             handleCardChange(newValue)
         }
     }
-    
+
     const AddCardDom = useMemo(() => {
-        // if (showAddEdit && currentCard.show) {
         if (showAddEdit && cardValue.show) {
+        // if (showAddEdit) {
             return <>
-                <textarea defaultValue={addCardTextValue.current} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => addCardTextValue.current = e.target.value} className='pc-card-cont-text' placeholder='为这张卡片输入标题…'/>
+                <textarea defaultValue={addCardTextValue.current} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => addCardTextValue.current = e.target.value} className='pc-card-cont-text' placeholder='为这张卡片输入标题…' />
                 <div className='pc-card-cont-btns'>
                     <button onClick={handleAddCurrentNewCard}>添加卡片</button>
                     <button className='cancle' onClick={handleCancel}>取消</button>

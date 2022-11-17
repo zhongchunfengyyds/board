@@ -4,7 +4,6 @@ import { CARD_LIST_TYPE } from '@/data/type'
 import './index.scss'
 
 interface PropsType {
-    handleAdd: () => void
 }
 const ContentCard: FC<CARD_LIST_TYPE & PropsType> = ({ title = '' }) => {
     return <div className='pc-card-cont'>

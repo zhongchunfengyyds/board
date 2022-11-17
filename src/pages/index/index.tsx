@@ -13,14 +13,15 @@ const Index = () => {
 	const [cardList, setCardList] = useState<Array<CARD_LIST_TYPE>>(baseList)
 
 	const handleAdd = () => { // add list to card
+		console.log(11111111111)
 		setCardList(res => [ ...res, { title: 'test_add' }])
 	}
 
   return <div className='pc-board'>
 		{
-			cardList.map((item, index) => <ContentCard key={index} {...item} handleAdd={handleAdd}/>)
+			cardList.map((item, index) => <ContentCard key={index} {...item}/>)
 		}
-		<div className='pc-card-cont pc-board-add'>添加另一个列表</div>
+		<div className='pc-card-cont pc-board-add' onClick={handleAdd}>添加另一个列表</div>
 	</div>
 }
 

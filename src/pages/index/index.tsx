@@ -12,8 +12,7 @@ const Index = () => {
 	]
 	const [cardList, setCardList] = useState<Array<CARD_LIST_TYPE>>(baseList)
 
-	const handleAdd = () => { // add list to card
-		console.log(11111111111)
+	const handleAdd = () => { // add card to list
 		setCardList(res => [ ...res, { title: 'test_add' }])
 	}
 

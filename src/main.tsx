@@ -1,10 +1,17 @@
-import React from 'react'
+import React, {Suspense, lazy} from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App'
-import './index.css'
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import './common/css/base.scss'
+const Index = lazy(() => import('./pages/index/index'))
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <React.StrictMode>
+        <Router>
+            <Suspense fallback={<div>Loading...</div>}>
+                <Routes>
+                    <Route path="/" element={<Index />} />
+                </Routes>
+            </Suspense>
+        </Router>
+    </React.StrictMode>,
 )

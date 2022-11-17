@@ -13,6 +13,7 @@ const ContentCard: FC<PropsType> = ({ cardValue, handleCardChange }) => {
     const [currentCard, setCurrentCard] = useState<CARD_LIST_TYPE>(cardValue)
     const [showAddEdit, setShowAddEdit] = useState<boolean>(false)
     const [status, setStatus] = useState<string>('')
+    const currentEditIndex = useRef<number>(-1)
     const [position, setPositon] = useState({
         left: 10,
         top: 10
@@ -43,14 +44,26 @@ const ContentCard: FC<PropsType> = ({ cardValue, handleCardChange }) => {
         console.log('handleViewDetail------------')
     }
 
-    const handleEditCard = (e: MouseEvent) => { // 每条card的编辑
+    const handleEditCard = (index: number, e: any) => { // 每条card的编辑
         e.stopPropagation()
         const { clientX, clientY } = e
         setPositon({
             top: clientY - 32,
-            left: clientX -220
+            left: clientX -240
         })
         setStatus('EDIT')
+        currentEditIndex.current = index
+    }
+
+    const handleConfirmEdit = (value: string) => {
+        console.log(value)
+        const newValue: CARD_LIST_TYPE = { ...currentCard }
+        if ( newValue.cardItem && newValue.cardItem[currentEditIndex.current]) {
+            newValue.cardItem[currentEditIndex.current] = { value , timestamp: (new Date).getTime()}
+            console.log(newValue)
+            setCurrentCard(newValue)
+            handleCardChange(newValue)
+        }
     }
     
     const AddCardDom = useMemo(() => {
@@ -72,26 +85,26 @@ const ContentCard: FC<PropsType> = ({ cardValue, handleCardChange }) => {
         if (currentCard.cardItem && currentCard.cardItem.length > 0) {
             return <div className='pc-card-cont-wrap'>
                 {
-                    currentCard.cardItem.map(item => <div className='item' key={item.timestamp} onClick={handleViewDetail}>
-                        <input type="text" defaultValue={item?.value} onChange={(e) => handleCurrentChange('title', e)}/>
-                        <i onClick={handleEditCard}>编辑</i>
+                    currentCard.cardItem.map((item, index) => <div className='item' key={item.timestamp} onClick={handleViewDetail}>
+                        <input type="text" value={item?.value ?? ''} onChange={(e) => handleCurrentChange('title', e)}/>
+                        <i onClick={(e) => handleEditCard(index, e)}>编辑</i>
                     </div>)
                 }
             </div>
         } else {
             return null
         }
-    }, [currentCard.cardItem])
+    }, [currentCard, currentCard.cardItem])
 
     return <div className='pc-card-cont'>
         <div className='title'>
-            <input type="text" defaultValue={currentCard?.title} onChange={(e) => handleCurrentChange('title', e)}/>
+            <input type="text" value={currentCard?.title ?? ''} onChange={(e) => handleCurrentChange('title', e)}/>
             {/*title operation  */}
             <BoardMoreBtns />
         </div>
         {CardItemDom}
         {AddCardDom}
-		<EditCardModal position={position} show={ status === 'EDIT' } onClose={() => setStatus('')} value='11111111111'/>
+		<EditCardModal handleConfirmEdit={(val: string) => handleConfirmEdit(val)} position={position} show={ status === 'EDIT' } onClose={() => setStatus('')} value={currentCard.cardItem && currentCard.cardItem[currentEditIndex.current] && currentCard.cardItem[currentEditIndex.current].value}/>
     </div>
 }
 

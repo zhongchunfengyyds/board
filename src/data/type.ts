@@ -5,5 +5,5 @@ export interface CARD_ITEM_TYPE {
 
 export interface CARD_LIST_TYPE {
   title: string | number
-  cardItem?: Array<CARD_ITEM_TYPE>
+  cardItem?: CARD_ITEM_TYPE[]
 }

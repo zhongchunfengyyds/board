@@ -1,4 +1,5 @@
 .pc-edit-card-modal {
+  position: absolute;
   display: flex;
   & > textarea {
     width: 256px;
@@ -20,6 +21,7 @@
       color: #fff;
       font-size: 12px;
       margin-bottom: 6px;
+      word-break: keep-all;
       &:last-child {
         margin-bottom: 0;
       }

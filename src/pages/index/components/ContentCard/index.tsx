@@ -43,9 +43,14 @@ const ContentCard: FC<PropsType> = ({ cardValue, handleCardChange }) => {
         console.log('handleViewDetail------------')
     }
 
-    const handleEditCard = (event: Event) => { // 每条card的编辑
-        event.stopPropagation()
-        console.log('handleEditCard-------------')
+    const handleEditCard = (e: MouseEvent) => { // 每条card的编辑
+        e.stopPropagation()
+        const { clientX, clientY } = e
+        setPositon({
+            top: clientY - 32,
+            left: clientX -220
+        })
+        setStatus('EDIT')
     }
     
     const AddCardDom = useMemo(() => {

@@ -1,5 +1,4 @@
-import React, { useState, FC } from 'react'
-import { createPortal } from 'react-dom'
+import React, { FC } from 'react'
 
 import './index.scss'
 import BoardModal from '@/Components/BoardModal'

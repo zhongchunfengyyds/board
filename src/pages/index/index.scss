@@ -3,6 +3,8 @@
   flex-wrap: nowrap;
   padding: 20px;
   &-add {
+    align-self: baseline;
+    flex-shrink: 0;
     margin-right: 0 !important;
     background-color: #172b4d !important;
     color: #fff;

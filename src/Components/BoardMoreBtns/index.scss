@@ -1,0 +1,12 @@
+i.board-more-btns {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: #0800003d;
+  margin: 0 12px 0 10px;
+  box-shadow: 6px 0 0 0 #0800003d,
+    12px 0 0 0 #0800003d
+  ;
+  cursor: pointer;
+}

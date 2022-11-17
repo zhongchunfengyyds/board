@@ -15,10 +15,16 @@ const Index = () => {
 	const handleAdd = () => { // add card to list
 		setCardList(res => [ ...res, { title: 'test_add' }])
 	}
+	const handleCardChange = (val: CARD_LIST_TYPE, index: number) => {
+		const newCard = [...cardList]
+		newCard[index] = val
+		console.log(newCard)
+		setCardList(cardList)
+	}
 
   return <div className='pc-board'>
 		{
-			cardList.map((item, index) => <ContentCard key={index} {...item}/>)
+			cardList.map((item, index) => <ContentCard key={index} cardValue={item} handleCardChange={(val) => handleCardChange(val, index)}/>)
 		}
 		<div className='pc-card-cont pc-board-add' onClick={handleAdd}>添加另一个列表</div>
 	</div>

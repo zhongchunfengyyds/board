@@ -1,25 +1,27 @@
+import React, { useState } from 'react'
+import { CARD_LIST_TYPE } from '@/data/type'
 import './index.scss'
-import ContentCard from './content-card'
-const App = () => {
-    const data = [14, 2, 7]
-    const addBoard = () => {
-        data.push(1)
-        console.log(data)
-    }
-    return (
-        <div className="board">
-            {data.map((item, index) => (
-                <div key={index} className="board-item" style={{height: 20 * item + 'px'}}>
-                    <div className="board-item-title"></div>
-                    <div className="board-item-content">
-                        <ContentCard data={item} />
-                    </div>
-                </div>
-            ))}
-            <div className="board-add" onClick={addBoard}>
-                添加看板
-            </div>
-        </div>
-    )
+
+import ContentCard from './components/ContentCard'
+
+const Index = () => {
+	const baseList: Array<CARD_LIST_TYPE> = [
+		{ title: '待办' },
+		{ title: '进行中' },
+		{ title: '完成' }
+	]
+	const [cardList, setCardList] = useState<Array<CARD_LIST_TYPE>>(baseList)
+
+	const handleAdd = () => { // add list to card
+		setCardList(res => [ ...res, { title: 'test_add' }])
+	}
+
+  return <div className='pc-board'>
+		{
+			cardList.map((item, index) => <ContentCard key={index} {...item} handleAdd={handleAdd}/>)
+		}
+		<div className='pc-card-cont pc-board-add'>添加另一个列表</div>
+	</div>
 }
-export default App
+
+export default Index

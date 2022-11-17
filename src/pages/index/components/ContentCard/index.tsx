@@ -10,6 +10,7 @@ interface PropsType {
     handleCardChange: (value: CARD_LIST_TYPE, show?: boolean) => void
 }
 const ContentCard: FC<PropsType> = ({ cardValue, handleCardChange }) => {
+    console.log(cardValue)
     const [showAddEdit, setShowAddEdit] = useState<boolean>(false)
     const [status, setStatus] = useState<string>('')
     const currentEditIndex = useRef<number>(-1)
@@ -86,7 +87,6 @@ const ContentCard: FC<PropsType> = ({ cardValue, handleCardChange }) => {
 
     const AddCardDom = useMemo(() => {
         if (showAddEdit && cardValue.show) {
-        // if (showAddEdit) {
             return <>
                 <textarea defaultValue={addCardTextValue.current} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => addCardTextValue.current = e.target.value} className='pc-card-cont-text' placeholder='为这张卡片输入标题…' />
                 <div className='pc-card-cont-btns'>
@@ -98,7 +98,7 @@ const ContentCard: FC<PropsType> = ({ cardValue, handleCardChange }) => {
         } else {
             return <div className='pc-card-cont-add' onClick={handleShowAddCardItem}>添加卡片</div>
         }
-    }, [showAddEdit, cardValue.show])
+    }, [showAddEdit, cardValue.show, addCardTextValue.current, handleAddCurrentNewCard, handleShowAddCardItem])
 
     const CardItemDom = useMemo(() => {
         if (cardValue.cardItem && cardValue.cardItem.length > 0) {
@@ -113,7 +113,7 @@ const ContentCard: FC<PropsType> = ({ cardValue, handleCardChange }) => {
         } else {
             return null
         }
-    }, [cardValue, cardValue.cardItem])
+    }, [cardValue.cardItem,handleViewDetail, handleCurrentChange])
 
     return <div className='pc-card-cont'>
         <div className='title'>

@@ -1,8 +1,9 @@
 import React, { FC, useState, ChangeEvent, useMemo, useRef } from 'react'
-import { CARD_LIST_TYPE, CARD_ITEM_TYPE } from '@/data/type'
+import { CARD_LIST_TYPE } from '@/data/type'
 
 import './index.scss'
 import BoardMoreBtns from '@/Components/BoardMoreBtns'
+import EditCardModal from '../EditCardModal'
 
 interface PropsType {
     cardValue: CARD_LIST_TYPE
@@ -11,6 +12,11 @@ interface PropsType {
 const ContentCard: FC<PropsType> = ({ cardValue, handleCardChange }) => {
     const [currentCard, setCurrentCard] = useState<CARD_LIST_TYPE>(cardValue)
     const [showAddEdit, setShowAddEdit] = useState<boolean>(false)
+    const [status, setStatus] = useState<string>('')
+    const [position, setPositon] = useState({
+        left: 10,
+        top: 10
+    })
     const addCardTextValue = useRef<string>('')
     const handleCurrentChange = (key: keyof CARD_LIST_TYPE, e: ChangeEvent<HTMLInputElement>) => { // change default value
         const newValue = { ...currentCard, [key]: e.target.value }
@@ -37,8 +43,8 @@ const ContentCard: FC<PropsType> = ({ cardValue, handleCardChange }) => {
         console.log('handleViewDetail------------')
     }
 
-    const handleEditCard = (e: Event) => { // 每条card的编辑
-        e.stopPropagation()
+    const handleEditCard = (event: Event) => { // 每条card的编辑
+        event.stopPropagation()
         console.log('handleEditCard-------------')
     }
     
@@ -80,6 +86,7 @@ const ContentCard: FC<PropsType> = ({ cardValue, handleCardChange }) => {
         </div>
         {CardItemDom}
         {AddCardDom}
+		<EditCardModal position={position} show={ status === 'EDIT' } onClose={() => setStatus('')} value='11111111111'/>
     </div>
 }
 

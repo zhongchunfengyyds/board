@@ -18,7 +18,6 @@ const Index = () => {
 	const handleCardChange = (val: CARD_LIST_TYPE, index: number) => {
 		const newCard = [...cardList]
 		newCard[index] = val
-		console.log(newCard)
 		setCardList(cardList)
 	}
 

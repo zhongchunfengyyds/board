@@ -1,11 +1,12 @@
 {
   "bracketSpacing": false,
   "jsxBracketSameLine": true,
-  "parser": "flow",
+//   "parser": "flow",
   "printWidth": 80,
   "singleQuote": true,
   "trailingComma": "all",
   "tabWidth": 4,
   "useTabs": false,
-  "semi": false
+  "semi": false,
+  "parser": "typescript"
 }

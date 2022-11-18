@@ -4,7 +4,7 @@ import React, {
     ChangeEvent,
     useMemo,
     useRef,
-    useEffect,
+    DragEvent
 } from 'react'
 import {CARD_LIST_TYPE} from '@/data/type'
 
@@ -46,7 +46,7 @@ const ContentCard: FC<PropsType> = ({
         if (!addCardTextValue.current) return
         const newCard = {
             value: addCardTextValue.current,
-            timestamp: new Date().getTime(),
+            id: new Date().getTime(),
         }
         addCardTextValue.current = ''
         const newValue = {...cardValue}
@@ -78,7 +78,7 @@ const ContentCard: FC<PropsType> = ({
      * 第三步：拖拽结束，更新数据重新渲染dom
      */
     // 拖拽开始
-    const dragCardStart = (e: React.DragEvent, index: number) => {
+    const dragCardStart = (e: DragEvent, index: number) => {
         const dom = e.target as HTMLElement
         dom.id = 'dragCard'
         setTimeout(() => {
@@ -91,10 +91,10 @@ const ContentCard: FC<PropsType> = ({
         )
     }
     // 拖拽进入
-    const dragCardEnter = (e: React.DragEvent, cardValue: CARD_LIST_TYPE) => {
+    const dragCardEnter = (e: DragEvent<HTMLElement>) => {
         const dragCard = document.getElementById('dragCard')
         e.preventDefault()
-        e.currentTarget.parentNode.insertBefore(
+        dragCard && e.currentTarget.parentNode?.insertBefore(
             dragCard,
             e.currentTarget.nextSibling,
         )
@@ -219,7 +219,6 @@ const ContentCard: FC<PropsType> = ({
                 show={status === 'EDIT'}
                 onClose={() => setStatus('')}
                 value={
-                    cardValue.cardItem &&
                     cardValue.cardItem[currentEditIndex.current] &&
                     cardValue.cardItem[currentEditIndex.current].value
                 }

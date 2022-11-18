@@ -30,7 +30,7 @@ const Index = () => {
 
     const handleAdd = () => {
         // add card to list
-        setCardList((res) => [...res, {title: 'test_add', show: false}])
+        setCardList((res) => [...res, { title: 'test_add', show: false, cardItem: [] }])
     }
     const handleCardChange = (
         val: CARD_LIST_TYPE,
@@ -68,7 +68,7 @@ const Index = () => {
                 }
             }
             cardList.forEach((item, index) => {
-                item.cardItem = item.cardItem.filter((item2) => {
+                item.cardItem = item?.cardItem?.filter((item2) => {
                     return item2.id !== dragData.id
                 })
             })

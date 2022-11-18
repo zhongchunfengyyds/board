@@ -67,23 +67,51 @@ const ContentCard: FC<PropsType> = ({cardValue, handleCardChange}) => {
         // 点击input弹窗详情
         console.log('handleViewDetail2233233------------')
     }
+
+    // 拖拽开始
     const dragCardStart = (e: React.DragEvent, index: number) => {
-        // 拖拽卡片
         e.dataTransfer.setData(
             'cardItem',
             JSON.stringify(cardValue.cardItem[index]),
         )
-        // handleCardChange(cardValue)
         console.log('dragCardStart------------', cardValue)
     }
-    const dragCardEnd = (e: React.DragEvent, currentCard: CARD_LIST_TYPE) => {
-        // 拖拽卡片
-        console.log('dragCardEnd------------', currentCard)
+    // 拖拽进入
+    const dragCardEnter = (e: React.DragEvent, cardValue: CARD_LIST_TYPE) => {
+        console.log('dragCardEnter------------', e)
+        e.preventDefault()
+        const div = document.createElement('p')
+        div.className = 'item'
+        div.style.height = '20px'
+        div.style.marginBottom = '10px'
+        div.style.backgroundColor = '#6967673d'
+        e.currentTarget.parentNode.insertBefore(
+            div,
+            e.currentTarget.nextSibling,
+        )
     }
-    const dropCard = (e: React.DragEvent, currentCard: CARD_LIST_TYPE) => {
-        // 拖拽卡片
-        console.log('dropCard------------', e)
-        console.log('dropCard------------', currentCard)
+    // 拖拽离开
+    const dragCardLeave = (e: React.DragEvent, cardValue: CARD_LIST_TYPE) => {
+        console.log('dragCardLeave------------', e)
+        // 清楚标记
+        const dom = e.currentTarget.parentNode.querySelector('p')
+        dom && dom.remove()
+    }
+
+    // 拖拽释放
+    const dropCard = (
+        e: React.DragEvent,
+        cardValue: CARD_LIST_TYPE,
+        index: number,
+    ) => {
+        // 拖拽悬浮结束
+        const dragCardItem = JSON.parse(e.dataTransfer.getData('cardItem'))
+        cardValue.cardItem.splice(index + 1, 0, dragCardItem)
+        handleCardChange(cardValue)
+
+        // 清楚标记
+        const dom = e.currentTarget.parentNode.querySelector('p')
+        dom && dom.remove()
     }
 
     const handleEditCard = (index: number, e: any) => {
@@ -100,7 +128,7 @@ const ContentCard: FC<PropsType> = ({cardValue, handleCardChange}) => {
 
     const handleConfirmEdit = (value: string) => {
         console.log(value)
-        // const newValue: CARD_LIST_TYPE = { ...currentCard }
+        // const newValue: CARD_LIST_TYPE = { ...cardValue }
         const newValue: CARD_LIST_TYPE = {...cardValue}
         if (newValue.cardItem && newValue.cardItem[currentEditIndex.current]) {
             newValue.cardItem[currentEditIndex.current] = {
@@ -108,7 +136,7 @@ const ContentCard: FC<PropsType> = ({cardValue, handleCardChange}) => {
                 timestamp: new Date().getTime(),
             }
             console.log(newValue)
-            // setCurrentCard(newValue)
+            // setcardValue(newValue)
             handleCardChange(newValue)
         }
     }
@@ -160,12 +188,13 @@ const ContentCard: FC<PropsType> = ({cardValue, handleCardChange}) => {
                     {cardValue.cardItem.map((item, index) => (
                         <div
                             className="item"
-                            key={item.timestamp}
+                            key={index}
                             onClick={handleViewDetail}
                             onDragStart={(e) => dragCardStart(e, index)}
-                            onDragEnd={(e) => dragCardEnd(e, cardValue)}
                             onDragOver={(e) => e.preventDefault()}
-                            onDrop={(e) => dropCard(e, cardValue)}
+                            onDragEnter={(e) => dragCardEnter(e, cardValue)}
+                            onDragLeave={(e) => dragCardLeave(e, cardValue)}
+                            onDrop={(e) => dropCard(e, cardValue, index)}
                             draggable="true">
                             <input
                                 type="text"

@@ -7,7 +7,7 @@
   box-sizing: border-box;
   margin-right: 20px;
   font-size: 16px;
-  background-color: #6967673d;
+  background-color: #ebecf0;
   cursor: pointer;
   input {
     padding: 8px;
@@ -110,3 +110,7 @@
     }
   }
 }
+
+.item:-moz-drag-over {
+    border: 1px solid black;
+  }

@@ -2,6 +2,11 @@
   display: flex;
   flex-wrap: nowrap;
   padding: 20px;
+  box-sizing: border-box;
+  height: 100vh;
+  background: url(../../assets/bg.jpeg);
+  background-size: cover;
+  overflow-y: hidden;
   &-add {
     align-self: baseline;
     flex-shrink: 0;

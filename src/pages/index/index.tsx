@@ -40,9 +40,15 @@ const Index = () => {
         index: number,
         show?: boolean,
     ) => {
-        const newCard = [...cardList]
-        newCard[index] = show ? {...val, show} : val
-        setCardList(newCard)
+        const newCardList: Array<CARD_LIST_TYPE> = cardList.map((_, i) => {
+					if (index === i && show) {
+						return { ...val, show }
+					} else {
+						return { ...val, show: false }
+					}
+				})
+        // newCard[index] = show ? {...val, show} : val
+        setCardList(newCardList)
     }
     // 拖拽开始的时候把拖拽的数据存入了缓存，结束后取出来处理
     const handleCardDragEnd = () => {

@@ -30,7 +30,10 @@ const Index = () => {
 
     const handleAdd = () => {
         // add card to list
-        setCardList((res) => [...res, { title: 'test_add', show: false, cardItem: [] }])
+        setCardList((res) => [
+            ...res,
+            {title: 'test_add', show: false, cardItem: []},
+        ])
     }
     const handleCardChange = (
         val: CARD_LIST_TYPE,
@@ -46,9 +49,9 @@ const Index = () => {
         console.log(localStorage.getItem('dragData'))
         const dragData = JSON.parse(localStorage.getItem('dragData') || '{}')
         const dom = document.getElementById('dragCard')
-				console.log(dom)
+        console.log(dom)
         if (dom) {
-					  let listIndex = 0,
+            let listIndex = 0,
                 cardIndex = 0
             const fatherDom =
                 document.getElementsByClassName('pc-card-cont-wrap')
@@ -65,14 +68,19 @@ const Index = () => {
                     }
                 }
             }
-						const newCardList: Array<CARD_LIST_TYPE> = cardList.map(item => {
-							    const res = item.cardItem.filter(item2 => {
+            const newCardList: Array<CARD_LIST_TYPE> = cardList.map((item) => {
+                const res = item.cardItem.filter((item2) => {
                     return item2.id !== dragData.id
-                	})
-									return { ...item, cardItem: res}
-						})
+                })
+                return {...item, cardItem: res}
+            })
             newCardList[listIndex].cardItem.splice(cardIndex, 0, dragData)
-						setCardList(newCardList)
+            // setCardList(newCardList)
+            console.log(newCardList)
+            setCardList([])
+            setTimeout(() => {
+                setCardList(newCardList)
+            }, 100)
         }
     }
     return (

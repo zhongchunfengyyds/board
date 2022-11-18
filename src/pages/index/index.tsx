@@ -48,7 +48,7 @@ const Index = () => {
         const dom = document.getElementById('dragCard')
 				console.log(dom)
         if (dom) {
-            let listIndex = 0,
+					  let listIndex = 0,
                 cardIndex = 0
             const fatherDom =
                 document.getElementsByClassName('pc-card-cont-wrap')
@@ -65,17 +65,14 @@ const Index = () => {
                     }
                 }
             }
-						const newCardList: Array<CARD_LIST_TYPE> = JSON.parse(JSON.stringify([...cardList]))
-            newCardList.forEach(item => {
-                item.cardItem = item.cardItem.filter(item2 => {
+						const newCardList: Array<CARD_LIST_TYPE> = cardList.map(item => {
+							    const res = item.cardItem.filter(item2 => {
                     return item2.id !== dragData.id
-                })
-            })
-						console.log(newCardList)
+                	})
+									return { ...item, cardItem: res}
+						})
             newCardList[listIndex].cardItem.splice(cardIndex, 0, dragData)
-            // 删除dom 节点
-            // dom && dom.remove()
-            setCardList(newCardList)
+						setCardList(newCardList)
         }
     }
     return (

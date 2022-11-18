@@ -22,6 +22,7 @@ const ContentCard: FC<PropsType> = ({
     handleCardChange,
     handleCardDragEnd
 }) => {
+    console.log(cardValue)
     const [showAddEdit, setShowAddEdit] = useState<boolean>(false)
     const [status, setStatus] = useState<string>('')
     const currentEditIndex = useRef<number>(-1)
@@ -165,6 +166,7 @@ const ContentCard: FC<PropsType> = ({
     ])
 
     const CardItemDom = useMemo(() => {
+        console.log(111111111111111111)
         if (cardValue.cardItem.length > 0) {
             return (
                 <div className="pc-card-cont-wrap">
@@ -195,7 +197,7 @@ const ContentCard: FC<PropsType> = ({
         } else {
             return null
         }
-    }, [cardValue.cardItem, handleViewDetail, handleCurrentChange])
+    }, [cardValue.cardItem, handleViewDetail, handleCurrentChange, handleCardDragEnd])
 
     return (
         <div className="pc-card-cont">

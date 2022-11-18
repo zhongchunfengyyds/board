@@ -68,19 +68,26 @@ const Index = () => {
                     }
                 }
             }
-            const newCardList: Array<CARD_LIST_TYPE> = cardList.map((item) => {
-                const res = item.cardItem.filter((item2) => {
-                    return item2.id !== dragData.id
-                })
-                return {...item, cardItem: res}
-            })
+
+            const newCardList: Array<CARD_LIST_TYPE> = cardList.map(
+                (item, index) => {
+                    const res = item.cardItem.filter((item2, index2) => {
+                        if (item2.id === dragData.id) {
+                            // 把dom 放回去 不放回去会导致dom丢失react无法渲染
+                            fatherDom[index].insertBefore(
+                                dom,
+                                fatherDom[index].children[index2]
+                            )
+                            return false
+                        } else {
+                            return true
+                        }
+                    })
+                    return {...item, cardItem: res}
+                },
+            )
             newCardList[listIndex].cardItem.splice(cardIndex, 0, dragData)
-            // setCardList(newCardList)
-            console.log(newCardList)
-            setCardList([])
-            setTimeout(() => {
-                setCardList(newCardList)
-            }, 100)
+            setCardList(newCardList)
         }
     }
     return (

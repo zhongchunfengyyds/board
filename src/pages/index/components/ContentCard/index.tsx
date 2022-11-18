@@ -4,7 +4,7 @@ import React, {
     ChangeEvent,
     useMemo,
     useRef,
-    DragEvent
+    DragEvent,
 } from 'react'
 import {CARD_LIST_TYPE} from '@/data/type'
 
@@ -20,9 +20,8 @@ interface PropsType {
 const ContentCard: FC<PropsType> = ({
     cardValue,
     handleCardChange,
-    handleCardDragEnd
+    handleCardDragEnd,
 }) => {
-    console.log(cardValue)
     const [showAddEdit, setShowAddEdit] = useState<boolean>(false)
     const [status, setStatus] = useState<string>('')
     const currentEditIndex = useRef<number>(-1)
@@ -70,7 +69,6 @@ const ContentCard: FC<PropsType> = ({
 
     const handleViewDetail = () => {
         // 点击input弹窗详情
-        console.log('handleViewDetail2233233------------')
     }
     /**
      * 第一步：拖拽板子，原来的板子变成占位图
@@ -94,12 +92,24 @@ const ContentCard: FC<PropsType> = ({
     const dragCardEnter = (e: DragEvent<HTMLElement>) => {
         const dragCard = document.getElementById('dragCard')
         e.preventDefault()
-        dragCard && e.currentTarget.parentNode?.insertBefore(
-            dragCard,
-            e.currentTarget.nextSibling,
-        )
+        dragCard &&
+            e.currentTarget.parentNode?.insertBefore(
+                dragCard,
+                e.currentTarget.nextSibling,
+            )
     }
-
+    const titleDragEnter = (e: DragEvent<HTMLElement>) => {
+        const dragCard = document.getElementById('dragCard')
+        e.preventDefault()
+        if (e.currentTarget.parentNode.children[1].firstChild) {
+            e.currentTarget.parentNode.children[1].insertBefore(
+                dragCard,
+                e.currentTarget.parentNode.children[1].firstChild,
+            )
+        } else {
+            e.currentTarget.parentNode.children[1].appendChild(dragCard)
+        }
+    }
     const handleEditCard = (index: number, e: any) => {
         // 每条card的编辑
         e.stopPropagation()
@@ -166,42 +176,43 @@ const ContentCard: FC<PropsType> = ({
     ])
 
     const CardItemDom = useMemo(() => {
-        console.log(111111111111111111)
-        if (cardValue.cardItem.length > 0) {
-            return (
-                <div className="pc-card-cont-wrap">
-                    {cardValue.cardItem.map((item, index) => (
-                        <div
-                            className="item"
-                            key={item.id}
-                            onClick={handleViewDetail}
-                            onDragStart={(e) => dragCardStart(e, index)}
-                            onDragOver={(e) => e.preventDefault()}
-                            onDragEnter={(e) => dragCardEnter(e)}
-                            onDragEnd={handleCardDragEnd}
-                            draggable="true">
-                            <input
-                                type="text"
-                                value={item?.value ?? ''}
-                                onChange={(e) =>
-                                    handleCurrentChange('title', e)
-                                }
-                            />
-                            <i onClick={(e) => handleEditCard(index, e)}>
-                                编辑
-                            </i>
-                        </div>
-                    ))}
-                </div>
-            )
-        } else {
-            return null
-        }
-    }, [cardValue.cardItem, handleViewDetail, handleCurrentChange, handleCardDragEnd])
+        return (
+            <div className="pc-card-cont-wrap">
+                {cardValue.cardItem.map((item, index) => (
+                    <div
+                        className="item"
+                        key={item.id}
+                        onClick={handleViewDetail}
+                        onDragStart={(e) => dragCardStart(e, index)}
+                        onDragOver={(e) => e.preventDefault()}
+                        onDragEnter={(e) => dragCardEnter(e)}
+                        onDragEnd={handleCardDragEnd}
+                        draggable="true">
+                        <input
+                            type="text"
+                            value={item?.value ?? ''}
+                            onChange={(e) => handleCurrentChange('title', e)}
+                        />
+                        <i onClick={(e) => handleEditCard(index, e)}>编辑</i>
+                    </div>
+                ))}
+            </div>
+        )
+    }, [
+        cardValue.cardItem,
+        handleViewDetail,
+        handleCurrentChange,
+        handleCardDragEnd,
+    ])
 
     return (
         <div className="pc-card-cont">
-            <div className="title">
+            <div
+                className="title"
+                onDragEnter={(e) => titleDragEnter(e)}
+                onDragOver={(e) => e.preventDefault()}
+                onDragEnd={handleCardDragEnd}
+                draggable="true">
                 <input
                     type="text"
                     value={cardValue?.title ?? ''}

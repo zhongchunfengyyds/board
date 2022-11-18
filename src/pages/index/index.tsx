@@ -46,10 +46,8 @@ const Index = () => {
     }
     // 拖拽开始的时候把拖拽的数据存入了缓存，结束后取出来处理
     const handleCardDragEnd = () => {
-        console.log(localStorage.getItem('dragData'))
         const dragData = JSON.parse(localStorage.getItem('dragData') || '{}')
         const dom = document.getElementById('dragCard')
-        console.log(dom)
         if (dom) {
             let listIndex = 0,
                 cardIndex = 0
@@ -76,8 +74,11 @@ const Index = () => {
                             // 把dom 放回去 不放回去会导致dom丢失react无法渲染
                             fatherDom[index].insertBefore(
                                 dom,
-                                fatherDom[index].children[index2]
+                                fatherDom[index].children[index2],
                             )
+                            dom.id = ''
+                            dom.style.opacity = '1'
+                            dom.style.filter = 'unset'
                             return false
                         } else {
                             return true
@@ -86,6 +87,7 @@ const Index = () => {
                     return {...item, cardItem: res}
                 },
             )
+
             newCardList[listIndex].cardItem.splice(cardIndex, 0, dragData)
             setCardList(newCardList)
         }

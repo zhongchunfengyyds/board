@@ -15,8 +15,13 @@ import EditCardModal from '../EditCardModal'
 interface PropsType {
     cardValue: CARD_LIST_TYPE
     handleCardChange: (value: CARD_LIST_TYPE, show?: boolean) => void
+    handleCardDragEnd: () => void // 拖拽结束
 }
-const ContentCard: FC<PropsType> = ({cardValue, handleCardChange}) => {
+const ContentCard: FC<PropsType> = ({
+    cardValue,
+    handleCardChange,
+    handleCardDragEnd,
+}) => {
     console.log(cardValue)
     const [showAddEdit, setShowAddEdit] = useState<boolean>(false)
     const [status, setStatus] = useState<string>('')
@@ -67,48 +72,32 @@ const ContentCard: FC<PropsType> = ({cardValue, handleCardChange}) => {
         // 点击input弹窗详情
         console.log('handleViewDetail2233233------------')
     }
-
+    /**
+     * 第一步：拖拽板子，原来的板子变成占位图
+     * 第二步：拖拽到什么地方，占位图图就移动到什么地方
+     * 第三步：拖拽结束，更新数据重新渲染dom
+     */
     // 拖拽开始
     const dragCardStart = (e: React.DragEvent, index: number) => {
-        e.dataTransfer.setData(
-            'cardItem',
+        const dom = e.target as HTMLElement
+        dom.id = 'dragCard'
+        setTimeout(() => {
+            dom.style.filter = 'brightness(0)'
+            dom.style.opacity = '0.1'
+        }, 100)
+        localStorage.setItem(
+            'dragData',
             JSON.stringify(cardValue.cardItem[index]),
         )
-        console.log('dragCardStart------------', cardValue)
     }
     // 拖拽进入
     const dragCardEnter = (e: React.DragEvent, cardValue: CARD_LIST_TYPE) => {
-        console.log('dragCardEnter------------', e)
+        const dragCard = document.getElementById('dragCard')
         e.preventDefault()
-        // 清楚标记
-        const dom = e.currentTarget.parentNode.querySelector('p')
-        dom && dom.remove()
-
-        // 添加标记
-        const div = document.createElement('p')
-        div.className = 'item'
-        div.style.height = '20px'
-        div.style.marginBottom = '10px'
-        div.style.backgroundColor = '#6967673d'
         e.currentTarget.parentNode.insertBefore(
-            div,
+            dragCard,
             e.currentTarget.nextSibling,
         )
-    }
-    // 拖拽释放
-    const dropCard = (
-        e: React.DragEvent,
-        cardValue: CARD_LIST_TYPE,
-        index: number,
-    ) => {
-        // 拖拽悬浮结束
-        const dragCardItem = JSON.parse(e.dataTransfer.getData('cardItem'))
-        cardValue.cardItem.splice(index + 1, 0, dragCardItem)
-        handleCardChange(cardValue)
-
-        // 清楚标记
-        const dom = e.currentTarget.parentNode.querySelector('p')
-        dom && dom.remove()
     }
 
     const handleEditCard = (index: number, e: any) => {
@@ -130,7 +119,7 @@ const ContentCard: FC<PropsType> = ({cardValue, handleCardChange}) => {
         if (newValue.cardItem && newValue.cardItem[currentEditIndex.current]) {
             newValue.cardItem[currentEditIndex.current] = {
                 value,
-                timestamp: new Date().getTime(),
+                id: new Date().getTime(),
             }
             console.log(newValue)
             // setcardValue(newValue)
@@ -185,12 +174,12 @@ const ContentCard: FC<PropsType> = ({cardValue, handleCardChange}) => {
                     {cardValue.cardItem.map((item, index) => (
                         <div
                             className="item"
-                            key={index}
+                            key={item.id}
                             onClick={handleViewDetail}
                             onDragStart={(e) => dragCardStart(e, index)}
                             onDragOver={(e) => e.preventDefault()}
                             onDragEnter={(e) => dragCardEnter(e, cardValue)}
-                            onDrop={(e) => dropCard(e, cardValue, index)}
+                            onDragEnd={handleCardDragEnd}
                             draggable="true">
                             <input
                                 type="text"

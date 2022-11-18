@@ -10,21 +10,21 @@ const Index = () => {
             title: '待办',
             show: false,
             cardItem: [
-                {value: '待办1', timestamp: 1610000000000},
-                {value: '待办2', timestamp: 1610000000001},
-                {value: '待办3', timestamp: 1610000000002},
+                {value: '待办1', id: 1610000000000},
+                {value: '待办2', id: 1610000000001},
+                {value: '待办3', id: 1610000000002},
             ],
         },
         {
             title: '进行中',
             show: false,
             cardItem: [
-                {value: '进行中1', timestamp: 1610000000003},
-                {value: '进行中2', timestamp: 1610000000004},
-                {value: '进行中3', timestamp: 1610000000005},
+                {value: '进行中1', id: 1610000000003},
+                {value: '进行中2', id: 1610000000004},
+                {value: '进行中3', id: 1610000000005},
             ],
         },
-        {title: '完成', show: false},
+        {title: '完成', show: false, cardItem: []},
     ]
     const [cardList, setCardList] = useState<Array<CARD_LIST_TYPE>>(baseList)
 
@@ -42,7 +42,43 @@ const Index = () => {
         console.log(newCard)
         setCardList(newCard)
     }
+    // 拖拽开始的时候把拖拽的数据存入了缓存，结束后取出来处理
+    const handleCardDragEnd = () => {
+        console.log(localStorage.getItem('dragData'))
 
+        const dragData = JSON.parse(localStorage.getItem('dragData') || '{}')
+        const dom = document.getElementById('dragCard')
+        if (dom) {
+            let listIndex = 0,
+                cardIndex = 0
+            const fatherDom =
+                document.getElementsByClassName('pc-card-cont-wrap')
+            // 判断dom在哪个父级中
+            for (let i = 0; i < fatherDom.length; i++) {
+                const item = fatherDom[i]
+                item.contains(dom)
+                if (item.contains(dom)) {
+                    listIndex = i
+                    for (let k = 0; k < item.children.length; k++) {
+                        const child = item.children[k]
+                        if (child.id === 'dragCard') {
+                            cardIndex = k
+                        }
+                    }
+                }
+            }
+            cardList.forEach((item, index) => {
+                item.cardItem = item.cardItem.filter((item2) => {
+                    return item2.id !== dragData.id
+                })
+            })
+            cardList[listIndex].cardItem.splice(cardIndex, 0, dragData)
+            console.log(cardList)
+            // 删除dom 节点
+            dom.remove()
+            setCardList(JSON.parse(JSON.stringify(cardList)))
+        }
+    }
     return (
         <div className="pc-board">
             {cardList.map((item, index) => (
@@ -52,6 +88,7 @@ const Index = () => {
                     handleCardChange={(val, show) =>
                         handleCardChange(val, index, show)
                     }
+                    handleCardDragEnd={handleCardDragEnd}
                 />
             ))}
             <div className="pc-card-cont pc-board-add" onClick={handleAdd}>

@@ -39,15 +39,14 @@ const Index = () => {
     ) => {
         const newCard = [...cardList]
         newCard[index] = show ? {...val, show} : val
-        console.log(newCard)
         setCardList(newCard)
     }
     // 拖拽开始的时候把拖拽的数据存入了缓存，结束后取出来处理
     const handleCardDragEnd = () => {
         console.log(localStorage.getItem('dragData'))
-
         const dragData = JSON.parse(localStorage.getItem('dragData') || '{}')
         const dom = document.getElementById('dragCard')
+				console.log(dom)
         if (dom) {
             let listIndex = 0,
                 cardIndex = 0
@@ -56,7 +55,6 @@ const Index = () => {
             // 判断dom在哪个父级中
             for (let i = 0; i < fatherDom.length; i++) {
                 const item = fatherDom[i]
-                item.contains(dom)
                 if (item.contains(dom)) {
                     listIndex = i
                     for (let k = 0; k < item.children.length; k++) {
@@ -67,16 +65,17 @@ const Index = () => {
                     }
                 }
             }
-            cardList.forEach((item, index) => {
-                item.cardItem = item?.cardItem?.filter((item2) => {
+						const newCardList: Array<CARD_LIST_TYPE> = JSON.parse(JSON.stringify([...cardList]))
+            newCardList.forEach(item => {
+                item.cardItem = item.cardItem.filter(item2 => {
                     return item2.id !== dragData.id
                 })
             })
-            cardList[listIndex].cardItem.splice(cardIndex, 0, dragData)
-            console.log(cardList)
+						console.log(newCardList)
+            newCardList[listIndex].cardItem.splice(cardIndex, 0, dragData)
             // 删除dom 节点
-            dom.remove()
-            setCardList(JSON.parse(JSON.stringify(cardList)))
+            // dom && dom.remove()
+            setCardList(newCardList)
         }
     }
     return (

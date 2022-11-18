@@ -20,9 +20,8 @@ interface PropsType {
 const ContentCard: FC<PropsType> = ({
     cardValue,
     handleCardChange,
-    handleCardDragEnd,
+    handleCardDragEnd
 }) => {
-    console.log(cardValue)
     const [showAddEdit, setShowAddEdit] = useState<boolean>(false)
     const [status, setStatus] = useState<string>('')
     const currentEditIndex = useRef<number>(-1)
@@ -113,7 +112,6 @@ const ContentCard: FC<PropsType> = ({
     }
 
     const handleConfirmEdit = (value: string) => {
-        console.log(value)
         // const newValue: CARD_LIST_TYPE = { ...cardValue }
         const newValue: CARD_LIST_TYPE = {...cardValue}
         if (newValue.cardItem && newValue.cardItem[currentEditIndex.current]) {
@@ -121,7 +119,6 @@ const ContentCard: FC<PropsType> = ({
                 value,
                 id: new Date().getTime(),
             }
-            console.log(newValue)
             // setcardValue(newValue)
             handleCardChange(newValue)
         }
@@ -168,7 +165,7 @@ const ContentCard: FC<PropsType> = ({
     ])
 
     const CardItemDom = useMemo(() => {
-        if (cardValue.cardItem && cardValue.cardItem.length > 0) {
+        if (cardValue.cardItem.length > 0) {
             return (
                 <div className="pc-card-cont-wrap">
                     {cardValue.cardItem.map((item, index) => (
@@ -178,7 +175,7 @@ const ContentCard: FC<PropsType> = ({
                             onClick={handleViewDetail}
                             onDragStart={(e) => dragCardStart(e, index)}
                             onDragOver={(e) => e.preventDefault()}
-                            onDragEnter={(e) => dragCardEnter(e, cardValue)}
+                            onDragEnter={(e) => dragCardEnter(e)}
                             onDragEnd={handleCardDragEnd}
                             draggable="true">
                             <input

@@ -80,6 +80,11 @@ const ContentCard: FC<PropsType> = ({cardValue, handleCardChange}) => {
     const dragCardEnter = (e: React.DragEvent, cardValue: CARD_LIST_TYPE) => {
         console.log('dragCardEnter------------', e)
         e.preventDefault()
+        // 清楚标记
+        const dom = e.currentTarget.parentNode.querySelector('p')
+        dom && dom.remove()
+
+        // 添加标记
         const div = document.createElement('p')
         div.className = 'item'
         div.style.height = '20px'
@@ -90,14 +95,6 @@ const ContentCard: FC<PropsType> = ({cardValue, handleCardChange}) => {
             e.currentTarget.nextSibling,
         )
     }
-    // 拖拽离开
-    const dragCardLeave = (e: React.DragEvent, cardValue: CARD_LIST_TYPE) => {
-        console.log('dragCardLeave------------', e)
-        // 清楚标记
-        const dom = e.currentTarget.parentNode.querySelector('p')
-        dom && dom.remove()
-    }
-
     // 拖拽释放
     const dropCard = (
         e: React.DragEvent,
@@ -193,7 +190,6 @@ const ContentCard: FC<PropsType> = ({cardValue, handleCardChange}) => {
                             onDragStart={(e) => dragCardStart(e, index)}
                             onDragOver={(e) => e.preventDefault()}
                             onDragEnter={(e) => dragCardEnter(e, cardValue)}
-                            onDragLeave={(e) => dragCardLeave(e, cardValue)}
                             onDrop={(e) => dropCard(e, cardValue, index)}
                             draggable="true">
                             <input

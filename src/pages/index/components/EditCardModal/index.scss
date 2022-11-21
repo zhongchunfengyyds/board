@@ -11,10 +11,11 @@
     border-radius: 6px;
   }
   & > ul {
+    position: absolute;
     list-style: none;
     padding: 0;
     margin: 0;
-    margin-left: 10px;
+    left: 266px;
     & > li {
       position: relative;
       padding: 6px 8px;
@@ -25,6 +26,7 @@
       margin-bottom: 6px;
       word-break: keep-all;
       transition: all .5s;
+      cursor: pointer;
       &:last-child {
         margin-bottom: 0;
       }

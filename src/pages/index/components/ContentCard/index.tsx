@@ -17,7 +17,6 @@ import CopyCardListModal from '../CopyCardListModal'
 
 interface PropsType {
     cardValue: CARD_LIST_TYPE
-    // handleCardChange: (value: CARD_LIST_TYPE, show?: boolean) => void
     handleAddCard: (value: CARD_LIST_TYPE) => void
     handleAddCardList: (val: CARD_LIST_TYPE) => void
     handleCardDragEnd: () => void // 拖拽结束

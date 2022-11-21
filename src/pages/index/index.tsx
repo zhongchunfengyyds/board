@@ -108,7 +108,6 @@ const Index = () => {
                 <ContentCard
                     key={index}
                     cardValue={item}
-                    handleCardChange={(val) => handleCardChange(val, index)}
                     handleAddCard={val => handleAddCard(val, index)}
                     handleAddCardList={val => handleAddCardList(val, index + 1)}
                     handleCardDragEnd={handleCardDragEnd}

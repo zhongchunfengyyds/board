@@ -101,13 +101,14 @@ const ContentCard: FC<PropsType> = ({
     const titleDragEnter = (e: DragEvent<HTMLElement>) => {
         const dragCard = document.getElementById('dragCard')
         e.preventDefault()
-        if (e.currentTarget.parentNode.children[1].firstChild) {
-            e.currentTarget.parentNode.children[1].insertBefore(
-                dragCard,
-                e.currentTarget.parentNode.children[1].firstChild,
+        const parentNode: HTMLElement = e?.currentTarget.parentNode as HTMLElement
+        if (parentNode.children[1].firstChild) {
+            parentNode.children[1].insertBefore(
+                (dragCard as HTMLElement),
+                parentNode.children[1].firstChild,
             )
         } else {
-            e.currentTarget.parentNode.children[1].appendChild(dragCard)
+            parentNode.children[1].appendChild((dragCard as HTMLElement))
         }
     }
     const handleEditCard = (index: number, e: any) => {
@@ -232,7 +233,7 @@ const ContentCard: FC<PropsType> = ({
                 onClose={() => setStatus('')}
                 value={
                     cardValue.cardItem[currentEditIndex.current] &&
-                    cardValue.cardItem[currentEditIndex.current].value
+                    cardValue.cardItem[currentEditIndex.current].title
                 }
             />
         </div>

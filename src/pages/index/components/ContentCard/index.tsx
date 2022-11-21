@@ -17,6 +17,7 @@ import BoardMoreBtns from '@/Components/BoardMoreBtns'
 import EditCardModal from '../EditCardModal'
 import eventBus from '@/common/js/eventBus'
 import CopyCardListModal from '../CopyCardListModal'
+import AddCardItem from '../AddCardItem'
 
 interface PropsType {
     cardValue: CARD_LIST_TYPE
@@ -30,8 +31,8 @@ const ContentCard: FC<PropsType> = ({
     handleAddCardList,
     handleCardDragEnd,
 }) => {
-    const [show, setShow] = useState<boolean>(false)
     const [status, setStatus] = useState<string>('') // 弹窗状态
+    const [addStatus, setAddStatus] = useState<'btn' | 'input'>('btn') // 操作状态
     const currentEditIndex = useRef<number>(-1) // 防止重复渲染
     const [isHead, setIsHead] = useState<boolean>(false) // 判断是否为头插入
     const [position, setPositon] = useState({
@@ -39,7 +40,6 @@ const ContentCard: FC<PropsType> = ({
         top: 10,
     })
 
-    const addCardTextValue = useRef<string>('')
     const handleCurrentChange = (
         key: keyof CARD_LIST_TYPE,
         e: ChangeEvent<HTMLInputElement>,
@@ -52,7 +52,8 @@ const ContentCard: FC<PropsType> = ({
     useEffect(() => {
         console.log('添加订阅')
         eventBus.on('addCardItem', () => {
-            setShow(false)
+            // setShow(false)
+            setAddStatus('btn')
         })
         return () => {
             console.log('取消订阅')
@@ -61,16 +62,15 @@ const ContentCard: FC<PropsType> = ({
     })
     const addCardItem = () => {
         eventBus.emit('addCardItem')
-        setShow(true)
+        setAddStatus('input')
     }
-    const handleAddCurrentNewCard = () => {
+    const handleAddCurrentNewCard = (val: string) => {
         // 添加卡片操作
-        if (!addCardTextValue.current) return
+        if (!val) return
         const newCard = {
-            title: addCardTextValue.current,
+            title: val,
             id: new Date().getTime().toString(),
         }
-        addCardTextValue.current = ''
         const newValue = {...cardValue}
         if (isHead) {
             newValue.cardItem = [newCard, ...newValue.cardItem]
@@ -78,13 +78,9 @@ const ContentCard: FC<PropsType> = ({
         } else {
             newValue.cardItem = newValue.cardItem.concat(newCard)
         }
-        setShow(false)
+        // setShow(false)
+        setAddStatus('btn')
         handleChangeCard(newValue)
-    }
-    const handleCancel = () => {
-        // 取消添加值
-        addCardTextValue.current = ''
-        setShow(false)
     }
     /**
      * 第一步：拖拽板子，原来的板子变成占位图
@@ -154,9 +150,7 @@ const ContentCard: FC<PropsType> = ({
 
     const handleCopyList = useCallback((title: string | number) => {
         // 复制列表 ----title需要重写
-        // console.log({...cardValue})
         const newCardList = JSON.parse(JSON.stringify(cardValue))
-        console.log(newCardList)
         handleAddCardList({...newCardList, title})
     }, [cardValue])
     const handleAddCardNew = () => {
@@ -164,38 +158,6 @@ const ContentCard: FC<PropsType> = ({
         setIsHead(true)
         addCardItem()
     }
-
-    const AddCardDom = useMemo(() => {
-        if (show) {
-            return (
-                <>
-                    <textarea
-                        defaultValue={addCardTextValue.current}
-                        onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-                            (addCardTextValue.current = e.target.value)
-                        }
-                        className="pc-card-cont-text"
-                        placeholder="为这张卡片输入标题…"
-                    />
-                    <div className="pc-card-cont-btns">
-                        <button onClick={handleAddCurrentNewCard}>
-                            添加卡片
-                        </button>
-                        <button className="cancle" onClick={handleCancel}>
-                            取消
-                        </button>
-                        <BoardMoreBtns />
-                    </div>
-                </>
-            )
-        } else {
-            return (
-                <div className="pc-card-cont-add" onClick={addCardItem}>
-                    添加卡片
-                </div>
-            )
-        }
-    }, [show, addCardTextValue.current, cardValue.cardItem, handleAddCurrentNewCard])
 
     const CardItemDom = useMemo(() => {
         return (
@@ -224,6 +186,8 @@ const ContentCard: FC<PropsType> = ({
         )
     }, [cardValue.cardItem, handleCurrentChange, handleCardDragEnd])
 
+    const ADD_DOM = useMemo(() => <AddCardItem status={addStatus} handleAddCurrentCard={val => handleAddCurrentNewCard(val)} addCardItem={addCardItem}/>, [addStatus, handleAddCurrentNewCard, addCardItem])
+
     return (
         <div className="pc-card-cont">
             <div
@@ -240,9 +204,9 @@ const ContentCard: FC<PropsType> = ({
                 {/*title operation  */}
                 <BoardMoreBtns onClick={() => setStatus('COPY')} />
             </div>
-            {isHead && AddCardDom}
+            {isHead && ADD_DOM}
             {CardItemDom}
-            {!isHead && AddCardDom}
+            {!isHead && ADD_DOM}
             <EditCardModal
                 handleConfirmEdit={(val: string) => handleConfirmEdit(val)}
                 position={position}

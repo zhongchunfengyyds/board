@@ -9,8 +9,9 @@ import React, {
 import {CARD_LIST_TYPE} from '@/data/type'
 
 import './index.scss'
-import BoardMoreBtns from '@/Components/BoardMoreBtns'
+import BoardMoreBtns from '@/components/BoardMoreBtns'
 import EditCardModal from '../EditCardModal'
+import eventBus from '@/common/js/eventBus'
 
 interface PropsType {
     cardValue: CARD_LIST_TYPE
@@ -22,7 +23,8 @@ const ContentCard: FC<PropsType> = ({
     handleCardChange,
     handleCardDragEnd,
 }) => {
-    const [showAddEdit, setShowAddEdit] = useState<boolean>(false)
+    console.log('cardValue', cardValue)
+    const [show, setShow] = useState<boolean>(false)
     const [status, setStatus] = useState<string>('')
     const currentEditIndex = useRef<number>(-1)
     const [position, setPositon] = useState({
@@ -39,36 +41,31 @@ const ContentCard: FC<PropsType> = ({
         const newValue = {...cardValue, [key]: e.target.value}
         handleCardChange(newValue)
     }
-
+    eventBus.once('addCardItem', () => {
+        console.log('on addCardItem')
+        setShow(false)
+    })
+    const addCardItem = () => {
+        eventBus.emit('addCardItem')
+        setShow(true)
+    }
     const handleAddCurrentNewCard = () => {
         // 添加卡片操作
         if (!addCardTextValue.current) return
         const newCard = {
             title: addCardTextValue.current,
-            id: new Date().getTime(),
+            id: new Date().getTime().toString(),
         }
         addCardTextValue.current = ''
         const newValue = {...cardValue}
-        newValue.cardItem = newValue.cardItem
-            ? newValue.cardItem.concat(newCard)
-            : [newCard]
+        newValue.cardItem.push(newCard)
+        setShow(false)
         handleCardChange(newValue)
-        setShowAddEdit(false)
     }
-
-    const handleShowAddCardItem = () => {
-        handleCardChange(cardValue, true)
-        setShowAddEdit(true)
-    }
-
     const handleCancel = () => {
         // 取消添加值
         addCardTextValue.current = ''
-        setShowAddEdit(false)
-    }
-
-    const handleViewDetail = () => {
-        // 点击input弹窗详情
+        setShow(false)
     }
     /**
      * 第一步：拖拽板子，原来的板子变成占位图
@@ -128,7 +125,7 @@ const ContentCard: FC<PropsType> = ({
         if (newValue.cardItem && newValue.cardItem[currentEditIndex.current]) {
             newValue.cardItem[currentEditIndex.current] = {
                 title,
-                id: new Date().getTime(),
+                id: new Date().getTime().toString(),
             }
             // setcardValue(newValue)
             handleCardChange(newValue)
@@ -136,7 +133,7 @@ const ContentCard: FC<PropsType> = ({
     }
 
     const AddCardDom = useMemo(() => {
-        if (showAddEdit && cardValue.show) {
+        if (show) {
             return (
                 <>
                     <textarea
@@ -160,20 +157,12 @@ const ContentCard: FC<PropsType> = ({
             )
         } else {
             return (
-                <div
-                    className="pc-card-cont-add"
-                    onClick={handleShowAddCardItem}>
+                <div className="pc-card-cont-add" onClick={addCardItem}>
                     添加卡片
                 </div>
             )
         }
-    }, [
-        showAddEdit,
-        cardValue.show,
-        addCardTextValue.current,
-        handleAddCurrentNewCard,
-        handleShowAddCardItem,
-    ])
+    }, [show, addCardTextValue.current, handleAddCurrentNewCard])
 
     const CardItemDom = useMemo(() => {
         return (
@@ -182,7 +171,7 @@ const ContentCard: FC<PropsType> = ({
                     <div
                         className="item"
                         key={item.id}
-                        onClick={handleViewDetail}
+                        onClick={() => eventBus.emit('openCardDetail', item.id)}
                         onDragStart={(e) => dragCardStart(e, index)}
                         onDragOver={(e) => e.preventDefault()}
                         onDragEnter={(e) => dragCardEnter(e)}
@@ -200,12 +189,7 @@ const ContentCard: FC<PropsType> = ({
                 ))}
             </div>
         )
-    }, [
-        cardValue.cardItem,
-        handleViewDetail,
-        handleCurrentChange,
-        handleCardDragEnd,
-    ])
+    }, [cardValue.cardItem, handleCurrentChange, handleCardDragEnd])
 
     return (
         <div className="pc-card-cont">
@@ -230,9 +214,13 @@ const ContentCard: FC<PropsType> = ({
                 position={position}
                 show={status === 'EDIT'}
                 onClose={() => setStatus('')}
-                value={
+                id={
                     cardValue.cardItem[currentEditIndex.current] &&
-                    cardValue.cardItem[currentEditIndex.current].value
+                    cardValue.cardItem[currentEditIndex.current].id
+                }
+                title={
+                    cardValue.cardItem[currentEditIndex.current] &&
+                    cardValue.cardItem[currentEditIndex.current].title
                 }
             />
         </div>

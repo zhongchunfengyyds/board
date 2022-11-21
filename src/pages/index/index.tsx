@@ -3,28 +3,27 @@ import {CARD_LIST_TYPE} from '@/data/type'
 import './index.scss'
 
 import ContentCard from './components/ContentCard'
-
+import CardDetailModal from './components/CardDetailModal'
+import eventBus from '@/common/js/eventBus'
 const Index = () => {
     const baseList: Array<CARD_LIST_TYPE> = [
         {
             title: '待办',
-            show: false,
             cardItem: [
-                {title: '待办1', id: 1610000000000},
-                {title: '待办2', id: 1610000000001},
-                {title: '待办3', id: 1610000000002},
+                {title: '待办1', id: '1610000000000'},
+                {title: '待办2', id: '1610000000001'},
+                {title: '待办3', id: '1610000000002'},
             ],
         },
         {
             title: '进行中',
-            show: false,
             cardItem: [
-                {title: '进行中1', id: 1610000000003},
-                {title: '进行中2', id: 1610000000004},
-                {title: '进行中3', id: 1610000000005},
+                {title: '进行中1', id: '1610000000003'},
+                {title: '进行中2', id: '1610000000004'},
+                {title: '进行中3', id: '1610000000005'},
             ],
         },
-        {title: '完成', show: false, cardItem: []},
+        {title: '完成',  cardItem: []},
     ]
     const [cardList, setCardList] = useState<Array<CARD_LIST_TYPE>>(baseList)
 
@@ -35,20 +34,9 @@ const Index = () => {
             {title: 'test_add', show: false, cardItem: []},
         ])
     }
-    const handleCardChange = (
-        val: CARD_LIST_TYPE,
-        index: number,
-        show?: boolean,
-    ) => {
-        const newCardList: Array<CARD_LIST_TYPE> = cardList.map((_, i) => {
-					if (index === i && show) {
-						return { ...val, show }
-					} else {
-						return { ...val, show: false }
-					}
-				})
-        // newCard[index] = show ? {...val, show} : val
-        setCardList(newCardList)
+    const handleCardChange = (val: CARD_LIST_TYPE, index: number) => {
+        cardList[index] = val
+        setCardList(cardList)
     }
     // 拖拽开始的时候把拖拽的数据存入了缓存，结束后取出来处理
     const handleCardDragEnd = () => {
@@ -98,21 +86,41 @@ const Index = () => {
             setCardList(newCardList)
         }
     }
+
+    const [show, setShow] = useState(false)
+    const [id, setId] = useState('')
+    eventBus.once('openCardDetail', (id: string) => {
+        setShow(true)
+        setId(id)
+        console.log(
+            'viewAddCardItemlisten',
+            eventBus.listenerCount('addCardItem'),
+        )
+    })
+    const handleModalClose = () => {
+        setShow(false)
+    }
     return (
         <div className="pc-board">
             {cardList.map((item, index) => (
                 <ContentCard
                     key={index}
                     cardValue={item}
-                    handleCardChange={(val, show) =>
-                        handleCardChange(val, index, show)
-                    }
+                    handleCardChange={(val) => handleCardChange(val, index)}
                     handleCardDragEnd={handleCardDragEnd}
                 />
             ))}
             <div className="pc-card-cont pc-board-add" onClick={handleAdd}>
                 添加另一个列表
             </div>
+            {useMemo(() => {
+                return (
+                    <CardDetailModal
+                        show={show}
+                        id={id}
+                        onClose={handleModalClose}></CardDetailModal>
+                )
+            }, [show, id])}
         </div>
     )
 }

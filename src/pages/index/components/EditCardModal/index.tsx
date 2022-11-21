@@ -1,8 +1,9 @@
 import React, {FC, useRef, ChangeEvent, useEffect, useState} from 'react'
 
 import './index.scss'
-import BoardModal from '@/Components/BoardModal'
-
+import BoardModal from '@/components/BoardModal'
+import {CARD_LIST_TYPE} from '@/data/type'
+import eventBus from '@/common/js/eventBus'
 interface positionType {
     left: number
     top: number
@@ -10,7 +11,8 @@ interface positionType {
 
 interface PropsType {
     show: boolean
-    value: string | undefined
+    title: string | undefined
+    id: string | undefined
     onClose: () => void
     handleConfirmEdit: (val: string) => void
     position?: positionType // 控制弹窗内容方向
@@ -18,7 +20,8 @@ interface PropsType {
 
 const Index: FC<PropsType> = ({
     show,
-    value,
+    title,
+    id,
     onClose,
     handleConfirmEdit,
     position = {left: 0, top: 0},
@@ -36,11 +39,14 @@ const Index: FC<PropsType> = ({
         onClose?.()
     }
     useEffect(() => {
-        setCurrentValue(value ?? '')
-    }, [value])
+        setCurrentValue(title ?? '')
+    }, [title])
 
     // 打开卡片详情
-    const open = () => {}
+    const open = () => {
+        onClose()
+        eventBus.emit('openCardDetail', id)
+    }
     // 修改标签
     const changeTag = () => {}
     // 更改成员

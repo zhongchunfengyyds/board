@@ -10,6 +10,7 @@ const Index = () => {
     const [show, setShow] = useState(false)
     const [id, setId] = useState('')
     const cardList = useCardList()
+    console.log(cardList)
     const setCardList = useSetCardList()
     const { AddCardListAction, ChangeCardAction } = useCardListAction()
 

@@ -15,6 +15,7 @@
     bottom: 0;
     background: rgba(0, 0, 0, .5);
     cursor: pointer;
+    z-index: 1000;
   }
   &-cont {
     position: absolute;

@@ -12,7 +12,7 @@ interface PropsType {
 const Index: FC<PropsType> = ({ show = false, onClose, handleCopyList, handleAddCard }) => {
   // <div className='pc-copy-card-list'></div>
   const [innerVisible, setInnerVisible] = useState<boolean>(false)
-  const [status, showStatus] = useState<string>('LIST') // 默认显示列表
+  const [status, showStatus] = useState<string>('') // 默认显示列表
   const WRAPDOM = useRef<HTMLUListElement>(null)
   const currentTitle = useRef<string>('')
   useEffect(() => {
@@ -29,6 +29,7 @@ const Index: FC<PropsType> = ({ show = false, onClose, handleCopyList, handleAdd
     setInnerVisible(false)
     onClose?.()
     handleCopyList(currentTitle.current)
+    showStatus('')
   }
   const handleAddCardNEW = () => {
     setInnerVisible(false)
@@ -51,7 +52,7 @@ const Index: FC<PropsType> = ({ show = false, onClose, handleCopyList, handleAdd
       <li className='item'>归档此列表中的所有卡片</li>
       <li className='item'>将此列表进行归档</li>
     </ul>
-  }, [handleAddCardNEW, handleCopyListNEW])
+  }, [handleAddCardNEW])
 
   const COPY_CARD_DOM = useMemo(() => {
     return <div className='pc-copy-card-name'>
@@ -69,11 +70,11 @@ const Index: FC<PropsType> = ({ show = false, onClose, handleCopyList, handleAdd
           </button>
       </div>
     </div>
-  }, [])
+  }, [handleCopyListNEW, currentTitle.current])
   return <>
       {
         innerVisible && <div className='pc-copy-card'>
-          { status === 'LIST' && Lits_DOM }
+          { status === '' && Lits_DOM }
           { status === 'COPY' && COPY_CARD_DOM }
         </div>
       }

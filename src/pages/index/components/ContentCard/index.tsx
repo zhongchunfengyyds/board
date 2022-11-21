@@ -6,7 +6,8 @@ import React, {
     useRef,
     useEffect,
     DragEvent,
-    memo
+    memo,
+    useCallback
 } from 'react'
 import {CARD_LIST_TYPE} from '@/data/type'
 import { isEmpty } from 'lodash'
@@ -151,11 +152,13 @@ const ContentCard: FC<PropsType> = ({
         }
     }
 
-    const handleCopyList = (title: string | number) => {
+    const handleCopyList = useCallback((title: string | number) => {
         // 复制列表 ----title需要重写
-        console.log({...cardValue})
-        handleAddCardList({...cardValue, title})
-    }
+        // console.log({...cardValue})
+        const newCardList = JSON.parse(JSON.stringify(cardValue))
+        console.log(newCardList)
+        handleAddCardList({...newCardList, title})
+    }, [cardValue])
     const handleAddCardNew = () => {
         // 头插入卡片
         setIsHead(true)
@@ -223,7 +226,6 @@ const ContentCard: FC<PropsType> = ({
 
     return (
         <div className="pc-card-cont">
-            {isHead && AddCardDom}
             <div
                 className="title"
                 onDragEnter={(e) => titleDragEnter(e)}
@@ -238,6 +240,7 @@ const ContentCard: FC<PropsType> = ({
                 {/*title operation  */}
                 <BoardMoreBtns onClick={() => setStatus('COPY')} />
             </div>
+            {isHead && AddCardDom}
             {CardItemDom}
             {!isHead && AddCardDom}
             <EditCardModal

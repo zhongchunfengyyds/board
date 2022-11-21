@@ -16,14 +16,13 @@ import CopyCardListModal from '../CopyCardListModal'
 
 interface PropsType {
     cardValue: CARD_LIST_TYPE
-    handleCardChange: (value: CARD_LIST_TYPE, show?: boolean) => void
+    // handleCardChange: (value: CARD_LIST_TYPE, show?: boolean) => void
     handleAddCard: (value: CARD_LIST_TYPE) => void
     handleAddCardList: (val: CARD_LIST_TYPE) => void
     handleCardDragEnd: () => void // 拖拽结束
 }
 const ContentCard: FC<PropsType> = ({
     cardValue,
-    handleCardChange,
     handleAddCard,
     handleAddCardList,
     handleCardDragEnd,
@@ -44,10 +43,9 @@ const ContentCard: FC<PropsType> = ({
     ) => {
         // change default value
         const newValue = {...cardValue, [key]: e.target.value}
-        handleCardChange(newValue)
+        handleAddCard(newValue)
     }
     eventBus.once('addCardItem', () => {
-        console.log('on addCardItem')
         setShow(false)
     })
     const addCardItem = () => {
@@ -63,9 +61,15 @@ const ContentCard: FC<PropsType> = ({
         }
         addCardTextValue.current = ''
         const newValue = {...cardValue}
-        newValue.cardItem.push(newCard)
+        // newValue.cardItem.push(newCard)
+        if (isHead) {
+            newValue.cardItem = [newCard, ...newValue.cardItem]
+            setIsHead(false)
+        } else {
+            newValue.cardItem = newValue.cardItem.concat(newCard)
+        }
         setShow(false)
-        handleCardChange(newValue)
+        handleAddCard(newValue)
     }
     const handleCancel = () => {
         // 取消添加值
@@ -135,7 +139,7 @@ const ContentCard: FC<PropsType> = ({
                 title,
                 id: new Date().getTime().toString(),
             }
-            handleCardChange(newValue)
+            handleAddCard(newValue) // 和添加类似
         }
     }
 
@@ -146,7 +150,7 @@ const ContentCard: FC<PropsType> = ({
     const handleAddCardNew = () => {
         // 头插入卡片
         setIsHead(true)
-        handleShowAddCardItem()
+        addCardItem()
     }
 
     const AddCardDom = useMemo(() => {

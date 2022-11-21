@@ -35,14 +35,10 @@ const Index = () => {
 
     const handleAddCardList = (val?: CARD_LIST_TYPE, index?: number) => {
         index = index ?? cardList.length
-        val = val ?? { title : 'test1111', show: false, cardItem: [] }
+        val = val ?? { title : 'test1111', cardItem: [] }
         const newCardList = [...cardList]
         newCardList.splice(index, 0, val)
         setCardList(newCardList)
-    }
-    const handleCardChange = (val: CARD_LIST_TYPE, index: number) => {
-        cardList[index] = val
-        setCardList(cardList)
     }
     // 拖拽开始的时候把拖拽的数据存入了缓存，结束后取出来处理
     const handleCardDragEnd = () => {

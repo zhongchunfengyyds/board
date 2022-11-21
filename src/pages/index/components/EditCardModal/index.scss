@@ -16,6 +16,7 @@
     margin: 0;
     margin-left: 10px;
     & > li {
+      position: relative;
       padding: 6px 8px;
       background: rgba(#0009, .6);
       border-radius: 6px;
@@ -23,8 +24,12 @@
       font-size: 12px;
       margin-bottom: 6px;
       word-break: keep-all;
+      transition: all .5s;
       &:last-child {
         margin-bottom: 0;
+      }
+      &:hover {
+        left: 10px;
       }
     }
   }

@@ -1,0 +1,36 @@
+.pc-copy-card {
+  position: absolute;
+  right: 40px;
+  top: -20px;
+  transform: translateX(100%);
+  width: 300px;
+  max-height: 90vh;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #fff;
+  overflow-y: auto;
+  border-radius: 6px;
+  z-index: 9;
+  font-size: 14px;
+  &-list {
+    & .title {
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+    & > .item {
+      height: 40px;
+      line-height: 40px;
+      padding-left: 10px;
+      transition: background-color .5s;
+      &:hover {
+        background-color: rgba(#000, .1);
+      }
+    }
+  }
+  &-name {
+   & > h2 {
+    font-weight: bold;
+    margin-bottom: 10px;
+   }
+  }
+}

@@ -11,20 +11,26 @@ import {CARD_LIST_TYPE} from '@/data/type'
 import './index.scss'
 import BoardMoreBtns from '@/Components/BoardMoreBtns'
 import EditCardModal from '../EditCardModal'
+import CopyCardListModal from '../CopyCardListModal'
 
 interface PropsType {
     cardValue: CARD_LIST_TYPE
     handleCardChange: (value: CARD_LIST_TYPE, show?: boolean) => void
+    handleAddCard: (value: CARD_LIST_TYPE) => void
+    handleAddCardList: (val: CARD_LIST_TYPE ) => void
     handleCardDragEnd: () => void // 拖拽结束
 }
 const ContentCard: FC<PropsType> = ({
     cardValue,
     handleCardChange,
+    handleAddCard,
+    handleAddCardList,
     handleCardDragEnd,
 }) => {
-    const [showAddEdit, setShowAddEdit] = useState<boolean>(false)
-    const [status, setStatus] = useState<string>('')
-    const currentEditIndex = useRef<number>(-1)
+    const [showAddEdit, setShowAddEdit] = useState<boolean>(false) //
+    const [status, setStatus] = useState<string>('') // 弹窗状态
+    const currentEditIndex = useRef<number>(-1) // 防止重复渲染
+    const [ isHead, setIsHead ] = useState<boolean>(false) // 判断是否为头插入
     const [position, setPositon] = useState({
         left: 10,
         top: 10,
@@ -49,10 +55,13 @@ const ContentCard: FC<PropsType> = ({
         }
         addCardTextValue.current = ''
         const newValue = {...cardValue}
-        newValue.cardItem = newValue.cardItem
-            ? newValue.cardItem.concat(newCard)
-            : [newCard]
-        handleCardChange(newValue)
+        if (isHead) {
+            newValue.cardItem = [newCard, ...newValue.cardItem]
+            setIsHead(false)
+        } else {
+            newValue.cardItem = newValue.cardItem.concat(newCard)
+        }
+        handleAddCard(newValue)
         setShowAddEdit(false)
     }
 
@@ -64,6 +73,7 @@ const ContentCard: FC<PropsType> = ({
     const handleCancel = () => {
         // 取消添加值
         addCardTextValue.current = ''
+        if ( isHead ) setIsHead(false)
         setShowAddEdit(false)
     }
 
@@ -111,7 +121,7 @@ const ContentCard: FC<PropsType> = ({
             parentNode.children[1].appendChild((dragCard as HTMLElement))
         }
     }
-    const handleEditCard = (index: number, e: any) => {
+    const handleEditCard = (index: number, e: any) => { // 编辑卡片
         // 每条card的编辑
         e.stopPropagation()
         const {clientX, clientY} = e
@@ -131,9 +141,16 @@ const ContentCard: FC<PropsType> = ({
                 title,
                 id: new Date().getTime(),
             }
-            // setcardValue(newValue)
             handleCardChange(newValue)
         }
+    }
+
+    const handleCopyList = (title: string | number) => { // 复制列表 ----title需要重写
+        handleAddCardList( { ...cardValue, title  })
+    }
+    const handleAddCardNew = () => { // 头插入卡片
+        setIsHead(true)
+        handleShowAddCardItem()
     }
 
     const AddCardDom = useMemo(() => {
@@ -170,7 +187,7 @@ const ContentCard: FC<PropsType> = ({
         }
     }, [
         showAddEdit,
-        cardValue.show,
+        cardValue,
         addCardTextValue.current,
         handleAddCurrentNewCard,
         handleShowAddCardItem,
@@ -187,8 +204,7 @@ const ContentCard: FC<PropsType> = ({
                         onDragStart={(e) => dragCardStart(e, index)}
                         onDragOver={(e) => e.preventDefault()}
                         onDragEnter={(e) => dragCardEnter(e)}
-                        onDragEnd={handleCardDragEnd}
-                        draggable="true">
+                        onDragEnd={handleCardDragEnd}>
                         {item.background && (
                             <div
                                 className="item-header"
@@ -210,6 +226,9 @@ const ContentCard: FC<PropsType> = ({
 
     return (
         <div className="pc-card-cont">
+            {
+                isHead && AddCardDom
+            }
             <div
                 className="title"
                 onDragEnter={(e) => titleDragEnter(e)}
@@ -222,10 +241,10 @@ const ContentCard: FC<PropsType> = ({
                     onChange={(e) => handleCurrentChange('title', e)}
                 />
                 {/*title operation  */}
-                <BoardMoreBtns />
+                <BoardMoreBtns onClick={() => setStatus('COPY')}/>
             </div>
             {CardItemDom}
-            {AddCardDom}
+            {! isHead && AddCardDom}
             <EditCardModal
                 handleConfirmEdit={(val: string) => handleConfirmEdit(val)}
                 position={position}
@@ -236,6 +255,7 @@ const ContentCard: FC<PropsType> = ({
                     cardValue.cardItem[currentEditIndex.current].title
                 }
             />
+            <CopyCardListModal handleAddCard={handleAddCardNew} handleCopyList={val => handleCopyList(val)} show={status === 'COPY'} onClose={() => setStatus('')}/>
         </div>
     )
 }

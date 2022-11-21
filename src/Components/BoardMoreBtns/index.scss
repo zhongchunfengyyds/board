@@ -1,12 +1,17 @@
 i.board-more-btns {
   display: inline-block;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background-color: #0800003d;
+  width: 12px;
+  
   margin: 0 12px 0 10px;
-  box-shadow: 6px 0 0 0 #0800003d,
-    12px 0 0 0 #0800003d
-  ;
+  &::after {
+    content: '';
+    width: 4px;
+    height: 4px;
+    display: inline-block;
+    box-shadow: 6px 0 0 0 #0800003d,
+    12px 0 0 0 #0800003d;
+    border-radius: 50%;
+    background-color: #0800003d;
+  }
   cursor: pointer;
 }

@@ -1,4 +1,4 @@
-import React, {useState, useMemo} from 'react'
+import React, {useState} from 'react'
 import {CARD_LIST_TYPE} from '@/data/type'
 import './index.scss'
 
@@ -28,26 +28,32 @@ const Index = () => {
     ]
     const [cardList, setCardList] = useState<Array<CARD_LIST_TYPE>>(baseList)
 
-    const handleAdd = () => {
-        // add card to list
-        setCardList((res) => [
-            ...res,
-            {title: 'test_add', show: false, cardItem: []},
-        ])
+    const handleAddCard = (val: CARD_LIST_TYPE, index: number) => {
+        const newCardList = [...cardList]
+        newCardList[index] = val
+        setCardList(newCardList)
+    }
+
+    const handleAddCardList = (val?: CARD_LIST_TYPE, index?: number) => {
+        index = index ?? cardList.length
+        val = val ?? { title : 'test1111', show: false, cardItem: [] }
+        const newCardList = [...cardList]
+        newCardList.splice(index, 0, val)
+        setCardList(newCardList)
     }
     const handleCardChange = (
         val: CARD_LIST_TYPE,
         index: number,
         show?: boolean,
     ) => {
+        console.log(cardList)
         const newCardList: Array<CARD_LIST_TYPE> = cardList.map((_, i) => {
 					if (index === i && show) {
 						return { ...val, show }
 					} else {
-						return { ...val, show: false }
+						return { ..._, show: false }
 					}
 				})
-        // newCard[index] = show ? {...val, show} : val
         setCardList(newCardList)
     }
     // 拖拽开始的时候把拖拽的数据存入了缓存，结束后取出来处理
@@ -107,10 +113,12 @@ const Index = () => {
                     handleCardChange={(val, show) =>
                         handleCardChange(val, index, show)
                     }
+                    handleAddCard={val => handleAddCard(val, index)}
+                    handleAddCardList={val => handleAddCardList(val, index + 1)}
                     handleCardDragEnd={handleCardDragEnd}
                 />
             ))}
-            <div className="pc-card-cont pc-board-add" onClick={handleAdd}>
+            <div className="pc-card-cont pc-board-add" onClick={() => handleAddCardList()}>
                 添加另一个列表
             </div>
         </div>

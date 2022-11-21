@@ -44,7 +44,7 @@ const ContentCard: FC<PropsType> = ({
         // 添加卡片操作
         if (!addCardTextValue.current) return
         const newCard = {
-            value: addCardTextValue.current,
+            title: addCardTextValue.current,
             id: new Date().getTime(),
         }
         addCardTextValue.current = ''
@@ -122,12 +122,12 @@ const ContentCard: FC<PropsType> = ({
         currentEditIndex.current = index
     }
 
-    const handleConfirmEdit = (value: string) => {
+    const handleConfirmEdit = (title: string) => {
         // const newValue: CARD_LIST_TYPE = { ...cardValue }
         const newValue: CARD_LIST_TYPE = {...cardValue}
         if (newValue.cardItem && newValue.cardItem[currentEditIndex.current]) {
             newValue.cardItem[currentEditIndex.current] = {
-                value,
+                title,
                 id: new Date().getTime(),
             }
             // setcardValue(newValue)
@@ -188,11 +188,13 @@ const ContentCard: FC<PropsType> = ({
                         onDragEnter={(e) => dragCardEnter(e)}
                         onDragEnd={handleCardDragEnd}
                         draggable="true">
-                        <input
-                            type="text"
-                            value={item?.value ?? ''}
-                            onChange={(e) => handleCurrentChange('title', e)}
-                        />
+                        {item.background && (
+                            <div
+                                className="item-header"
+                                style={{background: item.background}}></div>
+                        )}
+                        <div className="item-title"> {item.title} </div>
+
                         <i onClick={(e) => handleEditCard(index, e)}>编辑</i>
                     </div>
                 ))}

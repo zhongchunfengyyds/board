@@ -6,7 +6,7 @@
   border-radius: 6px;
   box-sizing: border-box;
   margin-right: 20px;
-  font-size: 16px;
+  font-size: 14px;
   background-color: #ebecf0;
   cursor: pointer;
   input {
@@ -48,14 +48,17 @@
       z-index: 1;
       border-radius: 6px;
       overflow: hidden;
-      & > input {
-        width: 100%;
-        box-shadow: 0 1px 0 #091e4240;
-        background-color: #fff;
-        cursor: pointer;
-        &:last-child {
-          margin-bottom: 0;
-        }
+      cursor: pointer;
+      padding: 6px 8px 2px;
+      background: #fff;
+      box-shadow: var(--ds-shadow-raised,0 1px 0 #091e4240);
+      & > .item-title {
+        word-wrap: break-word;
+        color: #172b4d;
+        display: block;
+        margin: 0 0 6px;
+        overflow: hidden;
+        text-decoration: none;
       }
       & > i {
         position: absolute;

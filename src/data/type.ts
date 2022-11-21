@@ -1,6 +1,7 @@
 export interface CARD_ITEM_TYPE {
-    value: string
+    title: string
     id: string | number
+    background?: string
 }
 
 export interface CARD_LIST_TYPE {

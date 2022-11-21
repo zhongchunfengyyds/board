@@ -6,8 +6,7 @@ import React, {
     useRef,
     useEffect,
     DragEvent,
-    memo,
-    useEffect
+    memo
 } from 'react'
 import {CARD_LIST_TYPE} from '@/data/type'
 import { isEmpty } from 'lodash'

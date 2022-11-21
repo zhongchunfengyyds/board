@@ -1,45 +1,18 @@
 import React, {useState,useMemo} from 'react'
 import {CARD_LIST_TYPE} from '@/data/type'
+import { useCardList, useSetCardList, useCardListAction } from '@/store/useCardList'
 import './index.scss'
 
 import ContentCard from './components/ContentCard'
 import CardDetailModal from './components/CardDetailModal'
 import eventBus from '@/common/js/eventBus'
 const Index = () => {
-    const baseList: Array<CARD_LIST_TYPE> = [
-        {
-            title: '待办',
-            cardItem: [
-                {title: '待办1', id: '1610000000000'},
-                {title: '待办2', id: '1610000000001'},
-                {title: '待办3', id: '1610000000002'},
-            ],
-        },
-        {
-            title: '进行中',
-            cardItem: [
-                {title: '进行中1', id: '1610000000003'},
-                {title: '进行中2', id: '1610000000004'},
-                {title: '进行中3', id: '1610000000005'},
-            ],
-        },
-        {title: '完成',  cardItem: []},
-    ]
-    const [cardList, setCardList] = useState<Array<CARD_LIST_TYPE>>(baseList)
+    const [show, setShow] = useState(false)
+    const [id, setId] = useState('')
+    const cardList = useCardList()
+    const setCardList = useSetCardList()
+    const { AddCardListAction, ChangeCardAction } = useCardListAction()
 
-    const handleAddCard = (val: CARD_LIST_TYPE, index: number) => {
-        const newCardList = [...cardList]
-        newCardList[index] = val
-        setCardList(newCardList)
-    }
-
-    const handleAddCardList = (val?: CARD_LIST_TYPE, index?: number) => {
-        index = index ?? cardList.length
-        val = val ?? { title : 'test1111', cardItem: [] }
-        const newCardList = [...cardList]
-        newCardList.splice(index, 0, val)
-        setCardList(newCardList)
-    }
     // 拖拽开始的时候把拖拽的数据存入了缓存，结束后取出来处理
     const handleCardDragEnd = () => {
         const dragData = JSON.parse(localStorage.getItem('dragData') || '{}')
@@ -89,8 +62,6 @@ const Index = () => {
         }
     }
 
-    const [show, setShow] = useState(false)
-    const [id, setId] = useState('')
     eventBus.once('openCardDetail', (id: string) => {
         setShow(true)
         setId(id)
@@ -108,12 +79,12 @@ const Index = () => {
                 <ContentCard
                     key={index}
                     cardValue={item}
-                    handleAddCard={val => handleAddCard(val, index)}
-                    handleAddCardList={val => handleAddCardList(val, index + 1)}
+                    handleChangeCard={val => ChangeCardAction(val, index)}
+                    handleAddCardList={val => AddCardListAction(val, index + 1)}
                     handleCardDragEnd={handleCardDragEnd}
                 />
             ))}
-            <div className="pc-card-cont pc-board-add" onClick={() => handleAddCardList()}>
+            <div className="pc-card-cont pc-board-add" onClick={() => AddCardListAction()}>
                 添加另一个列表
             </div>
             {useMemo(() => {

@@ -33,6 +33,7 @@ const Index: FC<PropsType> = ({
     }
     const handleSave = () => {
         if (!currentValue) return
+        console.log(currentValue)
         handleConfirmEdit(currentValue)
         setCurrentValue('')
         onClose?.()

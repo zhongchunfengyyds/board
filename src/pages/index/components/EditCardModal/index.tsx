@@ -2,7 +2,6 @@ import React, {FC, useRef, ChangeEvent, useEffect, useState} from 'react'
 
 import './index.scss'
 import BoardModal from '@/components/BoardModal'
-import {CARD_LIST_TYPE} from '@/data/type'
 import eventBus from '@/common/js/eventBus'
 interface positionType {
     left: number

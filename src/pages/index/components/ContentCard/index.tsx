@@ -9,7 +9,7 @@ import React, {
 import {CARD_LIST_TYPE} from '@/data/type'
 
 import './index.scss'
-import BoardMoreBtns from '@/components/BoardMoreBtns'
+import BoardMoreBtns from '@/Components/BoardMoreBtns'
 import EditCardModal from '../EditCardModal'
 import eventBus from '@/common/js/eventBus'
 import CopyCardListModal from '../CopyCardListModal'

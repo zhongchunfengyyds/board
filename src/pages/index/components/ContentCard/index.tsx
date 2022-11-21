@@ -4,6 +4,7 @@ import React, {
     ChangeEvent,
     useMemo,
     useRef,
+    useEffect,
     DragEvent,
 } from 'react'
 import {CARD_LIST_TYPE} from '@/data/type'
@@ -45,8 +46,16 @@ const ContentCard: FC<PropsType> = ({
         const newValue = {...cardValue, [key]: e.target.value}
         handleAddCard(newValue)
     }
-    eventBus.once('addCardItem', () => {
-        setShow(false)
+
+    useEffect(() => {
+        console.log('添加订阅')
+        eventBus.on('addCardItem', () => {
+            setShow(false)
+        })
+        return () => {
+            console.log('取消订阅')
+            eventBus.removeAllListeners('addCardItem')
+        }
     })
     const addCardItem = () => {
         eventBus.emit('addCardItem')

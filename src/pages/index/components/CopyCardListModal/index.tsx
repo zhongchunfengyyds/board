@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState, useRef, useMemo, ChangeEvent  } from 'react'
-import { useClickAway } from 'ahooks'
 import './index.scss'
 
 interface PropsType {
@@ -10,10 +9,8 @@ interface PropsType {
 }
 
 const Index: FC<PropsType> = ({ show = false, onClose, handleCopyList, handleAddCard }) => {
-  // <div className='pc-copy-card-list'></div>
   const [innerVisible, setInnerVisible] = useState<boolean>(false)
-  const [status, showStatus] = useState<string>('') // 默认显示列表
-  const WRAPDOM = useRef<HTMLUListElement>(null)
+  const [status, setStatus] = useState<string>('') // 默认显示列表
   const currentTitle = useRef<string>('')
   useEffect(() => {
     setInnerVisible(show)
@@ -22,25 +19,19 @@ const Index: FC<PropsType> = ({ show = false, onClose, handleCopyList, handleAdd
     setInnerVisible(false)
     onClose?.()
   }
-  useClickAway(() => {
-    handleClose()
-  }, WRAPDOM)
   const handleCopyListNEW = () => {
-    setInnerVisible(false)
-    onClose?.()
+    handleClose()
     handleCopyList(currentTitle.current)
-    showStatus('')
+    setStatus('')
   }
   const handleAddCardNEW = () => {
-    setInnerVisible(false)
-    onClose?.()
     handleAddCard()
   }
   const Lits_DOM = useMemo(() => {
     return <ul className='pc-copy-card-list'>
       <li className='item title'>列表动态</li>
       <li className='item' onClick={handleAddCardNEW}>添加卡</li>
-      <li className='item' onClick={() => showStatus('COPY')}>复制列表</li>
+      <li className='item' onClick={() => setStatus('COPY')}>复制列表</li>
       <li className='item'>移动列表</li>
       <li className='item'>关注</li>
       <li className='item'>排序依据</li>
@@ -77,6 +68,12 @@ const Index: FC<PropsType> = ({ show = false, onClose, handleCopyList, handleAdd
           { status === '' && Lits_DOM }
           { status === 'COPY' && COPY_CARD_DOM }
         </div>
+      }
+      {
+        innerVisible && <i onClick={() => {
+          handleClose()
+          setStatus('')
+        }} className='pc-copy-card-mask'/>
       }
     </>
 }

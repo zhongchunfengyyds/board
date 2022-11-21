@@ -1,7 +1,7 @@
 import React, {FC, useRef, ChangeEvent, useEffect, useState} from 'react'
 
 import './index.scss'
-import BoardModal from '@/components/BoardModal'
+import BoardModal from '@/Components/BoardModal'
 import eventBus from '@/common/js/eventBus'
 interface positionType {
     left: number
@@ -33,6 +33,7 @@ const Index: FC<PropsType> = ({
     }
     const handleSave = () => {
         if (!currentValue) return
+        console.log(currentValue)
         handleConfirmEdit(currentValue)
         setCurrentValue('')
         onClose?.()

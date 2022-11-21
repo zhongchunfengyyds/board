@@ -6,24 +6,27 @@ import React, {
     useRef,
     useEffect,
     DragEvent,
+    memo,
+    useEffect
 } from 'react'
 import {CARD_LIST_TYPE} from '@/data/type'
+import { isEmpty } from 'lodash'
 
 import './index.scss'
-import BoardMoreBtns from '@/components/BoardMoreBtns'
+import BoardMoreBtns from '@/Components/BoardMoreBtns'
 import EditCardModal from '../EditCardModal'
 import eventBus from '@/common/js/eventBus'
 import CopyCardListModal from '../CopyCardListModal'
 
 interface PropsType {
     cardValue: CARD_LIST_TYPE
-    handleAddCard: (value: CARD_LIST_TYPE) => void
+    handleChangeCard: (value: CARD_LIST_TYPE) => void
     handleAddCardList: (val: CARD_LIST_TYPE) => void
     handleCardDragEnd: () => void // 拖拽结束
 }
 const ContentCard: FC<PropsType> = ({
     cardValue,
-    handleAddCard,
+    handleChangeCard,
     handleAddCardList,
     handleCardDragEnd,
 }) => {
@@ -43,7 +46,7 @@ const ContentCard: FC<PropsType> = ({
     ) => {
         // change default value
         const newValue = {...cardValue, [key]: e.target.value}
-        handleAddCard(newValue)
+        handleChangeCard(newValue)
     }
 
     useEffect(() => {
@@ -69,7 +72,6 @@ const ContentCard: FC<PropsType> = ({
         }
         addCardTextValue.current = ''
         const newValue = {...cardValue}
-        // newValue.cardItem.push(newCard)
         if (isHead) {
             newValue.cardItem = [newCard, ...newValue.cardItem]
             setIsHead(false)
@@ -77,7 +79,7 @@ const ContentCard: FC<PropsType> = ({
             newValue.cardItem = newValue.cardItem.concat(newCard)
         }
         setShow(false)
-        handleAddCard(newValue)
+        handleChangeCard(newValue)
     }
     const handleCancel = () => {
         // 取消添加值
@@ -139,20 +141,20 @@ const ContentCard: FC<PropsType> = ({
         currentEditIndex.current = index
     }
 
-    const handleConfirmEdit = (title: string) => {
-        // const newValue: CARD_LIST_TYPE = { ...cardValue }
-        const newValue: CARD_LIST_TYPE = {...cardValue}
-        if (newValue.cardItem && newValue.cardItem[currentEditIndex.current]) {
+    const handleConfirmEdit = (name: string) => {
+        const newValue: CARD_LIST_TYPE = JSON.parse(JSON.stringify({ ...cardValue }))
+        if (!isEmpty(newValue.cardItem[currentEditIndex.current])) {
             newValue.cardItem[currentEditIndex.current] = {
-                title,
+                title: name,
                 id: new Date().getTime().toString(),
             }
-            handleAddCard(newValue) // 和添加类似
+            handleChangeCard(newValue) // 和添加类似
         }
     }
 
     const handleCopyList = (title: string | number) => {
         // 复制列表 ----title需要重写
+        console.log({...cardValue})
         handleAddCardList({...cardValue, title})
     }
     const handleAddCardNew = () => {
@@ -191,7 +193,7 @@ const ContentCard: FC<PropsType> = ({
                 </div>
             )
         }
-    }, [show, addCardTextValue.current, handleAddCurrentNewCard])
+    }, [show, addCardTextValue.current, cardValue.cardItem, handleAddCurrentNewCard])
 
     const CardItemDom = useMemo(() => {
         return (
@@ -263,4 +265,4 @@ const ContentCard: FC<PropsType> = ({
     )
 }
 
-export default ContentCard
+export default memo(ContentCard)

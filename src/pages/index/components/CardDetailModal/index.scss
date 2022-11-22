@@ -1,10 +1,156 @@
-.card-detail-modal{
-    background: #fff;
+.card-detail-modal {
+    background-color: #ebecf0;
     position: absolute;
     left: 50vw;
     top: 10vh;
     transform: translate(-50%, 0);
-    min-height: 80vh;
-    width: 70vw;
-    min-width: 1200px;
+    height: 80vh;
+    width: 900px;
+    display: flex;
+    flex-direction: column;
+
+    &>header {
+        height: 116px;
+        width: 100%;
+        background: skyblue;
+    }
+
+    &>.content {
+        flex: 1;
+        display: flex;
+
+        .content-left {
+            flex: 4;
+            margin-right: 10px;
+            padding: 30px 8px 0 16px;
+
+            .content-left-item {
+                margin-bottom: 30px;
+                display: flex;
+
+                &>img {
+                    margin-right: 10px;
+                    width: 25px;
+                    height: 25px;
+                }
+
+                &>.right {
+                    flex: 1;
+
+                    &>.title {
+                        font-size: 16px;
+                        color: #111;
+                        font-weight: 600;
+                    }
+
+                    &>.desc {
+                        margin-top: 10px;
+                        font-size: 14px;
+                        color: #172b4d;
+                    }
+
+                    &>.tag {
+                        margin-top: 20px;
+
+                        .tag-title {
+                            font-size: 12px;
+                            color: #172b4d;
+                        }
+
+                        .tag-content {
+                            margin-top: 10px;
+                            display: flex;
+                            flex-wrap: wrap;
+
+                            &-item {
+                                margin-right: 10px;
+                                margin-bottom: 10px;
+                                padding: 5px 10px;
+                                border-radius: 3px;
+                                font-size: 14px;
+                                color: #172b4d;
+                                background: skyblue;
+                                display: flex;
+                                align-items: center;
+
+                                &-point {
+                                    width: 12px;
+                                    height: 12px;
+                                    margin-right: 6px;
+                                    background: blue;
+                                    border-radius: 50%;
+                                }
+                            }
+
+                            .success {
+                                background: #d6ecd2;
+
+                                .tag-content-item-point {
+                                    background: #7bc86c;
+                                }
+                            }
+
+                            .warning {
+                                background: #fce6c6;
+
+                                .tag-content-item-point {
+                                    background: #f8af3f;
+                                }
+                            }
+
+                            .error {
+                                background: #f5d3ce;
+
+                                .tag-content-item-point {
+                                    background: #ef7564;
+                                }
+                            }
+
+                            .primary {
+                                background: #d6e8f2;
+
+                                .tag-content-item-point {
+                                    background: #5ba8e6;
+                                }
+
+                            }
+
+                            .stop {
+                                background: #dfe1e6;
+
+                                .tag-content-item-point {
+                                    background: #344563;
+                                }
+                            }
+                        }
+                    }
+
+                    &>.checkbox {
+                        display: flex;
+                        align-items: center;
+
+                        .checkbox-label {
+                            font-size: 14px;
+                            color: #172b4d;
+                        }
+                    }
+
+                    &>.comment {
+                        .comment-iframe {
+                            background: #fff;
+                        }
+
+                    }
+                }
+            }
+        }
+
+        .content-right {
+            width: 200px;
+            padding: 30px 16px 0 8px;
+            box-sizing: border-box;
+            height: 100%;
+            background: orange;
+        }
+    }
 }

@@ -20,8 +20,6 @@ time, mark, audio, video {
 	margin: 0;
 	padding: 0;
 	border: 0;
-	font-size: 14px;
-	font: inherit;
 	vertical-align: baseline;
     user-select: none;
 }
@@ -52,3 +50,44 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+
+// mt0,mr0,mb0,ml0 --> mt100,mr100,mb100,ml100
+@for $i from 0 through 100 {
+    .mt#{$i} {
+      margin-top: #{$i}px;
+    }
+  
+    .mr#{$i} {
+      margin-right: #{$i}px;
+    }
+  
+    .mb#{$i} {
+      margin-bottom: #{$i}px;
+    }
+  
+    .ml#{$i} {
+      margin-left: #{$i}px;
+    }
+  
+    .pt#{$i} {
+      padding-top: #{$i}px;
+    }
+  
+    .pr#{$i} {
+      padding-right: #{$i}px;
+    }
+  
+    .pb#{$i} {
+      padding-bottom: #{$i}px;
+    }
+  
+    .pl#{$i} {
+      padding-left: #{$i}px;
+    }
+  }
+  
+
+  .cursor-pointer {
+    cursor: pointer;
+  }

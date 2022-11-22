@@ -2,7 +2,6 @@ import { useCallback } from 'react'
 import { useRecoilValue, selector, useSetRecoilState, SetterOrUpdater } from 'recoil'
 import { CardListState } from './index'
 import {CARD_LIST_TYPE} from '@/data/type'
-import { Console } from 'console'
 
 const getCardListState = selector({ // 元数据
   key: 'getCardListState',

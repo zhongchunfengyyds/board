@@ -10,7 +10,6 @@ const Index = () => {
     const [show, setShow] = useState(false)
     const [id, setId] = useState('')
     const cardList = useCardList()
-    console.log(cardList)
     const setCardList = useSetCardList()
     const { AddCardListAction, ChangeCardAction } = useCardListAction()
 
@@ -71,9 +70,9 @@ const Index = () => {
             eventBus.listenerCount('addCardItem'),
         )
     })
-    const handleModalClose = () => {
-        setShow(false)
-    }
+    // const handleModalClose = () => {
+    //     setShow(false)
+    // }
     return (
         <div className="pc-board">
             {cardList.map((item, index) => (
@@ -88,14 +87,16 @@ const Index = () => {
             <div className="pc-card-cont pc-board-add" onClick={() => AddCardListAction()}>
                 添加另一个列表
             </div>
-            {useMemo(() => {
+            {/* {useMemo(() => {
                 return (
                     <CardDetailModal
                         show={show}
                         id={id}
-                        onClose={handleModalClose}></CardDetailModal>
+                        ></CardDetailModal>
                 )
-            }, [show, id])}
+                // 这样不太友好
+            }, [show, id])} */}
+            <CardDetailModal show={show} id={id} onClose={() => setShow(false)}/>
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import React, {FC, useRef, ChangeEvent, useEffect, useState} from 'react'
+import React, {FC, useRef, ChangeEvent, useEffect, useState, memo} from 'react'
 
 import BoardModal from '@/components/BoardModal'
 import './index.scss'
@@ -19,4 +19,4 @@ const Index: FC<PropsType> = ({show, id, onClose}) => {
     )
 }
 
-export default Index
+export default memo(Index) // 等同于你刚的效果

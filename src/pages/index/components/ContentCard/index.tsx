@@ -7,13 +7,13 @@ import React, {
     useEffect,
     DragEvent,
     memo,
-    useCallback
+    useCallback,
 } from 'react'
 import {CARD_LIST_TYPE} from '@/data/type'
-import { isEmpty } from 'lodash'
+import {isEmpty} from 'lodash'
 
 import './index.scss'
-import BoardMoreBtns from '@/Components/BoardMoreBtns'
+import BoardMoreBtns from '@/components/BoardMoreBtns'
 import EditCardModal from '../EditCardModal'
 import eventBus from '@/common/js/eventBus'
 import CopyCardListModal from '../CopyCardListModal'
@@ -138,7 +138,9 @@ const ContentCard: FC<PropsType> = ({
     }
 
     const handleConfirmEdit = (name: string) => {
-        const newValue: CARD_LIST_TYPE = JSON.parse(JSON.stringify({ ...cardValue }))
+        const newValue: CARD_LIST_TYPE = JSON.parse(
+            JSON.stringify({...cardValue}),
+        )
         if (!isEmpty(newValue.cardItem[currentEditIndex.current])) {
             newValue.cardItem[currentEditIndex.current] = {
                 title: name,
@@ -148,11 +150,14 @@ const ContentCard: FC<PropsType> = ({
         }
     }
 
-    const handleCopyList = useCallback((title: string | number) => {
-        // 复制列表 ----title需要重写
-        const newCardList = JSON.parse(JSON.stringify(cardValue))
-        handleAddCardList({...newCardList, title})
-    }, [cardValue])
+    const handleCopyList = useCallback(
+        (title: string | number) => {
+            // 复制列表 ----title需要重写
+            const newCardList = JSON.parse(JSON.stringify(cardValue))
+            handleAddCardList({...newCardList, title})
+        },
+        [cardValue],
+    )
     const handleAddCardNew = () => {
         // 头插入卡片
         setIsHead(true)
@@ -186,7 +191,16 @@ const ContentCard: FC<PropsType> = ({
         )
     }, [cardValue.cardItem, handleCurrentChange, handleCardDragEnd])
 
-    const ADD_DOM = useMemo(() => <AddCardItem status={addStatus} handleAddCurrentCard={val => handleAddCurrentNewCard(val)} addCardItem={addCardItem}/>, [addStatus, handleAddCurrentNewCard, addCardItem])
+    const ADD_DOM = useMemo(
+        () => (
+            <AddCardItem
+                status={addStatus}
+                handleAddCurrentCard={(val) => handleAddCurrentNewCard(val)}
+                addCardItem={addCardItem}
+            />
+        ),
+        [addStatus, handleAddCurrentNewCard, addCardItem],
+    )
 
     return (
         <div className="pc-card-cont">

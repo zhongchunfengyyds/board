@@ -1,8 +1,9 @@
 import React, {FC, useRef, ChangeEvent, useEffect, useState} from 'react'
+import eventBus from '@/common/js/eventBus'
 
 import './index.scss'
 import BoardModal from '@/Components/BoardModal'
-import eventBus from '@/common/js/eventBus'
+import RemoveCardToOtherList from '../RemoveCardToOtherList'
 interface positionType {
     left: number
     top: number
@@ -76,7 +77,10 @@ const Index: FC<PropsType> = ({
                 </div>
                 <ul>
                     <li onClick={open}>打开卡片</li>
-                    <li onClick={changeTag}>修改标签</li>
+                    <li onClick={changeTag}>
+                        修改标签
+                        <RemoveCardToOtherList />
+                    </li>
                     <li onClick={changeMember}>更改成员</li>
                     <li onClick={changeCover}>更改封面</li>
                     <li onClick={copy}>复制</li>

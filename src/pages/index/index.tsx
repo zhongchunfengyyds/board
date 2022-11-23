@@ -1,17 +1,23 @@
-import React, {useState,useMemo} from 'react'
+import React, {useState, useMemo} from 'react'
 import {CARD_LIST_TYPE} from '@/data/type'
-import { useCardList, useSetCardList, useCardListAction } from '@/store/useCardList'
+import {
+    useCardList,
+    useSetCardList,
+    useCardListAction,
+} from '@/store/useCardList'
 import './index.scss'
 
 import ContentCard from './components/ContentCard'
 import CardDetailModal from './components/CardDetailModal'
 import eventBus from '@/common/js/eventBus'
-const Index = () => {
+
+import {apiInitData} from '@/common/js/api'
+const Index =  () => {
     const [show, setShow] = useState(false)
     const [id, setId] = useState('')
     const cardList = useCardList()
     const setCardList = useSetCardList()
-    const { AddCardListAction, ChangeCardAction } = useCardListAction()
+    const {AddCardListAction, ChangeCardAction} = useCardListAction()
 
     // 拖拽开始的时候把拖拽的数据存入了缓存，结束后取出来处理
     const handleCardDragEnd = () => {
@@ -70,21 +76,25 @@ const Index = () => {
             eventBus.listenerCount('addCardItem'),
         )
     })
-    // const handleModalClose = () => {
-    //     setShow(false)
-    // }
+    // let res = await apiInitData({
+    //     userId: '1',
+    // })
     return (
         <div className="pc-board">
             {cardList.map((item, index) => (
                 <ContentCard
                     key={index}
                     cardValue={item}
-                    handleChangeCard={val => ChangeCardAction(val, index)}
-                    handleAddCardList={val => AddCardListAction(val, index + 1)}
+                    handleChangeCard={(val) => ChangeCardAction(val, index)}
+                    handleAddCardList={(val) =>
+                        AddCardListAction(val, index + 1)
+                    }
                     handleCardDragEnd={handleCardDragEnd}
                 />
             ))}
-            <div className="pc-card-cont pc-board-add" onClick={() => AddCardListAction()}>
+            <div
+                className="pc-card-cont pc-board-add"
+                onClick={() => AddCardListAction()}>
                 添加另一个列表
             </div>
             {/* {useMemo(() => {
@@ -96,7 +106,11 @@ const Index = () => {
                 )
                 // 这样不太友好
             }, [show, id])} */}
-            <CardDetailModal show={show} id={id} onClose={() => setShow(false)}/>
+            <CardDetailModal
+                show={show}
+                cardId={id}
+                onClose={() => setShow(false)}
+            />
         </div>
     )
 }

@@ -6,7 +6,14 @@ import { resolve } from 'path'
 export default defineConfig({
   plugins: [react()],
   server: {
-    open: true
+    open: true,
+    proxy: {
+      '/api': {
+        target: 'https://rocanoa.indpecker.com',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api/, '') // 将 /api 重写为空
+      }
+    }
   },
   resolve: {
     alias: {

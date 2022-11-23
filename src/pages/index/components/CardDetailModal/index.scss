@@ -1,4 +1,5 @@
 .card-detail-modal {
+    position: relative;
     background-color: #f4f5f7;
     position: absolute;
     left: 50vw;
@@ -9,12 +10,23 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-
+    .close{
+        position: fixed;
+        right: 4px;
+        top: 4px;
+    }
     &>header {
+        box-sizing: border-box;
+        padding: 4px;
         flex-shrink: 0;
         height: 116px;
         width: 100%;
         background: skyblue;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-end;
+
     }
 
     &>.content {
@@ -24,13 +36,13 @@
 
         .content-left {
             flex: 4;
-            padding: 30px 8px 0 16px;
+            padding: 30px 20px 0 16px;
             overflow-y: overlay;
 
             .content-left-item {
                 margin-bottom: 30px;
                 display: flex;
-
+                align-items: flex-start;
                 &>.right {
                     margin-left: 10px;
                     flex: 1;
@@ -144,10 +156,21 @@
         }
 
         .content-right {
-            width: 200px;
-            padding: 30px 16px 0 8px;
+            width: 192px;
+            padding: 80px 16px 0 8px;
             box-sizing: border-box;
             height: 100%;
         }
+    }
+}
+
+.header-popover>.tags {
+    display: grid;
+    grid-template-columns: repeat(5, 50px);
+    grid-template-rows: repeat(auto,32px);
+    grid-gap: 10px;
+    .ant-tag{
+        margin-right: 0;
+        height: 32px;
     }
 }

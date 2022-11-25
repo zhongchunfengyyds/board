@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState, FC, memo } from 'react'
 
 import BoardMoreBtns from '@/Components/BoardMoreBtns'
-
+import './index.scss'
 interface PropsType {
   status: 'btn' | 'input' // 切换状态
   handleAddCurrentCard: (val: string) => void

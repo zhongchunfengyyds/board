@@ -48,6 +48,8 @@
                     flex: 1;
 
                     &>.title {
+                        display: flex;
+                        justify-content: space-between;
                         font-size: 16px;
                         color: #111;
                         font-weight: 600;

@@ -1,22 +1,12 @@
-import React, {
-    FC,
-    useState,
-    ChangeEvent,
-    useMemo,
-    useRef,
-    useEffect,
-    DragEvent,
-    memo,
-    useCallback,
-} from 'react'
+import React, {FC, useState, ChangeEvent, useMemo, useRef, useEffect, DragEvent, memo, useCallback} from 'react'
 import {CARD_LIST_TYPE} from '@/data/type'
 import {isEmpty} from 'lodash'
 
 import './index.scss'
-import BoardMoreBtns from '@/components/BoardMoreBtns'
 import EditCardModal from '../EditCardModal'
 import eventBus from '@/common/js/eventBus'
 import CopyCardListModal from '../CopyCardListModal'
+import CardListMoreOperation from '../CardListMoreOperation'
 import AddCardItem from '../AddCardItem'
 
 interface PropsType {
@@ -25,12 +15,7 @@ interface PropsType {
     handleAddCardList: (val: CARD_LIST_TYPE) => void
     handleCardDragEnd: () => void // 拖拽结束
 }
-const ContentCard: FC<PropsType> = ({
-    cardValue,
-    handleChangeCard,
-    handleAddCardList,
-    handleCardDragEnd,
-}) => {
+const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardList, handleCardDragEnd}) => {
     const [status, setStatus] = useState<string>('') // 弹窗状态
     const [addStatus, setAddStatus] = useState<'btn' | 'input'>('btn') // 操作状态
     const currentEditIndex = useRef<number>(-1) // 防止重复渲染
@@ -40,10 +25,7 @@ const ContentCard: FC<PropsType> = ({
         top: 10,
     })
 
-    const handleCurrentChange = (
-        key: keyof CARD_LIST_TYPE,
-        e: ChangeEvent<HTMLInputElement>,
-    ) => {
+    const handleCurrentChange = (key: keyof CARD_LIST_TYPE, e: ChangeEvent<HTMLInputElement>) => {
         // change default value
         const newValue = {...cardValue, [key]: e.target.value}
         handleChangeCard(newValue)
@@ -95,31 +77,20 @@ const ContentCard: FC<PropsType> = ({
             dom.style.filter = 'brightness(0)'
             dom.style.opacity = '0.1'
         }, 100)
-        localStorage.setItem(
-            'dragData',
-            JSON.stringify(cardValue.cardItem[index]),
-        )
+        localStorage.setItem('dragData', JSON.stringify(cardValue.cardItem[index]))
     }
     // 拖拽进入
     const dragCardEnter = (e: DragEvent<HTMLElement>) => {
         const dragCard = document.getElementById('dragCard')
         e.preventDefault()
-        dragCard &&
-            e.currentTarget.parentNode?.insertBefore(
-                dragCard,
-                e.currentTarget.nextSibling,
-            )
+        dragCard && e.currentTarget.parentNode?.insertBefore(dragCard, e.currentTarget.nextSibling)
     }
     const titleDragEnter = (e: DragEvent<HTMLElement>) => {
         const dragCard = document.getElementById('dragCard')
         e.preventDefault()
-        const parentNode: HTMLElement = e?.currentTarget
-            .parentNode as HTMLElement
+        const parentNode: HTMLElement = e?.currentTarget.parentNode as HTMLElement
         if (parentNode.children[1].firstChild) {
-            parentNode.children[1].insertBefore(
-                dragCard as HTMLElement,
-                parentNode.children[1].firstChild,
-            )
+            parentNode.children[1].insertBefore(dragCard as HTMLElement, parentNode.children[1].firstChild)
         } else {
             parentNode.children[1].appendChild(dragCard as HTMLElement)
         }
@@ -138,9 +109,7 @@ const ContentCard: FC<PropsType> = ({
     }
 
     const handleConfirmEdit = (name: string) => {
-        const newValue: CARD_LIST_TYPE = JSON.parse(
-            JSON.stringify({...cardValue}),
-        )
+        const newValue: CARD_LIST_TYPE = JSON.parse(JSON.stringify({...cardValue}))
         if (!isEmpty(newValue.cardItem[currentEditIndex.current])) {
             newValue.cardItem[currentEditIndex.current] = {
                 title: name,
@@ -177,11 +146,7 @@ const ContentCard: FC<PropsType> = ({
                         onDragEnter={(e) => dragCardEnter(e)}
                         onDragEnd={handleCardDragEnd}
                         draggable="true">
-                        {item.background && (
-                            <div
-                                className="item-header"
-                                style={{background: item.background}}></div>
-                        )}
+                        {item.background && <div className="item-header" style={{background: item.background}}></div>}
                         <div className="item-title"> {item.title} </div>
 
                         <i onClick={(e) => handleEditCard(index, e)}>编辑</i>
@@ -210,13 +175,9 @@ const ContentCard: FC<PropsType> = ({
                 onDragOver={(e) => e.preventDefault()}
                 onDragEnd={handleCardDragEnd}
                 draggable="true">
-                <input
-                    type="text"
-                    value={cardValue?.title ?? ''}
-                    onChange={(e) => handleCurrentChange('title', e)}
-                />
+                <input type="text" value={cardValue?.title ?? ''} onChange={(e) => handleCurrentChange('title', e)} />
                 {/*title operation  */}
-                <BoardMoreBtns onClick={() => setStatus('COPY')} />
+                <CardListMoreOperation />
             </div>
             {isHead && ADD_DOM}
             {CardItemDom}
@@ -226,21 +187,17 @@ const ContentCard: FC<PropsType> = ({
                 position={position}
                 show={status === 'EDIT'}
                 onClose={() => setStatus('')}
-                id={
-                    cardValue.cardItem[currentEditIndex.current] &&
-                    cardValue.cardItem[currentEditIndex.current].id
-                }
+                id={cardValue.cardItem[currentEditIndex.current] && cardValue.cardItem[currentEditIndex.current].id}
                 title={
-                    cardValue.cardItem[currentEditIndex.current] &&
-                    cardValue.cardItem[currentEditIndex.current].title
+                    cardValue.cardItem[currentEditIndex.current] && cardValue.cardItem[currentEditIndex.current].title
                 }
             />
-            <CopyCardListModal
+            {/* <CopyCardListModal
                 handleAddCard={handleAddCardNew}
                 handleCopyList={(val) => handleCopyList(val)}
                 show={status === 'COPY'}
                 onClose={() => setStatus('')}
-            />
+            /> */}
         </div>
     )
 }

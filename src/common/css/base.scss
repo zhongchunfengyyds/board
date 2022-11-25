@@ -86,8 +86,13 @@ table {
       padding-left: #{$i}px;
     }
   }
+
+  $theme-first-color: #172b4d;
+  $theme-second-color: #5e6c84;
   
 
   .cursor-pointer {
     cursor: pointer;
   }
+
+  

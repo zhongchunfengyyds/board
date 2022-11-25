@@ -1,0 +1,12 @@
+.list-more-operation {
+    &>p {
+        font-size: 14px;
+        color: $theme-first-color;
+        cursor: pointer;
+        font-weight: 400;
+        margin: 0 -12px;
+        padding: 6px 12px;
+        position: relative;
+        text-decoration: none;
+    }
+}

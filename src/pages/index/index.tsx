@@ -1,7 +1,9 @@
 import React, {useState, useCallback, useEffect} from 'react'
 import { isEmpty } from 'lodash'
 import {CARD_LIST_TYPE} from '@/data/type'
+import {Button} from 'antd'
 import {useCardList, useSetCardList, useCardListAction} from '@/store/useCardList'
+
 import './index.scss'
 
 import ContentCard from './components/ContentCard'
@@ -10,6 +12,7 @@ import eventBus from '@/common/js/eventBus'
 
 import {apiInitData} from '@/common/js/api'
 const Index = () => {
+    const [step, setStep] = useState(0)
     const [show, setShow] = useState(false)
     const [id, setId] = useState('')
     const cardList = useCardList()
@@ -90,18 +93,31 @@ const Index = () => {
                     handleCardDragEnd={handleCardDragEnd}
                 />
             ))}
-            <div className="pc-card-cont pc-board-add" onClick={() => AddCardListAction()}>
-                添加另一个列表
+            <div className="pc-card-cont pc-board-add" style={{height: step == 0 ? '40px' : '95px'}}>
+                {step === 0 ? (
+                    <div
+                        className="pc-board-add-first"
+                        onClick={() => {
+                            setStep(1)
+                        }}>
+                        添加另一个列表
+                    </div>
+                ) : (
+                    <div className="pc-board-add-second">
+                        <input type="text" placeholder="请输入列表标题" />
+                        <div className="pc-board-add-second-btn">
+                            <Button type="primary">添加列表</Button>
+                            <Button
+                                className="ml10"
+                                onClick={() => {
+                                    setStep(0)
+                                }}>
+                                取消
+                            </Button>
+                        </div>
+                    </div>
+                )}
             </div>
-            {/* {useMemo(() => {
-                return (
-                    <CardDetailModal
-                        show={show}
-                        id={id}
-                        ></CardDetailModal>
-                )
-                // 这样不太友好
-            }, [show, id])} */}
             <CardDetailModal show={show} cardId={id} onClose={() => setShow(false)} />
         </div>
     )

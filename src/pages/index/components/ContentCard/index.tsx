@@ -32,12 +32,12 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
     }
 
     useEventBusOn('addCardItem', () => {
-        setAddStatus('input')
+        setAddStatus('btn')
     })
 
     const addCardItem = () => {
-        setAddStatus('input')
         emit('addCardItem')
+        setAddStatus('input')
     }
     const handleAddCurrentNewCard = (val: string) => {
         // 添加卡片操作

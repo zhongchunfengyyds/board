@@ -25,8 +25,8 @@ const Index: FC<PropsType> = ({ title = '看板', options = [], value = '', inli
       bordered={false}
       disabled={options.length === 0}
       showSearch
-      defaultValue={currentValue}
-      value={value}
+      defaultValue={options.length.toString()}
+      value={currentValue}
       style={{ width: '100%' }}
       placeholder="select Mode"
       onChange={handleChange}

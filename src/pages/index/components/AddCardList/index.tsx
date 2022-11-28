@@ -1,15 +1,19 @@
 import React, {useState} from 'react'
 import {Button} from 'antd'
+import {useCardListAction} from '@/store/useCardList'
 import './index.scss'
 
 import {apiListUpdate} from '@/common/js/api'
 const index = () => {
     const [step, setStep] = useState(0)
     const [title, setTitle] = useState('')
+    const {AddCardListAction} = useCardListAction()
 
     const handleAdd = () => {
+        if (!title) return
         apiListUpdate({listName: title}).then((res) => {
             setStep(0)
+            AddCardListAction({ title, cardItem: [] })
         })
     }
     return (

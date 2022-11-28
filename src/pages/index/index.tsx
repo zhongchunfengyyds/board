@@ -64,10 +64,18 @@ const Index = () => {
         console.log('viewAddCardItemlisten', eventBus.listenerCount('addCardItem'))
     })
     const getApiInitData = useCallback(async () => {
-        const res = await apiInitData({
+        const res = (await apiInitData({
             userId: '1',
+        })) as any
+        setCardList(res.result)
+        const arr: CARD_LIST_TYPE[] = []
+        res.data.result.forEach((item: any) => {
+            arr.push({
+                title: item.tabulated.listName,
+                cardItem: item.listCard,
+            })
         })
-        console.log(res)
+        setCardList(arr)
     }, [apiInitData])
     useEffect(() => {
         getApiInitData()

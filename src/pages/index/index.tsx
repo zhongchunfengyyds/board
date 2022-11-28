@@ -63,17 +63,15 @@ const Index = () => {
         setId(id)
         console.log('viewAddCardItemlisten', eventBus.listenerCount('addCardItem'))
     })
-    // let res = await apiInitData({
-    //     userId: '1',
-    // })
+    const getApiInitData = useCallback(async () => {
+        const res = await apiInitData({
+            userId: '1',
+        })
+        console.log(res)
+    }, [apiInitData])
     useEffect(() => {
-        useCallback(async () => {
-            let res = await apiInitData({
-                userId: '1',
-            })
-            console.log(res);
-        }, [])
-    }, [])
+        getApiInitData()
+    }, [getApiInitData])
     return (
         <div className="pc-board">
             {cardList.map((item, index) => (

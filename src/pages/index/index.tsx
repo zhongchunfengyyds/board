@@ -1,10 +1,6 @@
-import React, {useState, useMemo} from 'react'
+import React, {useState, useCallback, useEffect} from 'react'
 import {CARD_LIST_TYPE} from '@/data/type'
-import {
-    useCardList,
-    useSetCardList,
-    useCardListAction,
-} from '@/store/useCardList'
+import {useCardList, useSetCardList, useCardListAction} from '@/store/useCardList'
 import './index.scss'
 
 import ContentCard from './components/ContentCard'
@@ -12,7 +8,7 @@ import CardDetailModal from './components/CardDetailModal'
 import eventBus from '@/common/js/eventBus'
 
 import {apiInitData} from '@/common/js/api'
-const Index =  () => {
+const Index = () => {
     const [show, setShow] = useState(false)
     const [id, setId] = useState('')
     const cardList = useCardList()
@@ -26,8 +22,7 @@ const Index =  () => {
         if (dom) {
             let listIndex = 0,
                 cardIndex = 0
-            const fatherDom =
-                document.getElementsByClassName('pc-card-cont-wrap')
+            const fatherDom = document.getElementsByClassName('pc-card-cont-wrap')
             // 判断dom在哪个父级中
             for (let i = 0; i < fatherDom.length; i++) {
                 const item = fatherDom[i]
@@ -42,26 +37,21 @@ const Index =  () => {
                 }
             }
 
-            const newCardList: Array<CARD_LIST_TYPE> = cardList.map(
-                (item, index) => {
-                    const res = item.cardItem.filter((item2, index2) => {
-                        if (item2.id === dragData.id) {
-                            // 把dom 放回去 不放回去会导致dom丢失react无法渲染
-                            fatherDom[index].insertBefore(
-                                dom,
-                                fatherDom[index].children[index2],
-                            )
-                            dom.id = ''
-                            dom.style.opacity = '1'
-                            dom.style.filter = 'unset'
-                            return false
-                        } else {
-                            return true
-                        }
-                    })
-                    return {...item, cardItem: res}
-                },
-            )
+            const newCardList: Array<CARD_LIST_TYPE> = cardList.map((item, index) => {
+                const res = item.cardItem.filter((item2, index2) => {
+                    if (item2.id === dragData.id) {
+                        // 把dom 放回去 不放回去会导致dom丢失react无法渲染
+                        fatherDom[index].insertBefore(dom, fatherDom[index].children[index2])
+                        dom.id = ''
+                        dom.style.opacity = '1'
+                        dom.style.filter = 'unset'
+                        return false
+                    } else {
+                        return true
+                    }
+                })
+                return {...item, cardItem: res}
+            })
 
             newCardList[listIndex].cardItem.splice(cardIndex, 0, dragData)
             setCardList(newCardList)
@@ -71,14 +61,19 @@ const Index =  () => {
     eventBus.once('openCardDetail', (id: string) => {
         setShow(true)
         setId(id)
-        console.log(
-            'viewAddCardItemlisten',
-            eventBus.listenerCount('addCardItem'),
-        )
+        console.log('viewAddCardItemlisten', eventBus.listenerCount('addCardItem'))
     })
     // let res = await apiInitData({
     //     userId: '1',
     // })
+    useEffect(() => {
+        useCallback(async () => {
+            let res = await apiInitData({
+                userId: '1',
+            })
+            console.log(res);
+        }, [])
+    }, [])
     return (
         <div className="pc-board">
             {cardList.map((item, index) => (
@@ -86,15 +81,11 @@ const Index =  () => {
                     key={index}
                     cardValue={item}
                     handleChangeCard={(val) => ChangeCardAction(val, index)}
-                    handleAddCardList={(val) =>
-                        AddCardListAction(val, index + 1)
-                    }
+                    handleAddCardList={(val) => AddCardListAction(val, index + 1)}
                     handleCardDragEnd={handleCardDragEnd}
                 />
             ))}
-            <div
-                className="pc-card-cont pc-board-add"
-                onClick={() => AddCardListAction()}>
+            <div className="pc-card-cont pc-board-add" onClick={() => AddCardListAction()}>
                 添加另一个列表
             </div>
             {/* {useMemo(() => {
@@ -106,11 +97,7 @@ const Index =  () => {
                 )
                 // 这样不太友好
             }, [show, id])} */}
-            <CardDetailModal
-                show={show}
-                cardId={id}
-                onClose={() => setShow(false)}
-            />
+            <CardDetailModal show={show} cardId={id} onClose={() => setShow(false)} />
         </div>
     )
 }

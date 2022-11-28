@@ -2,7 +2,7 @@ import React, {FC, useRef, ChangeEvent, useEffect, useState} from 'react'
 import { useEventBus } from '@/hook/useEventBus'
 import './index.scss'
 import BoardModal from '@/Components/BoardModal'
-import RemoveCardToOtherList from '../RemoveCardToOtherList'
+import RemoveCardToOtherList from './Compnents/RemoveCardToOtherList'
 interface positionType {
     left: number
     top: number

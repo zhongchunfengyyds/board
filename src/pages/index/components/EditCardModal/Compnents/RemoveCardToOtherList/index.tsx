@@ -13,6 +13,7 @@ interface PropsType {
 const Index: FC<PropsType> = ({ id }) => { // 移动卡片到对应的列表
   const titleList = useCardListTitle()
   const cardList = useCardList()
+  const [currentId, setCurrentId] = useState<string>(id)
 
   const [open, setOpen] = useState(false)
   const handleOpenChange = (newOpen: boolean) => {
@@ -33,11 +34,11 @@ const Index: FC<PropsType> = ({ id }) => { // 移动卡片到对应的列表
     }))
   }, [titleList])
   const currentList = useMemo(() => {
-    return cardList.find(item => item.cardItem.findIndex(items => items.id === id) > -1)
-  }, [cardList])
+    return cardList.find(item => item.cardItem.findIndex(items => items.id === currentId) > -1)
+  }, [cardList, currentId])
   const currentIndex = useMemo(() => {
-    return (currentList as CARD_LIST_TYPE).cardItem.findIndex(item => item.id === id)
-  }, [currentList])
+    return (currentList as CARD_LIST_TYPE).cardItem.findIndex(item => item.id === currentId)
+  }, [currentList, currentId])
   const optionList = useMemo(() => {
     return currentList?.cardItem.map((_,index) => ({
       value: index,

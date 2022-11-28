@@ -39,9 +39,11 @@ const instance = axios.create({
  * @description axios请求拦截器
  */
 instance.interceptors.request.use(
-    (config: AxiosRequestConfig) => {
+    (config: any) => {
+        // 设置token
+        config.headers['Authorization'] = document.cookie.split('Authorization=')[1]
         console.log(config);
-
+        
         return config
     },
     (error: AxiosRequestConfig) => {
@@ -61,7 +63,7 @@ instance.interceptors.response.use(
         if (code == '200' || code == 0) {
             return data
         } else {
-            message.error(data.message)
+            message.error(data.message || data.msg)
             handleCode(code)
         }
     },

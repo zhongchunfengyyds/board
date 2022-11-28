@@ -7,6 +7,10 @@ interface apiInitDataParams {
 }
 export const apiInitData = (params: apiInitDataParams) => request.post('/oa/tabulated/findByUserId', params);
 
+// 获取用户信息
+
+export const apiGetUserInfo = () => request.get('/org/userResource/userMsg');
+
 // 卡片新增/修改  所有saveOrUpdate接口有ID修改无ID新增
 interface apiCardUpdateParams {
     id?: string;
@@ -23,7 +27,6 @@ export const apiCardUpdate = (params: apiCardUpdateParams) => request.post('/oa/
 
 
 // 列表新增/修改
-
 interface apiListUpdateParams {
     id?: string;
     listName: string

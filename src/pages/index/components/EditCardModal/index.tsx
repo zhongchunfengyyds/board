@@ -1,6 +1,5 @@
 import React, {FC, useRef, ChangeEvent, useEffect, useState} from 'react'
-import eventBus from '@/common/js/eventBus'
-
+import { useEventBusEmit } from '@/hook/EventBus'
 import './index.scss'
 import BoardModal from '@/Components/BoardModal'
 import RemoveCardToOtherList from '../RemoveCardToOtherList'
@@ -46,7 +45,7 @@ const Index: FC<PropsType> = ({
     // 打开卡片详情
     const open = () => {
         onClose()
-        eventBus.emit('openCardDetail', id)
+        useEventBusEmit('openCardDetail', id)
     }
     // 修改标签
     const changeTag = () => {}

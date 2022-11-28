@@ -3,17 +3,16 @@ import {isEmpty} from 'lodash'
 import {CARD_LIST_TYPE} from '@/data/type'
 import {Button} from 'antd'
 import {useCardList, useSetCardList, useCardListAction} from '@/store/useCardList'
+import {useEventBusOn} from '@/hook/EventBus'
 
 import './index.scss'
 
 import ContentCard from './components/ContentCard'
 import CardDetailModal from './components/CardDetailModal'
 import AddCardList from './components/AddCardList'
-import eventBus from '@/common/js/eventBus'
 
-import {apiInitData} from '@/common/js/api'
+import {apiInitData, apiGetUserInfo} from '@/common/js/api'
 const Index = () => {
-    const [step, setStep] = useState(0)
     const [show, setShow] = useState(false)
     const [id, setId] = useState('')
     const cardList = useCardList()
@@ -62,27 +61,28 @@ const Index = () => {
             setCardList(newCardList)
         }
     }
-
-    eventBus.once('openCardDetail', (id: string) => {
+    useEventBusOn('openCardDetail', (id: string) => {
         setShow(true)
         setId(id)
-        console.log('viewAddCardItemlisten', eventBus.listenerCount('addCardItem'))
     })
     const getApiInitData = useCallback(async () => {
-        const res = await apiInitData({
-            userId: '1',
-        }) as Record<string, any>
-        const arr: CARD_LIST_TYPE[] = !isEmpty(res.data.result) && res.data.result.map((item: any) => {
-            return {
-                title: item.tabulated.listName,
-                cardItem: item.listCard,
-            }
-        })
+        const res = (await apiInitData({
+            userId: '436974453159362561',
+        })) as Record<string, any>
+        const arr: CARD_LIST_TYPE[] =
+            !isEmpty(res.data.result) &&
+            res.data.result.map((item: any) => {
+                return {
+                    title: item.tabulated.listName,
+                    cardItem: item.listCard,
+                }
+            })
         setCardList(arr)
     }, [apiInitData])
     useEffect(() => {
         getApiInitData()
-    }, [getApiInitData])
+        apiGetUserInfo()
+    }, [getApiInitData, apiGetUserInfo])
 
     return (
         <div className="pc-board">

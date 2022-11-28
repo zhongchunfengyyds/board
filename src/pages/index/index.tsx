@@ -67,7 +67,7 @@ const Index = () => {
     })
     const getApiInitData = useCallback(async () => {
         const res = (await apiInitData({
-            userId: '436974453159362561',
+            userId: '1',
         })) as Record<string, any>
         const arr: CARD_LIST_TYPE[] =
             !isEmpty(res.data.result) &&

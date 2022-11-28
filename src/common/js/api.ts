@@ -37,5 +37,20 @@ interface apiListUpdateParams {
 export const apiListUpdate = (params: apiListUpdateParams) => {
     // 设置请求头
     request.defaults.headers['Content-Type'] = 'application/json;charset=UTF-8';
-    return request.post('/oa/tabulated/saveOrUpdate', { ...params});
+    return request.post('/oa/tabulated/saveOrUpdate', { ...params });
 }
+
+
+// 删除接口
+
+interface apiDeleteParams {
+    id: string;
+}
+// 清单删除
+export const apiCheckBoxDelete = (params: apiDeleteParams) => request.post('/oa/tabulated/delete', params);
+// 卡片删除
+export const apiCardDelete = (params: apiDeleteParams) => request.post('/oa/tabulated/delete', params);
+// 评论删除
+export const apiCommonDelete = (params: apiDeleteParams) => request.post('/oa/tabulated/delete', params);
+// 列表删除
+export const apiListDelete = (params: apiDeleteParams) => request.post('/oa/tabulated/delete', params);

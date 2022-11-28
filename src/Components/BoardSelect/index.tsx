@@ -22,6 +22,7 @@ const Index: FC<PropsType> = ({ title = '看板', options = [], value = '', inli
   return <div className={classnames('board-select', { inline })}>
     <p>{title}</p>
     <Select
+      bordered={false}
       disabled={options.length === 0}
       showSearch
       defaultValue={currentValue}

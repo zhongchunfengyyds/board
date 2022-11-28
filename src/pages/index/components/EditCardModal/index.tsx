@@ -11,7 +11,7 @@ interface positionType {
 interface PropsType {
     show: boolean
     title: string | undefined
-    id: string | undefined
+    id: string
     onClose: () => void
     handleConfirmEdit: (val: string) => void
     position?: positionType // 控制弹窗内容方向
@@ -84,7 +84,7 @@ const Index: FC<PropsType> = ({
                     <li onClick={changeMember}>更改成员</li>
                     <li onClick={changeCover}>更改封面</li>
                     <li onClick={copy}>复制</li>
-                    <RemoveCardToOtherList />
+                    <RemoveCardToOtherList id={id}/>
                     <li onClick={changeDeadline}>编辑日期</li>
                     <li onClick={archive}>归档</li>
                 </ul>

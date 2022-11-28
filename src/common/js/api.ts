@@ -29,6 +29,10 @@ interface apiListUpdateParams {
     listName: string
     archiving?: string
     sort?: string
-}
 
-export const apiListUpdate = (params: apiListUpdateParams) => request.post('/oa/tabulated/saveOrUpdate', params);
+}
+export const apiListUpdate = (params: apiListUpdateParams) => {
+    // 设置请求头
+    request.defaults.headers['Content-Type'] = 'application/json;charset=UTF-8';
+    return request.post('/oa/tabulated/saveOrUpdate', { ...params});
+}

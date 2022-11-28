@@ -1,3 +1,13 @@
 .remove-card-to-other {
-
+  width: 280px;
+  & > h3 {
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+  & > footer {
+    margin-top: 22px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 20px;
+  }
 }

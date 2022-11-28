@@ -1,14 +1,15 @@
 import { useCallback } from 'react'
 import { useRecoilValue, selector, useSetRecoilState, SetterOrUpdater } from 'recoil'
 import { CardListState } from './index'
-import {CARD_LIST_TYPE} from '@/data/type'
+import {CARD_LIST_TYPE, CARD_ITEM_TYPE} from '@/data/type'
 
-const getCardListState = selector({ // 元数据
+const getCardListState = selector({ // 查找总的数据
   key: 'getCardListState',
   get: ({get}): Array<CARD_LIST_TYPE> => get(CardListState)
 })
 
-export const useCardList = () => useRecoilValue(getCardListState) // cardList的值
+export const useCardList = (): Array<CARD_LIST_TYPE>  => useRecoilValue(getCardListState) // cardList的值
+export const useCardListTitle = (): Array<string | number> => useCardList().map(item => item.title) // 获取cardList => title
 export const useSetCardList = (): SetterOrUpdater<Array<CARD_LIST_TYPE> > => useSetRecoilState(CardListState)
 
 export const useCardListAction = () => {
@@ -25,7 +26,7 @@ export const useCardListAction = () => {
     const newCardList = JSON.parse(JSON.stringify(cardList))
     newCardList[index] = val
     setCardList(newCardList)
-}, [setCardList,cardList])
+  }, [setCardList,cardList])
   return {
     AddCardListAction,
     ChangeCardAction

@@ -1,9 +1,16 @@
 .board-select {
   padding: 4px;
+  box-sizing: border-box;
   border-radius: 4px;
   background-color: rgba(#000, .1);
   transition: all .6s;
+  & > p {
+    margin-bottom: 6px;
+  }
   &:hover {
     background-color: rgba(#000, .2);
+  }
+  &.inline {
+    display: inline-block;
   }
 }

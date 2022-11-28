@@ -9,13 +9,21 @@ const Index = () => { // 移动卡片到对应的列表
   const handleOpenChange = (newOpen: boolean) => {
     setOpen(newOpen);
   }
-  // const hide = () => {
-  //   setOpen(false)
-  // }
+  const handleDestination = () => { // 选择目的地
+  }
+  const handleList = () => { // 选择目的地
+  }
+  const handlePosition = () => { // 选择目的地
+  }
+
   const REMOVE_CONT_DOM = useMemo(() => {
     return <div className='remove-card-to-other'>
       <h3>选择目的地</h3>
-      <BoardSelect />
+      <BoardSelect title='看板' options={[]} onChange={handleDestination}/>
+      <footer>
+        <BoardSelect title='列表' inline options={[]} onChange={handleList}/>
+        <BoardSelect title='位置' inline options={[]} onChange={handlePosition}/>
+      </footer>
     </div>
   }, [])
   return <Popover

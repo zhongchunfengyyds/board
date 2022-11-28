@@ -8,39 +8,4 @@
     background: url(../../assets/bg.jpeg);
     background-size: cover;
     overflow-y: hidden;
-
-    .pc-board-add {
-        padding: 0;
-        margin-right: 0 !important;
-        color: #fff;
-        background: transparent;
-        transition: all .1s;
-        border-radius: 6px;
-        overflow: hidden;
-        .pc-board-add-first {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            background: #ebe9ed30;
-        }
-
-        .pc-board-add-second {
-            padding: 10px;
-            box-sizing: border-box;
-            background: #ebe9ed;
-            height: 100%;
-
-            &>input {
-                margin-bottom: 8px;
-                width: 100%;
-                font-weight: bold;
-                border: 2px solid transparent;
-
-                &:focus {
-                    border: 2px solid #0b19ea3d;
-                }
-            }
-        }
-    }
 }

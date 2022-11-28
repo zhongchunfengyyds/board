@@ -2,6 +2,7 @@ import React, {FC, useState, ChangeEvent, useMemo, useRef, DragEvent, memo, useC
 import {CARD_LIST_TYPE} from '@/data/type'
 import {isEmpty} from 'lodash'
 import {useEventBus, useEventBusOn} from '@/hook/useEventBus'
+import {useCurrentCardItem} from '@/store/useCurrentCardItem'
 
 import './index.scss'
 import EditCardModal from '../EditCardModal'
@@ -15,6 +16,7 @@ interface PropsType {
     handleCardDragEnd: () => void // 拖拽结束
 }
 const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardList, handleCardDragEnd}) => {
+    const { setCurrentCardItem } = useCurrentCardItem()
     const [status, setStatus] = useState<string>('') // 弹窗状态
     const [addStatus, setAddStatus] = useState<'btn' | 'input'>('btn') // 操作状态
     const currentEditIndex = useRef<number>(-1) // 防止重复渲染
@@ -98,6 +100,7 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
         })
         setStatus('EDIT')
         currentEditIndex.current = index
+        setCurrentCardItem(cardValue.cardItem[index])
     }
 
     const handleConfirmEdit = (name: string) => {
@@ -178,10 +181,6 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
                 position={position}
                 show={status === 'EDIT'}
                 onClose={() => setStatus('')}
-                id={cardValue.cardItem[currentEditIndex.current] && cardValue.cardItem[currentEditIndex.current].id}
-                title={
-                    cardValue.cardItem[currentEditIndex.current] && cardValue.cardItem[currentEditIndex.current].title
-                }
             />
         </div>
     )

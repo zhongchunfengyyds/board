@@ -25,6 +25,7 @@ export const useCardListAction = () => {
   const ChangeCardAction = useCallback((val: CARD_LIST_TYPE, index: number) => { // 修改添加卡片数据
     const newCardList = JSON.parse(JSON.stringify(cardList))
     newCardList[index] = val
+    console.log(newCardList)
     setCardList(newCardList)
   }, [setCardList,cardList])
   return {

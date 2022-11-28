@@ -1,5 +1,7 @@
 import React, {FC, useRef, ChangeEvent, useEffect, useState} from 'react'
 import { useEventBus } from '@/hook/useEventBus'
+import {useCurrentCardItem} from '@/store/useCurrentCardItem'
+import { CARD_ITEM_TYPE, CARD_LIST_TYPE } from '@/data/type'
 import './index.scss'
 import BoardModal from '@/Components/BoardModal'
 import RemoveCardToOtherList from './Compnents/RemoveCardToOtherList'
@@ -10,8 +12,6 @@ interface positionType {
 
 interface PropsType {
     show: boolean
-    title: string | undefined
-    id: string
     onClose: () => void
     handleConfirmEdit: (val: string) => void
     position?: positionType // 控制弹窗内容方向
@@ -19,12 +19,11 @@ interface PropsType {
 
 const Index: FC<PropsType> = ({
     show,
-    title,
-    id,
     onClose,
     handleConfirmEdit,
     position = {left: 0, top: 0},
 }) => {
+    const {currentCardItem } =useCurrentCardItem()
     const {left, top} = position
     const { emit } = useEventBus()
     const [currentValue, setCurrentValue] = useState<string>('')
@@ -40,13 +39,13 @@ const Index: FC<PropsType> = ({
         onClose?.()
     }
     useEffect(() => {
-        setCurrentValue(title ?? '')
-    }, [title])
+        setCurrentValue(currentCardItem.title ?? '')
+    }, [currentCardItem.title])
 
     // 打开卡片详情
     const open = () => {
         onClose()
-        emit('openCardDetail', id)
+        emit('openCardDetail', currentCardItem.id)
     }
     // 修改标签
     const changeTag = () => {}
@@ -85,7 +84,7 @@ const Index: FC<PropsType> = ({
                     <li onClick={changeMember}>更改成员</li>
                     <li onClick={changeCover}>更改封面</li>
                     <li onClick={copy}>复制</li>
-                    <RemoveCardToOtherList id={id}/>
+                    <RemoveCardToOtherList/>
                     <li onClick={changeDeadline}>编辑日期</li>
                     <li onClick={archive}>归档</li>
                 </ul>

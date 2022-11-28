@@ -1,18 +1,16 @@
-import React, { useMemo, useState, FC } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Popover, Button } from 'antd'
+import {useCurrentCardItem} from '@/store/useCurrentCardItem'
 import { useCardListTitle, useCardList,useCardListAction } from '@/store/useCardList'
 import {CARD_LIST_TYPE, CARD_ITEM_TYPE} from '@/data/type'
 import './index.scss'
 
 import BoardSelect from '@/Components/BoardSelect'
-
-interface PropsType {
-  id: string 
-}
-
-const Index: FC<PropsType> = ({ id }) => { // 移动卡片到对应的列表
+const Index = () => { // 移动卡片到对应的列表
   const titleList = useCardListTitle()
   const cardList = useCardList()
+  const { currentCardItem } = useCurrentCardItem()
+  const { id } = currentCardItem
   const [currentTitle, setCurrentTitle] = useState<string>('')
   const [currentPosition, setCurrentPosition] = useState<string>('')
   const {ChangeCardAction} = useCardListAction()
@@ -28,7 +26,6 @@ const Index: FC<PropsType> = ({ id }) => { // 移动卡片到对应的列表
     setCurrentTitle(val)
   }
   const handlePosition = (val: string) => { // 选择当前列表位置
-    console.log(val)
     setCurrentPosition(val)
   }
   const currentTitleList = useMemo(() => {
@@ -51,18 +48,16 @@ const Index: FC<PropsType> = ({ id }) => { // 移动卡片到对应的列表
     }))
   }, [currentList, currentIndex])
   const handleRemove = () => { // 移动 --- 利用recoil
-    // let newVal:CARD_ITEM_TYPE
-    // cardList.forEach(item => {
-    //   item.cardItem.forEach(items => {
-    //     if (items.id === id) {
-    //       newVal = items
-    //     }
-    //   })
-    // })
-    // if (currentTitle && Number(currentPosition) >= 0) {
-    //   (currentList as CARD_LIST_TYPE).cardItem.push(newVal)
-    //   console.log(currentList)
-    // }
+    if (currentTitle && Number(currentPosition) >= 0) {
+      // 新列表新增
+      let newList = currentList as CARD_LIST_TYPE
+      if (newList.cardItem[currentIndex] === currentCardItem) { // 原列表替换位置
+        console.log(111111)
+      } else { // 新列表新增
+      }
+      // newList.cardItem = [...newList.cardItem, currentCardItem]
+      // ChangeCardAction(newList, Number(currentPosition))
+    }
   }
   const REMOVE_CONT_DOM = useMemo(() => {
     return <div className='remove-card-to-other'>

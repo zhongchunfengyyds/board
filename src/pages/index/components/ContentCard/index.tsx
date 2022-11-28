@@ -5,7 +5,6 @@ import {useEventBusEmit, useEventBusOn} from '@/hook/EventBus'
 
 import './index.scss'
 import EditCardModal from '../EditCardModal'
-import CopyCardListModal from '../CopyCardListModal'
 import CardListMoreOperation from '../CardListMoreOperation'
 import AddCardItem from '../AddCardItem'
 

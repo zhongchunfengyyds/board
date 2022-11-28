@@ -1,4 +1,5 @@
 import React, {useState, useCallback, useEffect} from 'react'
+import { isEmpty } from 'lodash'
 import {CARD_LIST_TYPE} from '@/data/type'
 import {useCardList, useSetCardList, useCardListAction} from '@/store/useCardList'
 import './index.scss'
@@ -66,10 +67,10 @@ const Index = () => {
     const getApiInitData = useCallback(async () => {
         const res = (await apiInitData({
             userId: '1',
-        })) as any
-        setCardList(res.result)
+        })) as any ?? []
+        // setCardList(res.result)
         const arr: CARD_LIST_TYPE[] = []
-        res.data.result.forEach((item: any) => {
+        !isEmpty(res.data.result) && res.data.result.forEach((item: any) => {
             arr.push({
                 title: item.tabulated.listName,
                 cardItem: item.listCard,

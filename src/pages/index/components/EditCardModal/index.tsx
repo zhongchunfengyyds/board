@@ -79,11 +79,13 @@ const Index: FC<PropsType> = ({
                     <li onClick={open}>打开卡片</li>
                     <li onClick={changeTag}>
                         修改标签
-                        <RemoveCardToOtherList />
                     </li>
                     <li onClick={changeMember}>更改成员</li>
                     <li onClick={changeCover}>更改封面</li>
-                    <li onClick={copy}>复制</li>
+                    <li onClick={copy}>
+                        复制
+                        <RemoveCardToOtherList />
+                    </li>
                     <li onClick={changeDeadline}>编辑日期</li>
                     <li onClick={archive}>归档</li>
                 </ul>

@@ -9,8 +9,8 @@ export default defineConfig({
         open: true,
         proxy: {
             '/api': {
-                target: 'https://rocanoa.indpecker.com',
-                // target: 'http://192.168.1.53:8094',
+                // target: 'https://rocanoa.indpecker.com',
+                target: 'http://192.168.1.53:8094',
                 changeOrigin: true,
                 rewrite: path => path.replace(/^\/api/, '') // 将 /api 重写为空
             }

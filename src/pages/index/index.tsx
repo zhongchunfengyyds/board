@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useEffect} from 'react'
-import { isEmpty } from 'lodash'
+import {isEmpty} from 'lodash'
 import {CARD_LIST_TYPE} from '@/data/type'
 import {Button} from 'antd'
 import {useCardList, useSetCardList, useCardListAction} from '@/store/useCardList'
@@ -8,6 +8,7 @@ import './index.scss'
 
 import ContentCard from './components/ContentCard'
 import CardDetailModal from './components/CardDetailModal'
+import AddCardList from './components/AddCardList'
 import eventBus from '@/common/js/eventBus'
 
 import {apiInitData} from '@/common/js/api'
@@ -68,6 +69,7 @@ const Index = () => {
         console.log('viewAddCardItemlisten', eventBus.listenerCount('addCardItem'))
     })
     const getApiInitData = useCallback(async () => {
+<<<<<<< HEAD
         const res = await apiInitData({
             userId: '1',
         }) as Record<string, any>
@@ -77,11 +79,27 @@ const Index = () => {
                 cardItem: item.listCard,
             }
         })
+=======
+        const res =
+            ((await apiInitData({
+                userId: '1',
+            })) as any) ?? []
+        // setCardList(res.result)
+        const arr: CARD_LIST_TYPE[] = []
+        !isEmpty(res.data.result) &&
+            res.data.result.forEach((item: any) => {
+                arr.push({
+                    title: item.tabulated.listName,
+                    cardItem: item.listCard,
+                })
+            })
+>>>>>>> 9de56fa8f85d8829dd6a414bbc6731b82103c16d
         setCardList(arr)
     }, [apiInitData])
     useEffect(() => {
         getApiInitData()
     }, [getApiInitData])
+
     return (
         <div className="pc-board">
             {cardList.map((item, index) => (
@@ -93,31 +111,7 @@ const Index = () => {
                     handleCardDragEnd={handleCardDragEnd}
                 />
             ))}
-            <div className="pc-card-cont pc-board-add" style={{height: step == 0 ? '40px' : '95px'}}>
-                {step === 0 ? (
-                    <div
-                        className="pc-board-add-first"
-                        onClick={() => {
-                            setStep(1)
-                        }}>
-                        添加另一个列表
-                    </div>
-                ) : (
-                    <div className="pc-board-add-second">
-                        <input type="text" placeholder="请输入列表标题" />
-                        <div className="pc-board-add-second-btn">
-                            <Button type="primary">添加列表</Button>
-                            <Button
-                                className="ml10"
-                                onClick={() => {
-                                    setStep(0)
-                                }}>
-                                取消
-                            </Button>
-                        </div>
-                    </div>
-                )}
-            </div>
+            <AddCardList></AddCardList>
             <CardDetailModal show={show} cardId={id} onClose={() => setShow(false)} />
         </div>
     )

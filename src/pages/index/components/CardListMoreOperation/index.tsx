@@ -1,6 +1,6 @@
 import React, {FC, useMemo, useState, memo, useRef, ChangeEvent} from 'react'
 import BoardMoreBtns from '@/components/BoardMoreBtns'
-import {Button, Popover} from 'antd'
+import {Popover} from 'antd'
 import './index.scss'
 interface PropsType {
   handleCopyList: (val: string) => void

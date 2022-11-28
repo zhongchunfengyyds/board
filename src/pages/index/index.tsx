@@ -65,16 +65,14 @@ const Index = () => {
         console.log('viewAddCardItemlisten', eventBus.listenerCount('addCardItem'))
     })
     const getApiInitData = useCallback(async () => {
-        const res = (await apiInitData({
+        const res = await apiInitData({
             userId: '1',
-        })) as any ?? []
-        // setCardList(res.result)
-        const arr: CARD_LIST_TYPE[] = []
-        !isEmpty(res.data.result) && res.data.result.forEach((item: any) => {
-            arr.push({
+        }) as Record<string, any>
+        const arr: CARD_LIST_TYPE[] = !isEmpty(res.data.result) && res.data.result.map((item: any) => {
+            return {
                 title: item.tabulated.listName,
                 cardItem: item.listCard,
-            })
+            }
         })
         setCardList(arr)
     }, [apiInitData])

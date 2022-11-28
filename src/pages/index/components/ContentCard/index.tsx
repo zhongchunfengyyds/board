@@ -176,8 +176,10 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
                 onDragEnd={handleCardDragEnd}
                 draggable="true">
                 <input type="text" value={cardValue?.title ?? ''} onChange={(e) => handleCurrentChange('title', e)} />
-                {/*title operation  */}
-                <CardListMoreOperation />
+                <CardListMoreOperation
+                 handleAddCard={handleAddCardNew}
+                 handleCopyList={(val) => handleCopyList(val)}
+                />
             </div>
             {isHead && ADD_DOM}
             {CardItemDom}
@@ -192,12 +194,6 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
                     cardValue.cardItem[currentEditIndex.current] && cardValue.cardItem[currentEditIndex.current].title
                 }
             />
-            {/* <CopyCardListModal
-                handleAddCard={handleAddCardNew}
-                handleCopyList={(val) => handleCopyList(val)}
-                show={status === 'COPY'}
-                onClose={() => setStatus('')}
-            /> */}
         </div>
     )
 }

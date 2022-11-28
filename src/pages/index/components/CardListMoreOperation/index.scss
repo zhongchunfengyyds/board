@@ -9,4 +9,11 @@
         position: relative;
         text-decoration: none;
     }
+    &-name {
+        & > h2 {
+         font-size: 14px;
+         font-weight: bold;
+         margin-bottom: 10px;
+        }
+       }
 }

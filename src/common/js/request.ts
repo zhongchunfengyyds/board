@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 import { message } from 'antd';
 
 let baseURL = '/api'
@@ -31,20 +31,20 @@ const instance = axios.create({
     timeout: 20000,
     headers: {
         // 'Content-Type': 'application/json;charset=UTF-8',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-    },
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    }
 })
 
 /**
  * @description axios请求拦截器
  */
 instance.interceptors.request.use(
-    (config: any) => {
+    (config: AxiosRequestConfig) => {
         console.log(config);
 
         return config
     },
-    (error: any) => {
+    (error: AxiosRequestConfig) => {
         return Promise.reject(error)
     }
 )
@@ -53,9 +53,9 @@ instance.interceptors.request.use(
  * @description axios响应拦截器
  */
 instance.interceptors.response.use(
-    (response: any) => {
+    (response: AxiosResponse) => {
         console.log(response);
-        const { data, config } = response
+        const { data } = response
 
         const { code } = data as any
         if (code == '200' || code == 0) {

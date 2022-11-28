@@ -1,5 +1,5 @@
 import React, {FC, useRef, ChangeEvent, useEffect, useState} from 'react'
-import { useEventBusEmit } from '@/hook/EventBus'
+import { useEventBus } from '@/hook/useEventBus'
 import './index.scss'
 import BoardModal from '@/Components/BoardModal'
 import RemoveCardToOtherList from '../RemoveCardToOtherList'
@@ -26,6 +26,7 @@ const Index: FC<PropsType> = ({
     position = {left: 0, top: 0},
 }) => {
     const {left, top} = position
+    const { emit } = useEventBus()
     const [currentValue, setCurrentValue] = useState<string>('')
     const style = {
         left: `${left}px`,
@@ -45,7 +46,7 @@ const Index: FC<PropsType> = ({
     // 打开卡片详情
     const open = () => {
         onClose()
-        useEventBusEmit('openCardDetail', id)
+        emit('openCardDetail', id)
     }
     // 修改标签
     const changeTag = () => {}

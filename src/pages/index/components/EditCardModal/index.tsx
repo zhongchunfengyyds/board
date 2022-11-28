@@ -60,6 +60,8 @@ const Index: FC<PropsType> = ({
     const archive = () => {}
     // 复制
     const copy = () => {}
+    // 移动
+    const remove = () => {}
 
     return (
         <BoardModal show={show} onClose={onClose}>
@@ -82,10 +84,8 @@ const Index: FC<PropsType> = ({
                     </li>
                     <li onClick={changeMember}>更改成员</li>
                     <li onClick={changeCover}>更改封面</li>
-                    <li onClick={copy}>
-                        复制
-                        <RemoveCardToOtherList />
-                    </li>
+                    <li onClick={copy}>复制</li>
+                    <RemoveCardToOtherList />
                     <li onClick={changeDeadline}>编辑日期</li>
                     <li onClick={archive}>归档</li>
                 </ul>

@@ -1,11 +1,10 @@
-import React, {FC, useState, ChangeEvent, useMemo, useRef, useEffect, DragEvent, memo, useCallback} from 'react'
+import React, {FC, useState, ChangeEvent, useMemo, useRef, DragEvent, memo, useCallback} from 'react'
 import {CARD_LIST_TYPE} from '@/data/type'
 import {isEmpty} from 'lodash'
-import {useEventBusEmit, useEventBusOn} from '@/hook/EventBus'
+import {useEventBus, useEventBusOn} from '@/hook/useEventBus'
 
 import './index.scss'
 import EditCardModal from '../EditCardModal'
-import CopyCardListModal from '../CopyCardListModal'
 import CardListMoreOperation from '../CardListMoreOperation'
 import AddCardItem from '../AddCardItem'
 
@@ -24,6 +23,7 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
         left: 10,
         top: 10,
     })
+    const { emit } = useEventBus()
 
     const handleCurrentChange = (key: keyof CARD_LIST_TYPE, e: ChangeEvent<HTMLInputElement>) => {
         // change default value
@@ -36,8 +36,8 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
     })
 
     const addCardItem = () => {
+        emit('addCardItem')
         setAddStatus('input')
-        useEventBusEmit('addCardItem')
     }
     const handleAddCurrentNewCard = (val: string) => {
         // 添加卡片操作
@@ -53,7 +53,6 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
         } else {
             newValue.cardItem = newValue.cardItem.concat(newCard)
         }
-        // setShow(false)
         setAddStatus('btn')
         handleChangeCard(newValue)
     }
@@ -133,7 +132,7 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
                     <div
                         className="item"
                         key={item.id}
-                        onClick={() => useEventBusEmit('addCardItem', item.id)}
+                        onClick={() => emit('addCardItem', item.id)}
                         onDragStart={(e) => dragCardStart(e, index)}
                         onDragOver={(e) => e.preventDefault()}
                         onDragEnter={(e) => dragCardEnter(e)}

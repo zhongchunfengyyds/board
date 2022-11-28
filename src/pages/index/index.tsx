@@ -1,9 +1,8 @@
 import React, {useState, useCallback, useEffect} from 'react'
 import {isEmpty} from 'lodash'
 import {CARD_LIST_TYPE} from '@/data/type'
-import {Button} from 'antd'
 import {useCardList, useSetCardList, useCardListAction} from '@/store/useCardList'
-import {useEventBusOn} from '@/hook/EventBus'
+import {useEventBusOn} from '@/hook/useEventBus'
 
 import './index.scss'
 

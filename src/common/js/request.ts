@@ -32,6 +32,7 @@ const instance = axios.create({
     headers: {
         // 'Content-Type': 'application/json;charset=UTF-8',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+
     },
 })
 
@@ -40,8 +41,10 @@ const instance = axios.create({
  */
 instance.interceptors.request.use(
     (config: any) => {
+        // 设置token
+        config.headers['Authorization'] = document.cookie.split('Authorization=')[1]
         console.log(config);
-
+        
         return config
     },
     (error: any) => {
@@ -61,7 +64,7 @@ instance.interceptors.response.use(
         if (code == '200' || code == 0) {
             return data
         } else {
-            message.error(data.message)
+            message.error(data.message || data.msg)
             handleCode(code)
         }
     },

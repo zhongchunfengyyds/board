@@ -1,10 +1,10 @@
 import React, {FC, useState, ChangeEvent, useMemo, useRef, useEffect, DragEvent, memo, useCallback} from 'react'
 import {CARD_LIST_TYPE} from '@/data/type'
 import {isEmpty} from 'lodash'
+import {useEventBusEmit, useEventBusOn} from '@/hook/EventBus'
 
 import './index.scss'
 import EditCardModal from '../EditCardModal'
-import eventBus from '@/common/js/eventBus'
 import CopyCardListModal from '../CopyCardListModal'
 import CardListMoreOperation from '../CardListMoreOperation'
 import AddCardItem from '../AddCardItem'
@@ -31,20 +31,13 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
         handleChangeCard(newValue)
     }
 
-    useEffect(() => {
-        console.log('添加订阅')
-        eventBus.on('addCardItem', () => {
-            // setShow(false)
-            setAddStatus('btn')
-        })
-        return () => {
-            console.log('取消订阅')
-            eventBus.removeAllListeners('addCardItem')
-        }
+    useEventBusOn('addCardItem', () => {
+        setAddStatus('btn')
     })
+
     const addCardItem = () => {
-        eventBus.emit('addCardItem')
         setAddStatus('input')
+        useEventBusEmit('addCardItem')
     }
     const handleAddCurrentNewCard = (val: string) => {
         // 添加卡片操作
@@ -140,7 +133,7 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
                     <div
                         className="item"
                         key={item.id}
-                        onClick={() => eventBus.emit('openCardDetail', item.id)}
+                        onClick={() => useEventBusEmit('addCardItem', item.id)}
                         onDragStart={(e) => dragCardStart(e, index)}
                         onDragOver={(e) => e.preventDefault()}
                         onDragEnter={(e) => dragCardEnter(e)}
@@ -176,10 +169,7 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
                 onDragEnd={handleCardDragEnd}
                 draggable="true">
                 <input type="text" value={cardValue?.title ?? ''} onChange={(e) => handleCurrentChange('title', e)} />
-                <CardListMoreOperation
-                 handleAddCard={handleAddCardNew}
-                 handleCopyList={(val) => handleCopyList(val)}
-                />
+                <CardListMoreOperation handleAddCard={handleAddCardNew} handleCopyList={(val) => handleCopyList(val)} />
             </div>
             {isHead && ADD_DOM}
             {CardItemDom}

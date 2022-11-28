@@ -41,6 +41,17 @@ export const apiListUpdate = (params: apiListUpdateParams) => {
 }
 
 
+// 清单新增/修改
+
+interface apiCheckboxUpdateParams {
+    id?: string;
+    items?: string
+    isAccomplish?: string
+    card_id?: string
+}
+
+export const apiCheckboxUpdate = (params: apiCheckboxUpdateParams) => request.post('/oa/inventory/saveOrUpdate', params);
+
 // 删除接口
 
 interface apiDeleteParams {
@@ -54,3 +65,4 @@ export const apiCardDelete = (params: apiDeleteParams) => request.post('/oa/tabu
 export const apiCommonDelete = (params: apiDeleteParams) => request.post('/oa/tabulated/delete', params);
 // 列表删除
 export const apiListDelete = (params: apiDeleteParams) => request.post('/oa/tabulated/delete', params);
+

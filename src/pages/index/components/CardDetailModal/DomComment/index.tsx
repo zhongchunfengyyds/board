@@ -1,7 +1,9 @@
 import {memo, FC, useState, useMemo} from 'react'
 import {Mentions, Button, List} from 'antd'
 import {CommentOutlined} from '@ant-design/icons'
+import {apiCommentUpdate} from '@/common/js/api'
 
+import {useCurrentCardItem} from '@/store/useCurrentCardItem'
 export interface Comment {
     commentName: string // 评论人
     commentContent: string // 评论内容
@@ -10,24 +12,26 @@ export interface Comment {
 }
 export interface CommentProps {
     commentList?: Comment[]
-    onChange?: (commentList: Comment[]) => void
 }
-
-const Index: FC<CommentProps> = ({commentList = [], onChange}) => {
+const Index: FC<CommentProps> = ({commentList = []}) => {
+    const {currentCardItem, setCurrentCardItem} = useCurrentCardItem()
     const [commentValue, setCommentValue] = useState('')
     const newComment = () => {
         // 调接口评论
-        const newList = [
-            ...commentList,
-            {
-                commentName: '张三',
-                commentContent: commentValue,
-                cardId: '1',
-                commentId: '1',
-            },
-        ]
-        setCommentValue('')
-        onChange?.(newList)
+        apiCommentUpdate({
+            commentName: '张三',
+            commentId: '1',
+            cardId: currentCardItem.card.id,
+            commentContent: commentValue,
+        }).then((res) => {
+            console.log(currentCardItem, '评论成功')
+            setCurrentCardItem({
+                card: currentCardItem.card,
+                inventoryList: currentCardItem.inventoryList,
+                commentList: [res.data.result, ...currentCardItem.commentList],
+            })
+            setCommentValue('')
+        })
     }
     return (
         <>
@@ -53,7 +57,7 @@ const Index: FC<CommentProps> = ({commentList = [], onChange}) => {
                         <List
                             size="small"
                             itemLayout="horizontal"
-                            dataSource={commentList}
+                            dataSource={currentCardItem.commentList}
                             renderItem={(item) => (
                                 <List.Item>
                                     <List.Item.Meta title={item.commentName} description={item.commentContent} />

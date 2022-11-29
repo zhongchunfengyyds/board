@@ -68,6 +68,21 @@ interface apiCheckboxUpdateParams {
 
 export const apiCheckboxUpdate = (params: apiCheckboxUpdateParams) => request.post('/oa/inventory/saveOrUpdate', params);
 
+
+// 评论新增
+interface apiCommentUpdateParams {
+    id?: string;
+    commentName: string
+    commentId: string
+    commentContent: string
+    cardId: string
+}
+export const apiCommentUpdate = (params: apiCommentUpdateParams) => {
+    // 设置请求头
+    request.defaults.headers['Content-Type'] = 'application/json;charset=UTF-8';
+    return request.post('/oa/comment/saveOrUpdate', params);
+}
+
 // 删除接口
 
 interface apiDeleteParams {

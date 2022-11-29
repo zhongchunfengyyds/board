@@ -1,8 +1,8 @@
-import React, {useState, useCallback, useEffect} from 'react'
-import {isEmpty} from 'lodash'
+import React, {useState} from 'react'
 import {CARD_LIST_TYPE} from '@/data/type'
 import {useCardList, useSetCardList, useCardListAction} from '@/store/useCardList'
 import {useEventBusOn} from '@/hook/useEventBus'
+import { useApiInitData } from '@/hook/useApiIntData'
 
 import './index.scss'
 
@@ -10,8 +10,8 @@ import ContentCard from './components/ContentCard'
 import CardDetailModal from './components/CardDetailModal'
 import AddCardList from './components/AddCardList'
 
-import {apiInitData, apiGetUserInfo} from '@/common/js/api'
 const Index = () => {
+    useApiInitData()
     const [show, setShow] = useState(false)
     const [id, setId] = useState('')
     const cardList = useCardList()
@@ -64,24 +64,6 @@ const Index = () => {
         setShow(true)
         setId(id)
     })
-    const getApiInitData = useCallback(async () => {
-        const res = (await apiInitData({
-            userId: '1',
-        })) as Record<string, any>
-        const arr: CARD_LIST_TYPE[] =
-            !isEmpty(res.data.result) &&
-            res.data.result.map((item: any) => {
-                return {
-                    title: item.tabulated.listName,
-                    cardItem: item.listCard,
-                }
-            })
-        setCardList(arr)
-    }, [apiInitData])
-    useEffect(() => {
-        getApiInitData()
-        apiGetUserInfo()
-    }, [getApiInitData, apiGetUserInfo])
 
     return (
         <div className="pc-board">

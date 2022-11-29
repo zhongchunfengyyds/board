@@ -6,7 +6,7 @@ export const CardListState = atom<Array<CARD_LIST_TYPE>>({ // cardList数据源
     default: []
 })
 
-export const CurrenCardtItem = atom<CARD_ITEM_TYPE>({ // cardList数据源
+export const CurrenCardtItem = atom<CARD_ITEM_TYPE>({ // 当前选中的cardItem
     key: 'currentItem',
     default: { title: '', id: ''}
 })

@@ -1,8 +1,9 @@
 import React, {useState, useCallback, useEffect} from 'react'
 import {isEmpty} from 'lodash'
-import {CARD_LIST_TYPE} from '@/data/type'
+import {CARD_LIST_TYPE, CARD_ITEM_TYPE} from '@/data/type'
 import {useCardList, useSetCardList, useCardListAction} from '@/store/useCardList'
 import {useEventBusOn} from '@/hook/useEventBus'
+import {useCurrentCardItem} from '@/store/useCurrentCardItem'
 
 import './index.scss'
 
@@ -10,10 +11,10 @@ import ContentCard from './components/ContentCard'
 import CardDetailModal from './components/CardDetailModal'
 import AddCardList from './components/AddCardList'
 
-import {apiInitData, apiGetUserInfo} from '@/common/js/api'
+import {apiInitData, apiGetUserInfo, apiCardDetail} from '@/common/js/api'
 const Index = () => {
+    const {setCurrentCardItem} = useCurrentCardItem()
     const [show, setShow] = useState(false)
-    const [id, setId] = useState('')
     const cardList = useCardList()
     const setCardList = useSetCardList()
     const {AddCardListAction, ChangeCardAction} = useCardListAction()
@@ -61,8 +62,11 @@ const Index = () => {
         }
     }
     useEventBusOn('openCardDetail', (id: string) => {
-        setShow(true)
-        setId(id)
+        apiCardDetail({id}).then((res) => {
+            console.log(res)
+            setShow(true)
+            setCurrentCardItem(res.data.result)
+        })
     })
     const getApiInitData = useCallback(async () => {
         const res = (await apiInitData({

@@ -33,6 +33,13 @@ export const apiCardUpdate = (params: apiCardUpdateParams) => {
     request.defaults.headers['Content-Type'] = 'application/json;charset=UTF-8';
     return request.post('/oa/card/saveOrUpdate', params);
 }
+interface apiCardDetailParams {
+    id: string
+}
+export const apiCardDetail = (params: apiCardDetailParams) => {
+    request.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+    return request.post('/oa/card/findById', params);
+}
 
 
 // 列表新增/修改

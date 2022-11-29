@@ -139,7 +139,7 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
                     <div
                         className="item"
                         key={item.id}
-                        onClick={() => emit('addCardItem', item.id)}
+                        onClick={() => emit('openCardDetail', item.id)}
                         onDragStart={(e) => dragCardStart(e, index)}
                         onDragOver={(e) => e.preventDefault()}
                         onDragEnter={(e) => dragCardEnter(e)}

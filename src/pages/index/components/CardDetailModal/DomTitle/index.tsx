@@ -1,20 +1,17 @@
 import {memo, FC} from 'react'
 import {Avatar} from 'antd'
 import {CreditCardOutlined} from '@ant-design/icons'
-import {UserValue} from '@/data/type'
-export interface UserSelectProps {
-    memberList?: UserValue[]
-    date?: string[]
-}
+import {useCurrentCardItem} from '@/store/useCurrentCardItem'
 
-const Index: FC<UserSelectProps> = ({memberList = [], date = []}) => {
+const Index: FC = () => {
+    const {currentCardItem, setCurrentCardItem} = useCurrentCardItem()
     return (
         <div className="content-left-item">
             <CreditCardOutlined />
             <div className="right">
-                <h3>标题</h3>
-                <div className="desc pt10">介绍</div>
-                {date.length > 0 && (
+                <h3>{currentCardItem.card.title}</h3>
+                {/* <div className="desc pt10">{currentCardItem.dess}</div> */}
+                {/* {date.length > 0 && (
                     <div className="desc pt10">
                         时间：
                         {date.map((item, index) => {
@@ -25,14 +22,14 @@ const Index: FC<UserSelectProps> = ({memberList = [], date = []}) => {
                             }
                         })}
                     </div>
-                )}
-                {memberList.length > 0 && (
+                )} */}
+                {/* {memberList.length > 0 && (
                     <Avatar.Group className="mt20">
                         {memberList.map((item, index) => {
                             return <Avatar key={index} src={item.head} />
                         })}
                     </Avatar.Group>
-                )}
+                )} */}
             </div>
         </div>
     )

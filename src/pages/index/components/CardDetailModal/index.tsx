@@ -20,11 +20,10 @@ import {CheckList} from './DomCheckList'
 
 interface PropsType {
     show: boolean
-    cardId: string
     onClose?: () => void
 }
-
-const Index: FC<PropsType> = ({show, cardId, onClose}) => {
+// TODO 利用Recoil => currentItem 存取当前cardItem detail
+const Index: FC<PropsType> = ({show, onClose}) => {
     // 成员
     const [memberList, setMemberList] = useState<UserValue[]>([])
     // 日期

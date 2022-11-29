@@ -67,7 +67,7 @@ const Index: FC<PropsType> = ({ onClose }) => { // 移动卡片到对应的列�
       label: `${index + 1}${currentIndex === index ? '当前位置' : ''}`
     })) ?? []
   }, [currentList, currentIndex])
-  const handleRemove = () => { // 移动 --- 利用recoil
+  const handleRemove = () => {
     if (currentTitle && Number(currentPosition) >= 0) {
       // 新列表新增
       let newList = JSON.parse(JSON.stringify(currentList as CARD_LIST_TYPE))

@@ -95,7 +95,7 @@ const Index = () => {
                 />
             ))}
             <AddCardList></AddCardList>
-            <CardDetailModal show={show} cardId={id} onClose={() => setShow(false)} />
+            <CardDetailModal show={show} onClose={() => setShow(false)} />
         </div>
     )
 }

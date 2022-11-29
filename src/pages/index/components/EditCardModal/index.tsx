@@ -1,7 +1,6 @@
 import React, {FC, useRef, ChangeEvent, useEffect, useState} from 'react'
 import { useEventBus } from '@/hook/useEventBus'
 import {useCurrentCardItem} from '@/store/useCurrentCardItem'
-import { CARD_ITEM_TYPE, CARD_LIST_TYPE } from '@/data/type'
 import './index.scss'
 import BoardModal from '@/Components/BoardModal'
 import RemoveCardToOtherList from './Compnents/RemoveCardToOtherList'
@@ -60,8 +59,6 @@ const Index: FC<PropsType> = ({
     // 复制
     const copy = () => {}
     // 移动
-    const remove = () => {}
-
     return (
         <BoardModal show={show} onClose={onClose}>
             <div className="pc-edit-card-modal" style={style}>
@@ -84,7 +81,7 @@ const Index: FC<PropsType> = ({
                     <li onClick={changeMember}>更改成员</li>
                     <li onClick={changeCover}>更改封面</li>
                     <li onClick={copy}>复制</li>
-                    <RemoveCardToOtherList/>
+                    <RemoveCardToOtherList onClose={onClose}/>
                     <li onClick={changeDeadline}>编辑日期</li>
                     <li onClick={archive}>归档</li>
                 </ul>

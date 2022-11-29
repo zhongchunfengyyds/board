@@ -22,7 +22,7 @@ const Index: FC<PropsType> = ({onChange}) => {
                                     key={index}
                                     onClick={() => {
                                         setOpen(false)
-                                        onChange && onChange(item)
+                                        onChange?.(item)
                                     }}></Tag>
                             )
                         })}
@@ -33,7 +33,7 @@ const Index: FC<PropsType> = ({onChange}) => {
                         type="primary"
                         onClick={() => {
                             setOpen(false)
-                            onChange && onChange('')
+                            onChange?.('')
                         }}>
                         移除颜色
                     </Button>

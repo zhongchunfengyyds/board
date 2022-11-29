@@ -22,7 +22,7 @@ const Index: FC<FileProps> = ({fileList = [], onChange}) => {
                 return file
             })
             console.log(fileList)
-            onChange && onChange(newFileList as NewUploadFile[])
+            onChange?.(newFileList as NewUploadFile[])
         },
     }
 

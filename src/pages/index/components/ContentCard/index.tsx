@@ -28,7 +28,6 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
     const { emit } = useEventBus()
 
     const handleCurrentChange = (key: keyof CARD_LIST_TYPE, e: ChangeEvent<HTMLInputElement>) => {
-        // change default value
         const newValue = {...cardValue, [key]: e.target.value}
         handleChangeCard(newValue)
     }

@@ -27,7 +27,7 @@ const Index: FC<CommentProps> = ({commentList = [], onChange}) => {
             },
         ]
         setCommentValue('')
-        onChange && onChange(newList)
+        onChange?.(newList)
     }
     return (
         <>

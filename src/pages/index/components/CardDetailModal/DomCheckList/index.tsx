@@ -13,8 +13,7 @@ export interface CheckListProps {
 const Index: FC<CheckListProps> = ({checkList = []}) => {
     return (
         <>
-            {checkList.length > 0 && (
-                <div className="content-left-item">
+            {checkList.length > 0 && <div className="content-left-item">
                     <OrderedListOutlined />
                     <div className="right">
                         <div className="title">清单</div>
@@ -32,7 +31,7 @@ const Index: FC<CheckListProps> = ({checkList = []}) => {
                         </Checkbox.Group>
                     </div>
                 </div>
-            )}
+            }
         </>
     )
 }

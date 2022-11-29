@@ -71,7 +71,7 @@ const Index: FC<DesProps> = ({des = '', onChange}) => {
                             type="primary"
                             onClick={() => {
                                 setShowEditor(false)
-                                onChange && onChange(html)
+                                onChange?.(html)
                             }}>
                             完成
                         </Button>

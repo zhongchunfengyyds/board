@@ -5,11 +5,17 @@ import request from "./request";
 interface apiInitDataParams {
     userId: string;
 }
-export const apiInitData = (params: apiInitDataParams) => request.post('/oa/tabulated/findByUserId', params);
+export const apiInitData = (params: apiInitDataParams) => {
+    request.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+    return request.post('/oa/tabulated/findByUserId', params);
+}
 
 // 获取用户信息
 
-export const apiGetUserInfo = () => request.get('/org/userResource/userMsg');
+export const apiGetUserInfo = () => {
+    request.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+    return request.get('/org/userResource/userMsg');
+}
 
 // 卡片新增/修改  所有saveOrUpdate接口有ID修改无ID新增
 interface apiCardUpdateParams {
@@ -17,13 +23,16 @@ interface apiCardUpdateParams {
     title?: string
     details?: string
     color?: string
-    sort?: string
+    sort?: number
     expireTime?: string
     archiving?: string
-
+    tabulatedId: string // 列表id
 }
-export const apiCardUpdate = (params: apiCardUpdateParams) => request.post('/oa/card/saveOrUpdate', params);
-
+export const apiCardUpdate = (params: apiCardUpdateParams) => {
+    // 设置请求头
+    request.defaults.headers['Content-Type'] = 'application/json;charset=UTF-8';
+    return request.post('/oa/card/saveOrUpdate', params);
+}
 
 
 // 列表新增/修改

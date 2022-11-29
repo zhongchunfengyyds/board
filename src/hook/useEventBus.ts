@@ -6,6 +6,8 @@ const eventBus = new EventEmitter();
 
 type FNC = (eventName: string, callback: (...args: any[]) => void) => void
 
+// RefreshList 刷新列表
+
 export const useEventBus = () => {
     const emit = (eventName: string, ...args: any[]) => {
         eventBus.emit(eventName, ...args)

@@ -9,6 +9,8 @@ import EditCardModal from '../EditCardModal'
 import CardListMoreOperation from '../CardListMoreOperation'
 import AddCardItem from '../AddCardItem'
 
+import {apiCardUpdate} from '@/common/js/api'
+
 interface PropsType {
     cardValue: CARD_LIST_TYPE
     handleChangeCard: (value: CARD_LIST_TYPE) => void
@@ -16,7 +18,7 @@ interface PropsType {
     handleCardDragEnd: () => void // 拖拽结束
 }
 const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardList, handleCardDragEnd}) => {
-    const { setCurrentCardItem } = useCurrentCardItem()
+    const {setCurrentCardItem} = useCurrentCardItem()
     const [status, setStatus] = useState<string>('') // 弹窗状态
     const [addStatus, setAddStatus] = useState<'btn' | 'input'>('btn') // 操作状态
     const currentEditIndex = useRef<number>(-1) // 防止重复渲染
@@ -25,7 +27,7 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
         left: 10,
         top: 10,
     })
-    const { emit } = useEventBus()
+    const {emit} = useEventBus()
 
     const handleCurrentChange = (key: keyof CARD_LIST_TYPE, e: ChangeEvent<HTMLInputElement>) => {
         const newValue = {...cardValue, [key]: e.target.value}
@@ -43,19 +45,22 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
     const handleAddCurrentNewCard = (val: string) => {
         // 添加卡片操作
         if (!val) return
-        const newCard = {
+
+        apiCardUpdate({
             title: val,
-            id: new Date().getTime().toString(),
-        }
-        const newValue = {...cardValue}
-        if (isHead) {
-            newValue.cardItem = [newCard, ...newValue.cardItem]
-            setIsHead(false)
-        } else {
-            newValue.cardItem = newValue.cardItem.concat(newCard)
-        }
-        setAddStatus('btn')
-        handleChangeCard(newValue)
+            sort: cardValue.cardItem.length + 1,
+            tabulatedId: cardValue.id,
+        }).then((res) => {
+            console.log(res)
+            const newValue = {...cardValue}
+            if (isHead) {
+                newValue.cardItem = [res.data.result, ...newValue.cardItem]
+                setIsHead(false)
+            } else {
+                newValue.cardItem = newValue.cardItem.concat(res.data.result)
+            }
+            handleChangeCard(newValue)
+        })
     }
     /**
      * 第一步：拖拽板子，原来的板子变成占位图

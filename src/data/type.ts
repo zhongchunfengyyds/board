@@ -7,6 +7,7 @@ export interface CARD_ITEM_TYPE {
 export interface CARD_LIST_TYPE {
     title: string | number
     cardItem: CARD_ITEM_TYPE[]
+    id: string
 }
 
 export interface UserValue {

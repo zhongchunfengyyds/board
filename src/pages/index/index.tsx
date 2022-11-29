@@ -74,10 +74,13 @@ const Index = () => {
                 return {
                     title: item.tabulated.listName,
                     cardItem: item.listCard,
+                    id: item.tabulated.id,
                 }
             })
         setCardList(arr)
     }, [apiInitData])
+
+    useEventBusOn('RefreshList', getApiInitData)
     useEffect(() => {
         getApiInitData()
         apiGetUserInfo()

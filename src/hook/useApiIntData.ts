@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 
 export const useApiInitData = () => {
   const setCardList = useSetCardList()
-  const { data, error } = useSWR('oa/tabulated/findByUserId', async () => await apiInitData({
+  const { data, error, mutate } = useSWR('oa/tabulated/findByUserId', async () => await apiInitData({
     userId: '1'
   }))
   useEffect(() => {
@@ -19,5 +19,7 @@ export const useApiInitData = () => {
     })
     setCardList(list)
   }, [data])
-  
+  return {
+    mutate // 重新请求函数
+  }
 }

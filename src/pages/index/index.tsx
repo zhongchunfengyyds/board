@@ -3,6 +3,8 @@ import {CARD_LIST_TYPE} from '@/data/type'
 import {useCardList, useSetCardList, useCardListAction} from '@/store/useCardList'
 import {useEventBusOn} from '@/hook/useEventBus'
 import { useApiInitData } from '@/hook/useApiIntData'
+import {useCurrentCardItem} from '@/store/useCurrentCardItem'
+import {apiCardDetail} from '@/common/js/api'
 
 import './index.scss'
 
@@ -12,8 +14,8 @@ import AddCardList from './components/AddCardList'
 
 const Index = () => {
     useApiInitData()
+    const {setCurrentCardItem} = useCurrentCardItem()
     const [show, setShow] = useState(false)
-    const [id, setId] = useState('')
     const cardList = useCardList()
     const setCardList = useSetCardList()
     const {AddCardListAction, ChangeCardAction} = useCardListAction()
@@ -61,10 +63,12 @@ const Index = () => {
         }
     }
     useEventBusOn('openCardDetail', (id: string) => {
-        setShow(true)
-        setId(id)
+        apiCardDetail({id}).then((res) => {
+            console.log(res)
+            setShow(true)
+            setCurrentCardItem(res.data.result)
+        })
     })
-
     return (
         <div className="pc-board">
             {cardList.map((item, index) => (

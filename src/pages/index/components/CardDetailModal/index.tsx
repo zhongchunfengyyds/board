@@ -1,5 +1,5 @@
 import React, {FC, useState, memo} from 'react'
-import { Button, Divider} from 'antd'
+import {Button, Divider} from 'antd'
 import {CloseOutlined, ShareAltOutlined, ContainerOutlined} from '@ant-design/icons'
 import 'dayjs/locale/zh-cn'
 import BoardModal from '@/components/BoardModal'
@@ -18,12 +18,15 @@ import {NewUploadFile} from './DomFile'
 import DomCheckList from './DomCheckList'
 import {CheckList} from './DomCheckList'
 
+import {useCurrentCardItem} from '@/store/useCurrentCardItem'
 interface PropsType {
     show: boolean
     onClose?: () => void
 }
 // TODO 利用Recoil => currentItem 存取当前cardItem detail
 const Index: FC<PropsType> = ({show, onClose}) => {
+    const {currentCardItem, setCurrentCardItem} = useCurrentCardItem()
+    console.log('currentCardItem', currentCardItem)
     // 成员
     const [memberList, setMemberList] = useState<UserValue[]>([])
     // 日期
@@ -57,7 +60,7 @@ const Index: FC<PropsType> = ({show, onClose}) => {
                 </div>
                 <div className="content">
                     <div className="content-left">
-                        <DomTitle memberList={memberList} date={date} />
+                        <DomTitle memberList={memberList} date={date} title={currentCardItem.title} />
                         <DomDes
                             des={des}
                             onChange={(e) => {

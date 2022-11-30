@@ -1,7 +1,7 @@
 import React, { useMemo, useState, FC, useEffect } from 'react'
 import { isEmpty, isEqual } from 'lodash'
 import { Popover, Button } from 'antd'
-import {useCurrentCardItem} from '@/store/useCurrentCardItem'
+import {useShareMsg} from '@/store/useShareMsg'
 import { useCardListTitle, useCardList,useCardListAction } from '@/store/useCardList'
 import {CARD_LIST_TYPE, CARD_ITEM_TYPE} from '@/data/type'
 import './index.scss'
@@ -18,8 +18,8 @@ interface PropsType{
 const Index: FC<PropsType> = ({ onClose }) => { // 移动卡片到对应的列表
   const titleList = useCardListTitle()
   const cardList = useCardList()
-  const { currentCardItem } = useCurrentCardItem()
-  const { id } = currentCardItem
+  const { shareMsg } = useShareMsg()
+  const { id } = shareMsg
   const [currentTitle, setCurrentTitle] = useState<string|number>()
   const [currentPosition, setCurrentPosition] = useState<string | number>('')
   const {ChangeCardAction} = useCardListAction()
@@ -71,12 +71,12 @@ const Index: FC<PropsType> = ({ onClose }) => { // 移动卡片到对应的列�
     if (currentTitle && Number(currentPosition) >= 0) {
       // 新列表新增
       let newList = JSON.parse(JSON.stringify(currentList as CARD_LIST_TYPE))
-      const oldIndex = newList.cardItem.findIndex((item: CARD_ITEM_TYPE) => isEqual(item, currentCardItem))
+      const oldIndex = newList.cardItem.findIndex((item: CARD_ITEM_TYPE) => isEqual(item, shareMsg))
       const index = currentTitleList.findIndex(item => item.value === currentTitle) // 当前是哪一列
       if (oldIndex > -1) { // 1、原列表----替换位置
         newList.cardItem.splice(oldIndex, 1)
       }
-      newList.cardItem.splice(currentPosition, 0, currentCardItem)
+      newList.cardItem.splice(currentPosition, 0, shareMsg)
       ChangeCardAction(newList, index)
       hide()
       onClose()

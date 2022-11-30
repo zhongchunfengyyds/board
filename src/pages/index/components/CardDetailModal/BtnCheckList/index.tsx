@@ -4,9 +4,9 @@ import {Popover, Button, Input} from 'antd'
 const {TextArea} = Input
 import {CheckSquareOutlined} from '@ant-design/icons'
 import {apiCheckboxUpdate} from '@/common/js/api'
-import {useCurrentCardItem} from '@/store/useCurrentCardItem'
+import {useShareMsg} from '@/store/useShareMsg'
 const Index: FC = () => {
-    const {currentCardItem, setCurrentCardItem} = useCurrentCardItem()
+    const {shareMsg, setShareMsg} = useShareMsg()
     const [open, setOpen] = useState(false)
     const [checkListInput, setCheckListInput] = useState('')
     const newChecklist = () => {
@@ -15,10 +15,10 @@ const Index: FC = () => {
         apiCheckboxUpdate({
             items: checkListInput,
             isAccomplish: 0,
-            cardId: currentCardItem.card.id,
+            cardId: shareMsg.card.id,
         }).then((res) => {
-            const {card, commentList, inventoryList} = currentCardItem
-            setCurrentCardItem({
+            const {card, commentList, inventoryList} = shareMsg
+            setShareMsg({
                 card,
                 commentList,
                 inventoryList: [...inventoryList, res.data.result],

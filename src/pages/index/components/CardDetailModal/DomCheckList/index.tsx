@@ -1,7 +1,7 @@
 import {memo, FC} from 'react'
 import {Checkbox, Row, Col} from 'antd'
 import {OrderedListOutlined} from '@ant-design/icons'
-import {useCurrentCardItem} from '@/store/useCurrentCardItem'
+import {useShareMsg} from '@/store/useShareMsg'
 import {apiCheckboxUpdate} from '@/common/js/api'
 
 export interface CheckList {
@@ -12,8 +12,8 @@ export interface CheckList {
 }
 
 const Index: FC = () => {
-    const {currentCardItem, setCurrentCardItem} = useCurrentCardItem()
-    const {card, commentList, inventoryList} = currentCardItem
+    const {shareMsg, setShareMsg} = useShareMsg()
+    const {card, commentList, inventoryList} = shareMsg
     const onChange = (e: any, index: number) => {
         const newInventoryList = JSON.parse(JSON.stringify(inventoryList))
         const newCheckList: CheckList = newInventoryList[index]
@@ -24,7 +24,7 @@ const Index: FC = () => {
             id: newCheckList.id,
             items: newCheckList.items,
         }).then((res) => {
-            setCurrentCardItem({
+            setShareMsg({
                 card,
                 commentList,
                 inventoryList: newInventoryList,

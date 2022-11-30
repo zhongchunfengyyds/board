@@ -1,21 +1,22 @@
 import {memo, FC, useState} from 'react'
 import {Avatar, Input, Button} from 'antd'
 import {CreditCardOutlined} from '@ant-design/icons'
-import {useCurrentCardItem} from '@/store/useCurrentCardItem'
+import {useShareMsg} from '@/store/useShareMsg'
+import { CARD_DETAIL_TYPE } from '@/data/type'
 import {apiCardUpdate} from '@/common/js/api'
 
 const Index: FC = () => {
-    const {currentCardItem, setCurrentCardItem} = useCurrentCardItem()
+    const {shareMsg, setShareMsg} = useShareMsg()
     const [editorTitle, setEditorTitle] = useState(false)
-    const [title, setTitle] = useState(currentCardItem.card.title)
+    const [title, setTitle] = useState(shareMsg.card.title)
     const changTitle = () => {
         setEditorTitle(false)
-        const {card, commentList, inventoryList} = currentCardItem
+        const {card, commentList, inventoryList} = shareMsg
         apiCardUpdate({
             id: card.id,
             title: title,
         }).then((res) => {
-            setCurrentCardItem({
+            setShareMsg({
                 card: {
                     ...card,
                     title: title,
@@ -35,7 +36,7 @@ const Index: FC = () => {
                         onClick={() => {
                             setEditorTitle(true)
                         }}>
-                        {currentCardItem.card.title}
+                        {shareMsg.card.title}
                     </h3>
                 ) : (
                     <>

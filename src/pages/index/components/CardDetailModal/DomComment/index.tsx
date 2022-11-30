@@ -3,7 +3,7 @@ import {Mentions, Button, List} from 'antd'
 import {CommentOutlined} from '@ant-design/icons'
 import {apiCommentUpdate} from '@/common/js/api'
 
-import {useCurrentCardItem} from '@/store/useCurrentCardItem'
+import {useShareMsg} from '@/store/useShareMsg'
 export interface Comment {
     commentName: string // 评论人
     commentContent: string // 评论内容
@@ -14,21 +14,21 @@ export interface CommentProps {
     commentList?: Comment[]
 }
 const Index: FC<CommentProps> = ({commentList = []}) => {
-    const {currentCardItem, setCurrentCardItem} = useCurrentCardItem()
+    const {shareMsg, setShareMsg} = useShareMsg()
     const [commentValue, setCommentValue] = useState('')
     const newComment = () => {
         // 调接口评论
         apiCommentUpdate({
             commentName: '张三',
             commentId: '1',
-            cardId: currentCardItem.card.id,
+            cardId: shareMsg.card.id,
             commentContent: commentValue,
         }).then((res) => {
-            console.log(currentCardItem, '评论成功')
-            setCurrentCardItem({
-                card: currentCardItem.card,
-                inventoryList: currentCardItem.inventoryList,
-                commentList: [res.data.result, ...currentCardItem.commentList],
+            console.log(shareMsg, '评论成功')
+            setShareMsg({
+                card: shareMsg.card,
+                inventoryList: shareMsg.inventoryList,
+                commentList: [res.data.result, ...shareMsg.commentList],
             })
             setCommentValue('')
         })
@@ -57,7 +57,7 @@ const Index: FC<CommentProps> = ({commentList = []}) => {
                         <List
                             size="small"
                             itemLayout="horizontal"
-                            dataSource={currentCardItem.commentList}
+                            dataSource={shareMsg.commentList}
                             renderItem={(item) => (
                                 <List.Item>
                                     <List.Item.Meta title={item.commentName} description={item.commentContent} />

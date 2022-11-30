@@ -1,6 +1,6 @@
 import React, {FC, useRef, ChangeEvent, useEffect, useState} from 'react'
 import { useEventBus } from '@/hook/useEventBus'
-import {useCurrentCardItem} from '@/store/useCurrentCardItem'
+import {useShareMsg} from '@/store/useShareMsg'
 import './index.scss'
 import BoardModal from '@/Components/BoardModal'
 import RemoveCardToOtherList from './Compnents/RemoveCardToOtherList'
@@ -22,7 +22,7 @@ const Index: FC<PropsType> = ({
     handleConfirmEdit,
     position = {left: 0, top: 0},
 }) => {
-    const {currentCardItem } =useCurrentCardItem()
+    const {shareMsg } =useShareMsg()
     const {left, top} = position
     const { emit } = useEventBus()
     const [currentValue, setCurrentValue] = useState<string>('')
@@ -38,13 +38,13 @@ const Index: FC<PropsType> = ({
         onClose?.()
     }
     useEffect(() => {
-        setCurrentValue(currentCardItem.title ?? '')
-    }, [currentCardItem.title])
+        setCurrentValue(shareMsg.title ?? '')
+    }, [shareMsg.title])
 
     // 打开卡片详情
     const open = () => {
         onClose()
-        emit('openCardDetail', currentCardItem.id)
+        emit('openCardDetail', shareMsg.id)
     }
     // 修改标签
     const changeTag = () => {}

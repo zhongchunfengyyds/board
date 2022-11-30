@@ -2,19 +2,19 @@ import './index.scss'
 import {FC, memo, useMemo, useState} from 'react'
 import {Popover, Button, Divider, Tag} from 'antd'
 import {ColumnHeightOutlined} from '@ant-design/icons'
-import {useCurrentCardItem} from '@/store/useCurrentCardItem'
+import {useShareMsg} from '@/store/useShareMsg'
 import {apiCardUpdate} from '@/common/js/api'
 
 const Index: FC = () => {
-    const {currentCardItem, setCurrentCardItem} = useCurrentCardItem()
+    const {shareMsg, setShareMsg} = useShareMsg()
     const [open, setOpen] = useState(false)
     const onChange = (color: string) => {
-        const {card, commentList, inventoryList} = currentCardItem
+        const {card, commentList, inventoryList} = shareMsg
         apiCardUpdate({
             id: card.id,
             color: color,
         }).then((res) => {
-            setCurrentCardItem({
+            setShareMsg({
                 card: {
                     ...card,
                     color: color,

@@ -4,16 +4,16 @@ import {MenuUnfoldOutlined} from '@ant-design/icons'
 import {Editor, Toolbar} from '@wangeditor/editor-for-react'
 import {IDomEditor, IEditorConfig, IToolbarConfig} from '@wangeditor/editor'
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
-import {useCurrentCardItem} from '@/store/useCurrentCardItem'
+import {useShareMsg} from '@/store/useShareMsg'
 import {apiCardUpdate} from '@/common/js/api'
 const Index: FC = () => {
-    const {currentCardItem, setCurrentCardItem} = useCurrentCardItem()
-    const {card, commentList, inventoryList} = currentCardItem
+    const {shareMsg, setShareMsg} = useShareMsg()
+    const {card, commentList, inventoryList} = shareMsg
     const onChange = (html: string) => {
         const newCard = JSON.parse(JSON.stringify(card))
         newCard.details = html
         apiCardUpdate(newCard).then((res) => {
-            setCurrentCardItem({
+            setShareMsg({
                 card: newCard,
                 commentList,
                 inventoryList,

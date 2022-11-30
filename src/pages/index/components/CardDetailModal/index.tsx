@@ -1,9 +1,13 @@
 import React, {FC, useState, memo} from 'react'
 import {Button, Divider} from 'antd'
-import {CloseOutlined, ShareAltOutlined, ContainerOutlined} from '@ant-design/icons'
+import {CloseOutlined, ContainerOutlined} from '@ant-design/icons'
+import {useShareMsg} from '@/store/useShareMsg'
+import { useCardList } from '@/store/useCardList'
+import {apiCardDelete} from '@/common/js/api'
 import 'dayjs/locale/zh-cn'
-import BoardModal from '@/components/BoardModal'
 import './index.scss'
+
+import BoardModal from '@/components/BoardModal'
 import MemberBtn from './BtnMember'
 import BtnCheckList from './BtnCheckList'
 import BtnDate from './BtnDate'
@@ -14,28 +18,27 @@ import DomComment from './DomComment'
 import DomFile from './DomFile'
 import DomCheckList from './DomCheckList'
 
-import {useCurrentCardItem} from '@/store/useCurrentCardItem'
-import {apiCardDelete} from '@/common/js/api'
 interface PropsType {
     show: boolean
     onClose?: () => void
 }
 // TODO 利用Recoil => currentItem 存取当前cardItem detail
 const Index: FC<PropsType> = ({show, onClose}) => {
-    const {currentCardItem, setCurrentCardItem} = useCurrentCardItem()
-    console.log('currentCardItem', currentCardItem)
+    const {shareMsg} = useShareMsg()
+    const cardList = useCardList()
+    console.log(cardList)
+    console.log('shareMsg', shareMsg)
     const delCard = ()=>{
         apiCardDelete({
-            id: currentCardItem.card.id
+            id: shareMsg.card.id
         }).then((res)=>{
-            
             onClose?.()
         })
     }
     return (
         <BoardModal show={show} onClose={onClose}>
             <div className="card-detail-modal">
-                {currentCardItem.card?.color && <header style={{background: currentCardItem.card.color}}></header>}
+                {shareMsg.card?.color && <header style={{background: shareMsg.card.color}}></header>}
                 <div className="close">
                     <Button shape="circle" type="text" icon={<CloseOutlined />} onClick={onClose} />
                 </div>

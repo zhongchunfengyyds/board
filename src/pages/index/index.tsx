@@ -3,7 +3,7 @@ import {CARD_LIST_TYPE} from '@/data/type'
 import {useCardList, useSetCardList, useCardListAction} from '@/store/useCardList'
 import {useEventBusOn} from '@/hook/useEventBus'
 import { useApiInitData } from '@/hook/useApiIntData'
-import {useCurrentCardItem} from '@/store/useCurrentCardItem'
+import {useShareMsg} from '@/store/useShareMsg'
 import {apiCardDetail} from '@/common/js/api'
 
 import './index.scss'
@@ -14,7 +14,7 @@ import AddCardList from './components/AddCardList'
 
 const Index = () => {
     useApiInitData()
-    const {setCurrentCardItem} = useCurrentCardItem()
+    const {setShareMsg} = useShareMsg()
     const [show, setShow] = useState(false)
     const cardList = useCardList()
     const setCardList = useSetCardList()
@@ -66,7 +66,7 @@ const Index = () => {
         apiCardDetail({id}).then((res) => {
             console.log(res)
             setShow(true)
-            setCurrentCardItem(res.data.result)
+            setShareMsg(res.data.result)
         })
     })
     return (

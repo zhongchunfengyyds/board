@@ -6,7 +6,7 @@ import { CARD_DETAIL_TYPE } from '@/data/type'
 import {apiCardUpdate} from '@/common/js/api'
 
 const Index: FC = () => {
-    const {shareMsg, setShareMsg} = useShareMsg()
+    const {shareMsg, setShareMsgAction} = useShareMsg()
     const [editorTitle, setEditorTitle] = useState(false)
     const [title, setTitle] = useState(shareMsg.card.title)
     const changTitle = () => {
@@ -16,7 +16,7 @@ const Index: FC = () => {
             id: card.id,
             title: title,
         }).then((res) => {
-            setShareMsg({
+            setShareMsgAction({
                 card: {
                     ...card,
                     title: title,

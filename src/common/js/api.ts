@@ -62,11 +62,14 @@ export const apiListUpdate = (params: apiListUpdateParams) => {
 interface apiCheckboxUpdateParams {
     id?: string;
     items?: string
-    isAccomplish?: string
-    card_id?: string
+    isAccomplish?: number
+    cardId?: string
 }
 
-export const apiCheckboxUpdate = (params: apiCheckboxUpdateParams) => request.post('/oa/inventory/saveOrUpdate', params);
+export const apiCheckboxUpdate = (params: apiCheckboxUpdateParams) => {
+    request.defaults.headers['Content-Type'] = 'application/json;charset=UTF-8';
+    return request.post('/oa/inventory/saveOrUpdate', params);
+}
 
 
 // 评论新增

@@ -3,17 +3,28 @@ import {FC, memo, useMemo, useState} from 'react'
 import {Popover, Button, Input} from 'antd'
 const {TextArea} = Input
 import {CheckSquareOutlined} from '@ant-design/icons'
-export interface BtnCheckListProps {
-    onChange?: (value: string) => void
-}
-const Index: FC<BtnCheckListProps> = ({onChange}) => {
+import {apiCheckboxUpdate} from '@/common/js/api'
+import {useCurrentCardItem} from '@/store/useCurrentCardItem'
+const Index: FC = () => {
+    const {currentCardItem, setCurrentCardItem} = useCurrentCardItem()
     const [open, setOpen] = useState(false)
     const [checkListInput, setCheckListInput] = useState('')
     const newChecklist = () => {
         setOpen(false)
-        if(!checkListInput) return
-        onChange && onChange(checkListInput)
-        setCheckListInput('')
+        if (!checkListInput) return
+        apiCheckboxUpdate({
+            items: checkListInput,
+            isAccomplish: 0,
+            cardId: currentCardItem.card.id,
+        }).then((res) => {
+            const {card, commentList, inventoryList} = currentCardItem
+            setCurrentCardItem({
+                card,
+                commentList,
+                inventoryList: [...inventoryList, res.data.result],
+            })
+            setCheckListInput('')
+        })
     }
     const content = () => {
         return (

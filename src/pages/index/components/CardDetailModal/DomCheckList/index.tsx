@@ -1,37 +1,62 @@
 import {memo, FC} from 'react'
 import {Checkbox, Row, Col} from 'antd'
 import {OrderedListOutlined} from '@ant-design/icons'
+import {useCurrentCardItem} from '@/store/useCurrentCardItem'
+import {apiCheckboxUpdate} from '@/common/js/api'
 
 export interface CheckList {
+    cardId: string
     items: string // 任务名
-    isAccomplish: boolean // 是否完成
-}
-export interface CheckListProps {
-    checkList?: CheckList[]
+    isAccomplish: number // 是否完成
+    id: string
 }
 
-const Index: FC<CheckListProps> = ({checkList = []}) => {
+const Index: FC = () => {
+    const {currentCardItem, setCurrentCardItem} = useCurrentCardItem()
+    const {card, commentList, inventoryList} = currentCardItem
+    const onChange = (e: any, index: number) => {
+        const newInventoryList = JSON.parse(JSON.stringify(inventoryList))
+        const newCheckList: CheckList = newInventoryList[index]
+        newCheckList.isAccomplish = e.target.checked ? 1 : 0
+        apiCheckboxUpdate({
+            cardId: newCheckList.cardId,
+            isAccomplish: newCheckList.isAccomplish,
+            id: newCheckList.id,
+            items: newCheckList.items,
+        }).then((res) => {
+            setCurrentCardItem({
+                card,
+                commentList,
+                inventoryList: newInventoryList,
+            })
+        })
+    }
     return (
         <>
-            {checkList.length > 0 && <div className="content-left-item">
+            {inventoryList.length > 0 && (
+                <div className="content-left-item">
                     <OrderedListOutlined />
                     <div className="right">
                         <div className="title">清单</div>
                         <div className="pt12"></div>
-                        <Checkbox.Group style={{width: '100%'}}>
-                            <Row gutter={[0, 10]}>
-                                {checkList.map((item, index) => {
-                                    return (
-                                        <Col span={24} key={index}>
-                                            <Checkbox value={item.items}>{item.items}</Checkbox>
-                                        </Col>
-                                    )
-                                })}
-                            </Row>
-                        </Checkbox.Group>
+                        <Row gutter={[0, 10]}>
+                            {inventoryList.map((item, index) => {
+                                return (
+                                    <Col span={24} key={index}>
+                                        <Checkbox
+                                            checked={item.isAccomplish === 1}
+                                            onChange={(e) => {
+                                                onChange(e, index)
+                                            }}>
+                                            {item.items}
+                                        </Checkbox>
+                                    </Col>
+                                )
+                            })}
+                        </Row>
                     </div>
                 </div>
-            }
+            )}
         </>
     )
 }

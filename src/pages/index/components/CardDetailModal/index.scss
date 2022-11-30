@@ -43,6 +43,9 @@
                 margin-bottom: 30px;
                 display: flex;
                 align-items: flex-start;
+                &>.anticon{
+                    margin-top: 4px;
+                }
                 &>.right {
                     margin-left: 10px;
                     flex: 1;

@@ -26,7 +26,7 @@ interface apiCardUpdateParams {
     sort?: number
     expireTime?: string
     archiving?: string
-    tabulatedId: string // 列表id
+    tabulatedId?: string // 列表id
 }
 export const apiCardUpdate = (params: apiCardUpdateParams) => {
     // 设置请求头
@@ -92,11 +92,11 @@ interface apiDeleteParams {
     id: string;
 }
 // 清单删除
-export const apiCheckBoxDelete = (params: apiDeleteParams) => request.post('/oa/tabulated/delete', params);
+export const apiCheckBoxDelete = (params: apiDeleteParams) => request.post('/oa/inventory/removeById', params);
 // 卡片删除
-export const apiCardDelete = (params: apiDeleteParams) => request.post('/oa/tabulated/delete', params);
+export const apiCardDelete = (params: apiDeleteParams) => request.post('/oa/card/removeById', params);
 // 评论删除
-export const apiCommonDelete = (params: apiDeleteParams) => request.post('/oa/tabulated/delete', params);
+export const apiCommonDelete = (params: apiDeleteParams) => request.post('/oa/comment/removeById', params);
 // 列表删除
-export const apiListDelete = (params: apiDeleteParams) => request.post('/oa/tabulated/delete', params);
+export const apiListDelete = (params: apiDeleteParams) => request.post('/oa/tabulated/removeById', params);
 

@@ -13,6 +13,8 @@ export interface CARD_ITEM_TYPE {
     params: any
     sort: number
     tabulatedId: string
+    color: string
+    details: string
 }
 
 export interface CARD_LIST_TYPE {

@@ -4,19 +4,27 @@ import {MenuUnfoldOutlined} from '@ant-design/icons'
 import {Editor, Toolbar} from '@wangeditor/editor-for-react'
 import {IDomEditor, IEditorConfig, IToolbarConfig} from '@wangeditor/editor'
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
-
-export interface DesProps {
-    des?: string
-    onChange?: (value: string) => void
-}
-
-const Index: FC<DesProps> = ({des = '', onChange}) => {
+import {useCurrentCardItem} from '@/store/useCurrentCardItem'
+import {apiCardUpdate} from '@/common/js/api'
+const Index: FC = () => {
+    const {currentCardItem, setCurrentCardItem} = useCurrentCardItem()
+    const {card, commentList, inventoryList} = currentCardItem
+    const onChange = (html: string) => {
+        const newCard = JSON.parse(JSON.stringify(card))
+        newCard.details = html
+        apiCardUpdate(newCard).then((res) => {
+            setCurrentCardItem({
+                card: newCard,
+                commentList,
+                inventoryList,
+            })
+        })
+    }
     const __ctx = process.env.NODE_ENV === 'development' ? '/api' : ''
     // editor 实例
     const [editor, setEditor] = useState<IDomEditor | null>(null) // TS 语法
-    // 编辑器内容
-    const [html, setHtml] = useState(des)
-    const [showEditor, setShowEditor] = useState(true)
+    const show = card.details ? card.details.length == 0 : true
+    const [showEditor, setShowEditor] = useState(show)
     // 工具栏配置
     const toolbarConfig: Partial<IToolbarConfig> = {} // TS 语法
     // 编辑器配置
@@ -70,8 +78,8 @@ const Index: FC<DesProps> = ({des = '', onChange}) => {
                             size="small"
                             type="primary"
                             onClick={() => {
+                                onChange(editor?.getHtml() || '')
                                 setShowEditor(false)
-                                onChange?.(html)
                             }}>
                             完成
                         </Button>
@@ -82,7 +90,7 @@ const Index: FC<DesProps> = ({des = '', onChange}) => {
                     <>
                         <div
                             className="desc cursor-pointer"
-                            dangerouslySetInnerHTML={{__html: html}}
+                            dangerouslySetInnerHTML={{__html: card.details}}
                             onClick={() => setShowEditor(true)}></div>
                     </>
                 ) : (
@@ -96,11 +104,8 @@ const Index: FC<DesProps> = ({des = '', onChange}) => {
                             />
                             <Editor
                                 defaultConfig={editorConfig}
-                                value={html}
+                                value={card.details}
                                 onCreated={setEditor}
-                                onChange={(editor) => {
-                                    setHtml(editor.getHtml())
-                                }}
                                 mode="default"
                                 style={{height: '500px', overflowY: 'hidden'}}
                             />

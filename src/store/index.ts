@@ -25,7 +25,9 @@ export const CurrenCardtItem = atom<CARD_DETAIL_TYPE>({ // 当前选中的cardIt
             modifierName: '',
             params: {},
             sort: 0,
-            tabulatedId: ''
+            tabulatedId: '',
+            color: '',
+            details: ''
         },
         commentList: [],
         inventoryList: []

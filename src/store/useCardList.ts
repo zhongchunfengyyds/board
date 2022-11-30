@@ -15,9 +15,8 @@ export const useSetCardList = (): SetterOrUpdater<Array<CARD_LIST_TYPE> > => use
 export const useCardListAction = () => {
   const setCardList = useSetCardList()
   const cardList = useCardList()
-  const AddCardListAction = useCallback((val?: CARD_LIST_TYPE, index?: number) => { // 添加列表数据
+  const AddCardListAction = useCallback((val: CARD_LIST_TYPE, index?: number) => { // 添加列表数据
     index = index ?? cardList.length
-    val = val ?? { title : 'test1111', cardItem: [] }
     const newCardList = JSON.parse(JSON.stringify(cardList))
     newCardList.splice(index, 0, val)
     setCardList(newCardList)

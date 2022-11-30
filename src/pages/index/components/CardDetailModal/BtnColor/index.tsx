@@ -2,11 +2,29 @@ import './index.scss'
 import {FC, memo, useMemo, useState} from 'react'
 import {Popover, Button, Divider, Tag} from 'antd'
 import {ColumnHeightOutlined} from '@ant-design/icons'
-interface PropsType {
-    onChange?: (value: string) => void
-}
-const Index: FC<PropsType> = ({onChange}) => {
+import {useCurrentCardItem} from '@/store/useCurrentCardItem'
+import {apiCardUpdate} from '@/common/js/api'
+
+const Index: FC = () => {
+    const {currentCardItem, setCurrentCardItem} = useCurrentCardItem()
     const [open, setOpen] = useState(false)
+    const onChange = (color: string) => {
+        const {card, commentList, inventoryList} = currentCardItem
+        apiCardUpdate({
+            id: card.id,
+            color: color,
+        }).then((res) => {
+            setCurrentCardItem({
+                card: {
+                    ...card,
+                    color: color,
+                },
+                commentList,
+                inventoryList,
+            })
+            setOpen(false)
+        })
+    }
     const colorList = ['#f50', '#2db7f5', '#87d068', '#108ee9', '#f50', '#2db7f5', '#87d068', '#108ee9']
     const content = useMemo(() => {
         return (
@@ -21,7 +39,6 @@ const Index: FC<PropsType> = ({onChange}) => {
                                     color={item}
                                     key={index}
                                     onClick={() => {
-                                        setOpen(false)
                                         onChange?.(item)
                                     }}></Tag>
                             )
@@ -32,7 +49,6 @@ const Index: FC<PropsType> = ({onChange}) => {
                         size="small"
                         type="primary"
                         onClick={() => {
-                            setOpen(false)
                             onChange?.('')
                         }}>
                         移除颜色

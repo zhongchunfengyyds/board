@@ -9,7 +9,7 @@ import EditCardModal from '../EditCardModal'
 import CardListMoreOperation from '../CardListMoreOperation'
 import AddCardItem from '../AddCardItem'
 
-import {apiCardUpdate} from '@/common/js/api'
+import {apiListUpdate} from '@/common/js/api'
 
 interface PropsType {
     cardValue: CARD_LIST_TYPE
@@ -33,7 +33,12 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
         const newValue = {...cardValue, [key]: e.target.value}
         handleChangeCard(newValue)
     }
-
+    const handleCardListNameChange = () => {
+        apiListUpdate({
+            id: cardValue.id,
+            listName: cardValue.listName,
+        }).then((res) => {})
+    }
     useEventBusOn('addCardItem', () => {
         setAddStatus('btn')
     })
@@ -165,16 +170,35 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
         ),
         [addStatus, handleAddCurrentNewCard, addCardItem],
     )
-
+    const [showInput, setShowInput] = useState(false)
     return (
         <div className="pc-card-cont">
             <div
                 className="title"
                 onDragEnter={(e) => titleDragEnter(e)}
                 onDragOver={(e) => e.preventDefault()}
-                onDragEnd={handleCardDragEnd}
-                draggable="true">
-                <input type="text" value={cardValue?.title ?? ''} onChange={(e) => handleCurrentChange('title', e)} />
+                onDragEnd={handleCardDragEnd}>
+                {showInput ? (
+                    <input
+                        type="text"
+                        value={cardValue?.listName ?? ''}
+                        onBlur={(e) => {
+                            handleCardListNameChange()
+                            setShowInput(false)
+                        }}
+                        onKeyUp={(e) => {
+                            if (e.keyCode === 13) {
+                                handleCardListNameChange()
+                                setShowInput(false)
+                            }
+                        }}
+                        onChange={(e) => handleCurrentChange('listName', e)}
+                    />
+                ) : (
+                    <span style={{display: 'inline-block'}} onClick={(e) => setShowInput(true)}>
+                        <input disabled className="cursor-pointer" type="text" value={cardValue?.listName ?? ''} />
+                    </span>
+                )}
                 <CardListMoreOperation handleAddCard={handleAddCardNew} handleCopyList={(val) => handleCopyList(val)} />
             </div>
             {isHead && ADD_DOM}

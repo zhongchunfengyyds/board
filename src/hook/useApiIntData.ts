@@ -13,7 +13,7 @@ export const useApiInitData = () => {
         const resList = data?.data?.result ?? []
         const list = resList.map((item: any) => {
             return {
-                title: item.tabulated.listName,
+                listName: item.tabulated.listName,
                 cardItem: item.listCard,
                 id: item.tabulated.id
             }

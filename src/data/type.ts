@@ -18,7 +18,7 @@ export interface CARD_ITEM_TYPE {
 }
 
 export interface CARD_LIST_TYPE {
-    title: string | number
+    listName: string 
     cardItem: CARD_ITEM_TYPE[]
     id: string
 }

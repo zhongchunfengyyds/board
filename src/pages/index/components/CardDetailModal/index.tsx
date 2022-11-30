@@ -35,7 +35,7 @@ const Index: FC<PropsType> = ({show, onClose}) => {
     return (
         <BoardModal show={show} onClose={onClose}>
             <div className="card-detail-modal">
-                {currentCardItem.card.color && <header style={{background: currentCardItem.card.color}}></header>}
+                {currentCardItem.card?.color && <header style={{background: currentCardItem.card.color}}></header>}
                 <div className="close">
                     <Button shape="circle" type="text" icon={<CloseOutlined />} onClick={onClose} />
                 </div>

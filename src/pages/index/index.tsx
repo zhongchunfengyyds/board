@@ -106,7 +106,10 @@ const Index = () => {
             const newCardList: Array<CARD_LIST_TYPE> = cardList.filter((item, index) => {
                 if (item.id === dragData.id) {
                     // 把dragList 放回去 不放回去会导致dragList丢失react无法渲染
-                    dragList?.parentNode?.insertBefore(dragList, dragList?.parentNode?.children[index])
+                    dragList?.parentNode?.insertBefore(
+                        dragList,
+                        dragList?.parentNode?.children[listIndex > index ? index : index + 1],
+                    )
                     dragList.id = ''
                     dragList.style.opacity = '1'
                     dragList.style.filter = 'unset'

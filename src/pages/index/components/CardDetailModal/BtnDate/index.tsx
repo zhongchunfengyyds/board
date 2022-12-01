@@ -2,38 +2,46 @@ import './index.scss'
 import {FC, memo, useMemo, useState} from 'react'
 import {Popover, Button, DatePicker} from 'antd'
 import {FieldTimeOutlined} from '@ant-design/icons'
-import {UserValue} from '@/data/type'
 import locale from 'antd/es/date-picker/locale/zh_CN'
-const {RangePicker} = DatePicker
-interface PropsType {
-    onChange?: (value: string[]) => void
-}
-const Index: FC<PropsType> = ({onChange}) => {
+import {useShareMsg} from '@/store/useShareMsg'
+import {apiCardUpdate} from '@/common/js/api'
+const Index: FC = () => {
+    const {shareMsg, setShareMsgAction} = useShareMsg()
     const [open, setOpen] = useState(false)
-    const [date, setDate] = useState<string[]>([])
+    const [date, setDate] = useState<string>('')
+    const onChange = () => {
+        apiCardUpdate({
+            id: shareMsg.card.id,
+            expireTime: date,
+        }).then((res) => {
+            setOpen(false)
+            setShareMsgAction({
+                card: {
+                    ...shareMsg.card,
+                    expireTime: date,
+                },
+                commentList: shareMsg.commentList,
+                inventoryList: shareMsg.inventoryList,
+            })
+        })
+    }
     const AddDateDom = useMemo(() => {
         return (
             <>
-                <RangePicker
+                <DatePicker
                     locale={locale}
-                    onChange={(e, date) => {
-                        setDate(date)
+                    showTime
+                    onChange={(e, dateStr) => {
+                        setDate(dateStr)
                     }}
                 />
                 <div></div>
-                <Button
-                    className="mt10"
-                    size="small"
-                    type="primary"
-                    onClick={() => {
-                        setOpen(false)
-                        onChange && onChange(date)
-                    }}>
+                <Button className="mt10" size="small" type="primary" onClick={onChange}>
                     完成
                 </Button>
             </>
         )
-    }, [open])
+    }, [open, date])
     return (
         <>
             <Popover

@@ -15,10 +15,11 @@ export interface CARD_ITEM_TYPE {
     tabulatedId: string
     color: string
     details: string
+    expireTime: string
 }
 
 export interface CARD_LIST_TYPE {
-    listName: string 
+    listName: string
     cardItem: CARD_ITEM_TYPE[]
     id: string
 }

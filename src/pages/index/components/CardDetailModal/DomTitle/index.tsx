@@ -2,7 +2,7 @@ import {memo, FC, useState} from 'react'
 import {Avatar, Input, Button} from 'antd'
 import {CreditCardOutlined} from '@ant-design/icons'
 import {useShareMsg} from '@/store/useShareMsg'
-import { CARD_DETAIL_TYPE } from '@/data/type'
+import {CARD_DETAIL_TYPE} from '@/data/type'
 import {apiCardUpdate} from '@/common/js/api'
 
 const Index: FC = () => {
@@ -62,18 +62,9 @@ const Index: FC = () => {
                         </div>
                     </>
                 )}
-                {/* {date.length > 0 && (
-                    <div className="desc pt10">
-                        时间：
-                        {date.map((item, index) => {
-                            if (index === 0) {
-                                return <span key={index}>{item}</span>
-                            } else {
-                                return <span key={index}> 至 {item}</span>
-                            }
-                        })}
-                    </div>
-                )} */}
+                {shareMsg.card.expireTime?.length > 0 && (
+                    <div className="desc pt10">到期时间：{shareMsg.card.expireTime}</div>
+                )}
                 {/* {memberList.length > 0 && (
                     <Avatar.Group className="mt20">
                         {memberList.map((item, index) => {

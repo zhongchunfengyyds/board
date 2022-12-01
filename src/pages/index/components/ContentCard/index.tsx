@@ -3,13 +3,13 @@ import {CARD_LIST_TYPE} from '@/data/type'
 import {isEmpty} from 'lodash'
 import {useEventBus, useEventBusOn} from '@/hook/useEventBus'
 import {useShareMsg} from '@/store/useShareMsg'
-
+import {ClockCircleOutlined, EditOutlined} from '@ant-design/icons'
 import './index.scss'
 import EditCardModal from '../EditCardModal'
 import CardListMoreOperation from '../CardListMoreOperation'
 import AddCardItem from '../AddCardItem'
 
-import {apiListUpdate} from '@/common/js/api'
+import {apiListUpdate, apiCardUpdate} from '@/common/js/api'
 
 interface PropsType {
     cardValue: CARD_LIST_TYPE
@@ -152,7 +152,18 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
                         draggable="true">
                         {item.color && <div className="item-header" style={{background: item.color}}></div>}
                         <div className="item-title"> {item.title} </div>
-                        <i onClick={(e) => handleEditCard(index, e)}>编辑</i>
+                        {item.expireTime && (
+                            <div className="item-row">
+                                <div className="item-expire-time">
+                                    <ClockCircleOutlined />
+                                    <span className="ml4">{item.expireTime}</span>
+                                </div>
+                            </div>
+                        )}
+                        <div className="item-edit">
+                            <EditOutlined />
+                        </div>
+                        {/* <i onClick={(e) => handleEditCard(index, e)}>编辑</i> */}
                     </div>
                 ))}
             </div>

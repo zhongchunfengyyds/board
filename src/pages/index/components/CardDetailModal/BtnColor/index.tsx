@@ -6,7 +6,7 @@ import {useShareMsg} from '@/store/useShareMsg'
 import {apiCardUpdate} from '@/common/js/api'
 
 const Index: FC = () => {
-    const {shareMsg, setShareMsg} = useShareMsg()
+    const {shareMsg, setShareMsgAction} = useShareMsg()
     const [open, setOpen] = useState(false)
     const onChange = (color: string) => {
         const {card, commentList, inventoryList} = shareMsg
@@ -14,7 +14,7 @@ const Index: FC = () => {
             id: card.id,
             color: color,
         }).then((res) => {
-            setShareMsg({
+            setShareMsgAction({
                 card: {
                     ...card,
                     color: color,

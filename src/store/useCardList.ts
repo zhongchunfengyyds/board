@@ -50,7 +50,7 @@ export const useCardListAction = () => {
             item.cardItem.forEach((card, cardIndex) => {
                 if (card.sort <= item.cardItem[cardIndex - 1]?.sort) {
                     let temp = card.sort
-                    card.sort = item.cardItem[cardIndex - 1].sort
+                    card.sort = item.cardItem[cardIndex - 1].sort + 1
                     item.cardItem[cardIndex - 1].sort = temp
                     apiCardUpdate({
                         id: card.id,

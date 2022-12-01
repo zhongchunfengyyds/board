@@ -68,12 +68,14 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
         })
     }
     /**
+     * 列表子项拖拽
      * 第一步：拖拽板子，原来的板子变成占位图
      * 第二步：拖拽到什么地方，占位图图就移动到什么地方
      * 第三步：拖拽结束，更新数据重新渲染dom
      */
     // 拖拽开始
     const dragCardStart = (e: DragEvent, index: number) => {
+        e.stopPropagation()
         const dom = e.target as HTMLElement
         dom.id = 'dragCard'
         setTimeout(() => {
@@ -90,6 +92,7 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
     }
     const titleDragEnter = (e: DragEvent<HTMLElement>) => {
         const dragCard = document.getElementById('dragCard')
+        if(!dragCard) return
         e.preventDefault()
         const parentNode: HTMLElement = e?.currentTarget.parentNode as HTMLElement
         if (parentNode.children[1].firstChild) {
@@ -181,6 +184,7 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
         [addStatus, handleAddCurrentNewCard, addCardItem],
     )
     const [showInput, setShowInput] = useState(false)
+
     return (
         <div className="pc-card-cont">
             <div

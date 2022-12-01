@@ -57,14 +57,17 @@
         &>.item {
             position: relative;
             z-index: 1;
-            border-radius: 6px;
+            border-radius: 3px;
             overflow: hidden;
             cursor: pointer;
-            padding: 6px 8px 2px;
             background: #fff;
             box-shadow: var(--ds-shadow-raised, 0 1px 0 #091e4240);
-
+            .item-header{
+                height: 32px;
+                margin-bottom: 4px;
+            }
             &>.item-title {
+                padding: 6px 8px 2px;
                 word-wrap: break-word;
                 color: #172b4d;
                 display: block;

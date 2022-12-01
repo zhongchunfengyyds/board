@@ -41,7 +41,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
     (config: any) => {
         // 设置token
-        config.headers['Authorization'] = document.cookie.split('Authorization=')[1]
+        config.headers['Authorization'] = document.cookie.split('Authorization=')[1] || 'Bearer-eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJhZ2lsZUJQTSIsInN1YiI6ImFkbWluOnJvY2FuT0EiLCJhdWQiOiJwYyIsImlhdCI6MTY2OTg2MzIyNX0.rnrVqOJkUilL9tCYyPAyD5IpAsSnzIKWGPJEklbl6eVLUH9KCfzNBBkx90reSHIH2gaiY_qjj5uWxFvL12kaxw'
         console.log(config);
         
         return config

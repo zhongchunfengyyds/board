@@ -150,9 +150,8 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
                         onDragEnter={(e) => dragCardEnter(e)}
                         onDragEnd={handleCardDragEnd}
                         draggable="true">
-                        {item.background && <div className="item-header" style={{background: item.background}}></div>}
+                        {item.color && <div className="item-header" style={{background: item.color}}></div>}
                         <div className="item-title"> {item.title} </div>
-
                         <i onClick={(e) => handleEditCard(index, e)}>编辑</i>
                     </div>
                 ))}

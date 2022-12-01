@@ -11,11 +11,12 @@ export const useApiInitData = () => {
     useEffect(() => {
         apiGetUserInfo()
         const resList = data?.data?.result ?? []
-        const list = resList.map((item: any) => {
+        const list = resList.map((item: any, index: number) => {
             return {
                 listName: item.tabulated.listName,
                 cardItem: item.listCard,
-                id: item.tabulated.id
+                id: item.tabulated.id,
+                sort: item.tabulated.sort || index + 1
             }
         })
         setCardList(list)

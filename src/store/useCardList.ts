@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { useRecoilValue, selector, useSetRecoilState, SetterOrUpdater } from 'recoil'
 import { CardListState } from './index'
 import { CARD_LIST_TYPE } from '@/data/type'
-import { apiCardUpdate } from '@/common/js/api'
+import { apiCardUpdate, apiListUpdate } from '@/common/js/api'
 const getCardListState = selector({ // 查找总的数据
     key: 'getCardListState',
     get: ({ get }): Array<CARD_LIST_TYPE> => get(CardListState)
@@ -25,9 +25,56 @@ export const useCardListAction = () => {
         const newCardList = JSON.parse(JSON.stringify(cardList))
         newCardList[index] = val
         setCardList(newCardList)
-    
+
     }, [setCardList, cardList])
+    const ChangeCardListSortAction = (val: CARD_LIST_TYPE[]) => { // 修改列表数据
+        console.log(val, 'val');
+        const newVal: CARD_LIST_TYPE[] = JSON.parse(JSON.stringify(val))
+        newVal.forEach((item, index) => {
+            if (item.sort <= newVal[index - 1]?.sort) {
+                let temp = item.sort
+                item.sort = newVal[index - 1].sort
+                newVal[index - 1].sort = temp
+                apiListUpdate({
+                    id: item.id,
+                    listName: item.listName,
+                    sort: item.sort
+                })
+                apiListUpdate({
+                    id: newVal[index - 1].id,
+                    listName: newVal[index - 1].listName,
+                    sort: newVal[index - 1].sort
+                })
+
+            }
+            item.cardItem.forEach((card, cardIndex) => {
+                if (card.sort <= item.cardItem[cardIndex - 1]?.sort) {
+                    let temp = card.sort
+                    card.sort = item.cardItem[cardIndex - 1].sort
+                    item.cardItem[cardIndex - 1].sort = temp
+                    apiCardUpdate({
+                        id: card.id,
+                        sort: card.sort,
+                        tabulatedId: card.tabulatedId !== item.id ? item.id : card.tabulatedId
+                    })
+                    apiCardUpdate({
+                        id: item.cardItem[cardIndex - 1].id,
+                        sort: item.cardItem[cardIndex - 1].sort,
+                        tabulatedId: card.tabulatedId !== item.id ? item.id : card.tabulatedId
+                    })
+                } else if (card.tabulatedId !== item.id) {
+                    apiCardUpdate({
+                        id: card.id,
+                        sort: card.sort,
+                        tabulatedId: item.id
+                    })
+                }
+            })
+        })
+        setCardList(newVal)
+    }
     return {
+        ChangeCardListSortAction,
         AddCardListAction,
         ChangeCardAction
     }

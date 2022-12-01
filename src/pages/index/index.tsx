@@ -20,7 +20,7 @@ const Index = () => {
     console.log(cardList, '新数据')
 
     const setCardList = useSetCardList()
-    const {AddCardListAction, ChangeCardAction} = useCardListAction()
+    const {AddCardListAction, ChangeCardAction, ChangeCardListSortAction} = useCardListAction()
 
     // 拖拽开始的时候把拖拽的数据存入了缓存，结束后取出来处理
     const handleCardDragEnd = () => {
@@ -61,7 +61,7 @@ const Index = () => {
             })
 
             newCardList[listIndex].cardItem.splice(cardIndex, 0, dragData)
-            setCardList(newCardList)
+            ChangeCardListSortAction(newCardList)
         }
     }
     useEventBusOn('openCardDetail', (id: string) => {
@@ -119,7 +119,7 @@ const Index = () => {
                 }
             })
             newCardList.splice(listIndex, 0, dragData)
-            setCardList(newCardList)
+            ChangeCardListSortAction(newCardList)
         }
     }
     return (

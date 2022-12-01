@@ -47,7 +47,7 @@ interface apiListUpdateParams {
     id?: string;
     listName: string
     archiving?: string
-    sort?: string
+    sort?: number
 
 }
 export const apiListUpdate = (params: apiListUpdateParams) => {

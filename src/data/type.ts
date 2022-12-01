@@ -22,6 +22,7 @@ export interface CARD_LIST_TYPE {
     listName: string
     cardItem: CARD_ITEM_TYPE[]
     id: string
+    sort: number
 }
 export interface CARD_DETAIL_TYPE {
     card: CARD_ITEM_TYPE

@@ -122,33 +122,31 @@ const Index = () => {
             ChangeCardListSortAction(newCardList)
         }
     }
-    return React.useMemo(() => {
-        return (
-            <div className="pc-board">
-                {cardList.map((item, index) => (
-                    <div
-                        className="mr10"
-                        draggable="true"
-                        onDragStart={(e) => dragListStart(e, item)}
-                        onDragOver={(e) => e.preventDefault()}
-                        onDragEnter={(e) => dragListEnter(e)}
-                        onDragEnd={(e) => {
-                            handleCardListEnd(e, index)
-                        }}
-                        key={index}>
-                        <ContentCard
-                            cardValue={item}
-                            handleChangeCard={(val) => ChangeCardAction(val, index)}
-                            handleAddCardList={(val) => AddCardListAction(val, index + 1)}
-                            handleCardDragEnd={handleCardDragEnd}
-                        />
-                    </div>
-                ))}
-                <AddCardList></AddCardList>
-                <CardDetailModal show={show} onClose={() => setShow(false)} />
-            </div>
-        )
-    }, [cardList])
+    return (
+        <div className="pc-board">
+            {cardList.map((item, index) => (
+                <div
+                 className='mr10'
+                    draggable="true"
+                    onDragStart={(e) => dragListStart(e, item)}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDragEnter={(e) => dragListEnter(e)}
+                    onDragEnd={(e) => {
+                        handleCardListEnd(e, index)
+                    }}
+                    key={index}>
+                    <ContentCard
+                        cardValue={item}
+                        handleChangeCard={(val) => ChangeCardAction(val, index)}
+                        handleAddCardList={(val) => AddCardListAction(val, index + 1)}
+                        handleCardDragEnd={handleCardDragEnd}
+                    />
+                </div>
+            ))}
+            <AddCardList></AddCardList>
+            <CardDetailModal show={show} onClose={() => setShow(false)} />
+        </div>
+    )
 }
 
 export default Index

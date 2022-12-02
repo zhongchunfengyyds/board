@@ -13,13 +13,11 @@ import CardDetailModal from './components/CardDetailModal'
 import AddCardList from './components/AddCardList'
 
 const Index = () => {
-    useApiInitData()
+    const { Loading } = useApiInitData()
     const {setShareMsg} = useShareMsg()
     const [show, setShow] = useState(false)
     const cardList = useCardList()
-    console.log(cardList, '新数据')
 
-    const setCardList = useSetCardList()
     const {AddCardListAction, ChangeCardAction, ChangeCardListSortAction} = useCardListAction()
 
     // 拖拽开始的时候把拖拽的数据存入了缓存，结束后取出来处理
@@ -122,6 +120,8 @@ const Index = () => {
             ChangeCardListSortAction(newCardList)
         }
     }
+    console.log(Loading)
+    if ( Loading ) return <div>Loading...</div>
     return (
         <div className="pc-board">
             {cardList.map((item, index) => (

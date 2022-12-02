@@ -1,10 +1,10 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 import { message } from 'antd';
 
-let baseURL = '/api'
-if (process.env.NODE_ENV != 'development') {
+let baseURL = window.location.origin
+if (window.location.hostname === 'localhost') {
     // 生产环境
-    baseURL = window.location.origin
+    baseURL =  '/api'
 }
 // import store from '@/store'
 
@@ -40,8 +40,6 @@ const instance = axios.create({
  */
 instance.interceptors.request.use(
     (config: any) => {
-        // 设置token
-        config.headers['Authorization'] = document.cookie.split('Authorization=')[1] || 'Bearer-eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJhZ2lsZUJQTSIsInN1YiI6ImFkbWluOnJvY2FuT0EiLCJhdWQiOiJwYyIsImlhdCI6MTY2OTg4MjM5OX0.AEjywHceisD8AWy9HSDuUAIuNtS5wOt6ufbmE5iH9ilxYzzARxCmDgglWotpCXfLIPiMjVPB3livaeNvgCVHQA'
         return config
     },
     (error: AxiosRequestConfig) => {

@@ -16,7 +16,8 @@ export default defineConfig({
             }
         }
     },
-    base: '/agilebpm-ui/board/index/',
+    base: 'agilebpm-ui/board/index/',// 线上打包
+    // base: '/board/index/', // localhost打包
     resolve: {
         alias: {
             '@': resolve(__dirname, './src')

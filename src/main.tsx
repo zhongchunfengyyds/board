@@ -1,7 +1,8 @@
 import React, {Suspense, lazy} from 'react'
 import {RecoilRoot} from 'recoil'
 import ReactDOM from 'react-dom/client'
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Routes, Route, HashRouter} from 'react-router-dom'
+// react history 路由
 import {ConfigProvider} from 'antd'
 import Loading from '@/components/Loading'
 
@@ -14,13 +15,13 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
                     colorPrimary: '#0088ec',
                 },
             }}>
-            <Router>
+            <HashRouter>
                 <Suspense fallback={<Loading />}>
                     <Routes>
                         <Route path="/" element={<Index />} />
                     </Routes>
                 </Suspense>
-            </Router>
+            </HashRouter>
         </ConfigProvider>
     </RecoilRoot>,
 )

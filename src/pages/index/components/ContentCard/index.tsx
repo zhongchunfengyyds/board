@@ -92,7 +92,7 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
     }
     const titleDragEnter = (e: DragEvent<HTMLElement>) => {
         const dragCard = document.getElementById('dragCard')
-        if(!dragCard) return
+        if (!dragCard) return
         e.preventDefault()
         const parentNode: HTMLElement = e?.currentTarget.parentNode as HTMLElement
         if (parentNode.children[1].firstChild) {
@@ -213,7 +213,11 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
                         <input disabled className="cursor-pointer" type="text" value={cardValue?.listName ?? ''} />
                     </span>
                 )}
-                <CardListMoreOperation handleAddCard={handleAddCardNew} handleCopyList={(val) => handleCopyList(val)} />
+                <CardListMoreOperation
+                    id={cardValue.id}
+                    handleAddCard={handleAddCardNew}
+                    handleCopyList={(val) => handleCopyList(val)}
+                />
             </div>
             {isHead && ADD_DOM}
             {CardItemDom}

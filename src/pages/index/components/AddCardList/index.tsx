@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {Button} from 'antd'
-import {useCardListAction} from '@/store/useCardList'
+import {useCardListAction, useCardList} from '@/store/useCardList'
 import './index.scss'
 
 import {apiListUpdate} from '@/common/js/api'
@@ -8,12 +8,13 @@ const index = () => {
     const [step, setStep] = useState(0)
     const [title, setTitle] = useState('')
     const {AddCardListAction} = useCardListAction()
+    const cardList = useCardList()
 
     const handleAdd = () => {
         if (!title) return
-        apiListUpdate({listName: title}).then((res) => {
+        apiListUpdate({listName: title, sort: cardList[cardList.length - 1].sort + 1}).then((res) => {
             setStep(0)
-            AddCardListAction({ title, cardItem: [] })
+            AddCardListAction({cardItem: [], ...res.data.result})
         })
     }
     return (

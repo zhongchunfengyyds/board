@@ -3,11 +3,16 @@ import BoardMoreBtns from '@/components/BoardMoreBtns'
 import {Popover} from 'antd'
 import './index.scss'
 import {apiListDelete} from '@/common/js/api'
+import {useSetCardList, useCardList} from '@/store/useCardList'
 interface PropsType {
     handleCopyList: (val: string) => void
     handleAddCard: () => void
+    id: string
 }
-const Index: FC<PropsType> = ({handleCopyList, handleAddCard}) => {
+
+const Index: FC<PropsType> = ({id, handleCopyList, handleAddCard}) => {
+    const setCardList = useSetCardList()
+    const cardList = useCardList()
     const [open, setOpen] = useState<boolean>(false)
     const hide = () => {
         setOpen(false)
@@ -41,7 +46,15 @@ const Index: FC<PropsType> = ({handleCopyList, handleAddCard}) => {
             </div>
         )
     }, [handleCopyListNEW, currentTitle.current])
-    const delList = () => {}
+    const delList = () => {
+        apiListDelete({id}).then((res) => {
+            console.log(res)
+            // setCardList
+            const newCardList = cardList.filter((item) => item.id !== id)
+            setCardList(newCardList)
+            setOpen(false)
+        })
+    }
     const PopoverDom = useMemo(() => {
         return (
             <div className="list-more-operation">
@@ -70,4 +83,4 @@ const Index: FC<PropsType> = ({handleCopyList, handleAddCard}) => {
         </Popover>
     )
 }
-export default memo(Index)
+export default Index

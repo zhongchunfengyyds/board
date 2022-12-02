@@ -2,19 +2,20 @@ import useSWR from 'swr'
 import { apiInitData, apiGetUserInfo } from '@/common/js/api'
 import { useSetCardList } from '@/store/useCardList'
 import { useUserInfo } from '@/store/useUserInfo'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 
-export const useApiInitData = () => {
+export const useApiInitData = async () => {
     const setCardList = useSetCardList()
-    const { setUserInfo } = useUserInfo()
-    const { data: user } = useSWR('org/userResource/userMsg', async () => await apiGetUserInfo())
-    const { data, error, mutate } = useSWR({ url: 'oa/tabulated/findByUserId', args: user }, async () => await apiInitData({
-        userId: user?.data?.user?.id ?? ''
-    }))
-    useEffect(() => {
-        console.log(data)
-        const resList = data?.data?.result ?? []
-        const list = resList.map((item: any, index: number) => {
+    const { setUserInfoData } = useUserInfo()
+
+    const init = useCallback(async () => {
+        let { data: { user } } = await apiGetUserInfo()
+        let res = await apiInitData({
+            userId: user.id
+        })
+        const result = res.data.result
+        setUserInfoData(user)
+        const list = result.map((item: any, index: number) => {
             return {
                 listName: item.tabulated.listName,
                 cardItem: item.listCard,
@@ -23,5 +24,8 @@ export const useApiInitData = () => {
             }
         })
         setCardList(list)
-    }, [data])
+    }, [])
+    useEffect(() => {
+        init()
+    }, [])
 }

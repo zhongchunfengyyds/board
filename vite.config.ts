@@ -16,6 +16,7 @@ export default defineConfig({
             }
         }
     },
+    base: '/agilebpm-ui/board/index/',
     resolve: {
         alias: {
             '@': resolve(__dirname, './src')

@@ -5,6 +5,8 @@ import {useEventBusOn} from '@/hook/useEventBus'
 import {useApiInitData} from '@/hook/useApiIntData'
 import {useShareMsg} from '@/store/useShareMsg'
 import {apiCardDetail} from '@/common/js/api'
+import LoadingComp from '@/components/Loading'
+
 
 import './index.scss'
 
@@ -121,7 +123,7 @@ const Index = () => {
         }
     }
     console.log(Loading)
-    if ( Loading ) return <div>Loading...</div>
+    if ( Loading ) return <LoadingComp/>
     return (
         <div className="pc-board">
             {cardList.map((item, index) => (

@@ -1,10 +1,10 @@
-import useSWR from 'swr'
 import { apiInitData, apiGetUserInfo } from '@/common/js/api'
 import { useSetCardList } from '@/store/useCardList'
 import { useUserInfo } from '@/store/useUserInfo'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-export const useApiInitData = async () => {
+export const useApiInitData = () => {
+    const [Loading, setLoading] = useState(true)
     const setCardList = useSetCardList()
     const { setUserInfoData } = useUserInfo()
 
@@ -24,8 +24,12 @@ export const useApiInitData = async () => {
             }
         })
         setCardList(list)
+        setLoading(false)
     }, [])
     useEffect(() => {
         init()
     }, [])
+    return {
+        Loading
+    }
 }

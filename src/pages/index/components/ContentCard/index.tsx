@@ -81,7 +81,7 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
         setTimeout(() => {
             dom.style.filter = 'brightness(0)'
             dom.style.opacity = '0.1'
-        }, 100)
+        }, 1)
         localStorage.setItem('dragData', JSON.stringify(cardValue.cardItem[index]))
     }
     // 拖拽进入

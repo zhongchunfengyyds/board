@@ -11,8 +11,6 @@ interface PropsType {
 }
 
 const Index: FC<PropsType> = ({id, handleCopyList, handleAddCard}) => {
-    console.log(id);
-    
     const setCardList = useSetCardList()
     const cardList = useCardList()
     const [open, setOpen] = useState<boolean>(false)
@@ -48,16 +46,12 @@ const Index: FC<PropsType> = ({id, handleCopyList, handleAddCard}) => {
             </div>
         )
     }, [handleCopyListNEW, currentTitle.current])
-    const delList = () => {
+    const delList = async () => {
         console.log(id);
-        
-        apiListDelete({id}).then((res) => {
-            console.log(res)
-            // setCardList
-            const newCardList = cardList.filter((item) => item.id !== id)
-            setCardList(newCardList)
-            setOpen(false)
-        })
+        const res = await apiListDelete({id})
+        const newCardList = cardList.filter((item) => item.id !== id)
+        setCardList(newCardList)
+        setOpen(false)
     }
     const PopoverDom = useMemo(() => {
         return (
@@ -70,11 +64,11 @@ const Index: FC<PropsType> = ({id, handleCopyList, handleAddCard}) => {
                 <p onClick={delList}>将此列表进行归档</p>
             </div>
         )
-    }, [cardList])
+    }, [cardList, delList])
     const CURRRENT_DOM = useMemo(() => {
         if (status === 'COPY') return COPY_CARD_DOM
         else return PopoverDom
-    }, [status])
+    }, [status, PopoverDom])
     return (
         <Popover
             content={CURRRENT_DOM}

@@ -26,8 +26,6 @@ interface PropsType {
 const Index: FC<PropsType> = ({show, onClose}) => {
     const {shareMsg} = useShareMsg()
     const cardList = useCardList()
-    console.log(cardList)
-    console.log('shareMsg', shareMsg)
     const delCard = ()=>{
         apiCardDelete({
             id: shareMsg.card.id

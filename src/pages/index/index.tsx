@@ -126,6 +126,7 @@ const Index = () => {
         <div className="pc-board">
             {cardList.map((item, index) => (
                 <div
+                 className='mr10'
                     draggable="true"
                     onDragStart={(e) => dragListStart(e, item)}
                     onDragOver={(e) => e.preventDefault()}

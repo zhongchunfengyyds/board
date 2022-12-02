@@ -1,10 +1,12 @@
 import useSWR from 'swr'
 import { apiInitData, apiGetUserInfo } from '@/common/js/api'
 import { useSetCardList } from '@/store/useCardList'
+import { useUserInfo } from '@/store/useUserInfo'
 import { useEffect } from 'react'
 
 export const useApiInitData = () => {
     const setCardList = useSetCardList()
+    const { setUserInfo } = useUserInfo()
     const { data, error, mutate } = useSWR('oa/tabulated/findByUserId', async () => await apiInitData({
         userId: '1'
     }))
@@ -21,7 +23,4 @@ export const useApiInitData = () => {
         })
         setCardList(list)
     }, [data])
-    return {
-        mutate // 重新请求函数
-    }
 }

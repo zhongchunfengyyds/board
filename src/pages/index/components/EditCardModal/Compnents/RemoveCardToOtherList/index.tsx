@@ -6,7 +6,7 @@ import { useCardListTitle, useCardList,useCardListAction } from '@/store/useCard
 import {CARD_LIST_TYPE, CARD_ITEM_TYPE} from '@/data/type'
 import './index.scss'
 
-import BoardSelect from '@/Components/BoardSelect'
+import BoardSelect from '@/components/BoardSelect'
 
 interface OptionsType {
   value: number
@@ -47,7 +47,7 @@ const Index: FC<PropsType> = ({ onClose }) => { // 移动卡片到对应的列�
     }))
   }, [titleList])
   const currentList = useMemo(() => { // 根据title查找当前列表
-    if (currentTitle) return cardList.find(item => item.title === currentTitle)
+    if (currentTitle) return cardList.find(item => item.listName === currentTitle)
     return cardList.find(item => item.cardItem.findIndex(items => items.id === id) > -1)
   }, [cardList, id, currentTitle])
   const currentIndex = useMemo(() => { // 所在cardItem index
@@ -95,7 +95,7 @@ const Index: FC<PropsType> = ({ onClose }) => { // 移动卡片到对应的列�
   }, [optionList, currentTitleList, currentTitle, currentPosition])
 
   useEffect(() => {
-    setCurrentTitle(currentList?.title ?? '')
+    setCurrentTitle(currentList?.listName ?? '')
     const index = currentIndex > -1 ? currentIndex : (optionList?.length - 1)
     setCurrentPosition(optionList?.[index].label)
   }, [currentList, currentIndex, optionList])

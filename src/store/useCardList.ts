@@ -9,7 +9,7 @@ const getCardListState = selector({ // 查找总的数据
 })
 
 export const useCardList = (): Array<CARD_LIST_TYPE> => useRecoilValue(getCardListState) // cardList的值
-export const useCardListTitle = (): Array<string | number> => useCardList().map(item => item.title) // 获取cardList => title
+export const useCardListTitle = (): Array<string | number> => useCardList().map(item => item.listName) // 获取cardList => title
 export const useSetCardList = (): SetterOrUpdater<Array<CARD_LIST_TYPE>> => useSetRecoilState(CardListState)
 
 export const useCardListAction = () => {

@@ -84,7 +84,9 @@ const Index = () => {
         const dragList = document.getElementById('dragList')
         e.preventDefault()
         // if(e.nativeEvent.layer)
-        if (e.nativeEvent.layerX > 135) {
+        console.log(e.nativeEvent);
+        
+        if (e.nativeEvent.offsetX > 135) {
             dragList && e.currentTarget.parentNode?.insertBefore(dragList, e.currentTarget)
         } else {
             dragList && e.currentTarget.parentNode?.insertBefore(dragList, e.currentTarget.nextSibling)
@@ -98,7 +100,7 @@ const Index = () => {
         if (dragList) {
             // 判断是父亲的第几个子元素
             for (let i = 0; i < dragList?.parentNode?.children?.length; i++) {
-                const item = e.currentTarget.parentNode?.children[i]
+                const item = e.currentTarget.parentNode?.children[i] as HTMLElement
                 if (item.id === 'dragList') {
                     listIndex = i
                 }

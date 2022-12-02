@@ -58,7 +58,7 @@ const Index: FC<CommentProps> = ({commentList = []}) => {
                             size="small"
                             itemLayout="horizontal"
                             dataSource={shareMsg.commentList}
-                            renderItem={(item) => (
+                            renderItem={(item:Comment) => (
                                 <List.Item>
                                     <List.Item.Meta title={item.commentName} description={item.commentContent} />
                                 </List.Item>

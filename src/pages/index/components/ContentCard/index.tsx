@@ -117,13 +117,13 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
 
     const handleConfirmEdit = (name: string) => {
         const newValue: CARD_LIST_TYPE = JSON.parse(JSON.stringify({...cardValue}))
-        if (!isEmpty(newValue.cardItem[currentEditIndex.current])) {
-            newValue.cardItem[currentEditIndex.current] = {
-                title: name,
-                id: new Date().getTime().toString(),
-            }
-            handleChangeCard(newValue) // 和添加类似
-        }
+        // if (!isEmpty(newValue.cardItem[currentEditIndex.current])) {
+        //     newValue.cardItem[currentEditIndex.current] = {
+        //         title: name,
+        //         id: new Date().getTime().toString(),
+        //     }
+        //     handleChangeCard(newValue) // 和添加类似
+        // }
     }
 
     const handleCopyList = useCallback(

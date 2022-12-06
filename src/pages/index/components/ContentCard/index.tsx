@@ -179,6 +179,7 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
                 status={addStatus}
                 handleAddCurrentCard={(val) => handleAddCurrentNewCard(val)}
                 addCardItem={addCardItem}
+                onClose={() => setAddStatus('btn')}
             />
         ),
         [addStatus, handleAddCurrentNewCard, addCardItem],

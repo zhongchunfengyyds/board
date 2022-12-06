@@ -1,3 +1,11 @@
 .pc-card-cont-add {
     color: $theme-second-color;
 }
+
+.pc-card-cont-btns {
+    justify-content: flex-start;
+
+    &>button.cancle {
+        margin-left: 10px;
+    }
+}

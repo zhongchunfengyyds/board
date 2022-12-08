@@ -71,7 +71,7 @@ const Index = () => {
     })
     // 列表拖拽
     const dragListStart = (e: DragEvent, listValue: CARD_LIST_TYPE) => {
-        if (!listValue.isMenber) return
+        if (listValue.isMenber) return
         const dom = e.target as HTMLElement
         dom.id = 'dragList'
         setTimeout(() => {

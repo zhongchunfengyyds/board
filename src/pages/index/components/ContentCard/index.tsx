@@ -75,7 +75,7 @@ const ContentCard: FC<PropsType> = ({cardValue, handleChangeCard, handleAddCardL
      */
     // 拖拽开始
     const dragCardStart = (e: DragEvent, index: number) => {
-        if (!cardValue.isMenber) return
+        if (cardValue.isMenber) return
         e.stopPropagation()
         const dom = e.target as HTMLElement
         dom.id = 'dragCard'

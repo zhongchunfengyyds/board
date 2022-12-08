@@ -12,7 +12,7 @@ const index = () => {
 
     const handleAdd = () => {
         if (!title) return
-        apiListUpdate({listName: title, sort: cardList[cardList.length - 1].sort + 1}).then((res) => {
+        apiListUpdate({listName: title, sort: cardList[cardList.length - 1]?.sort + 1 || 1}).then((res) => {
             setStep(0)
             AddCardListAction({cardItem: [], ...res.data.result})
         })

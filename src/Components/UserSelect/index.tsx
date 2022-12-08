@@ -3,7 +3,7 @@ import {Select, Spin} from 'antd'
 import type {SelectProps} from 'antd/es/select'
 import debounce from 'lodash/debounce'
 import {UserValue} from '@/data/type'
-
+import {apiFindByUserName} from '@/common/js/api'
 export interface fieldNames {
     label: string
     value: string
@@ -60,16 +60,16 @@ function DebounceSelect<ValueType extends {key?: string; label: React.ReactNode;
 
 async function fetchUserList(username: string): Promise<UserValue[]> {
     console.log('fetching user', username)
-
-    return fetch('https://randomuser.me/api/?results=5')
-        .then((response) => response.json())
-        .then((body) =>
-            body.results.map((user: {name: {first: string; last: string}; login: {username: string}}) => ({
-                label: `${user.name.first} ${user.name.last}`,
-                value: user.login.username,
-                head: 'https://joeschmoe.io/api/v1/random',
-            })),
-        )
+    return apiFindByUserName(username).then((res) => {
+        return res.data.result.map((item: any) => {
+            return {
+                key: item.id,
+                label: item.fullname,
+                value: item.id,
+                head: '/sys/sysFile/previewImage?fileId=' + item.head || item.photo,
+            }
+        })
+    })
 }
 
 export interface UserSelectProps {
@@ -83,7 +83,7 @@ const App: React.FC<UserSelectProps> = ({onChange, value}) => {
             value={value}
             placeholder="选择用户"
             fetchOptions={fetchUserList}
-            onChange={(newValue,option) => {
+            onChange={(newValue, option) => {
                 onChange && onChange(option as UserValue[])
             }}
             style={{width: '100%'}}

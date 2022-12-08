@@ -20,6 +20,7 @@ const Index: FC = () => {
                     ...shareMsg.card,
                     expireTime: date,
                 },
+                orgUserList: shareMsg.orgUserList,
                 commentList: shareMsg.commentList,
                 inventoryList: shareMsg.inventoryList,
             })

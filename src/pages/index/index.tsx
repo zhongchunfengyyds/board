@@ -7,7 +7,6 @@ import {useShareMsg} from '@/store/useShareMsg'
 import {apiCardDetail} from '@/common/js/api'
 import LoadingComp from '@/components/Loading'
 
-
 import './index.scss'
 
 import ContentCard from './components/ContentCard'
@@ -15,7 +14,7 @@ import CardDetailModal from './components/CardDetailModal'
 import AddCardList from './components/AddCardList'
 
 const Index = () => {
-    const { Loading } = useApiInitData()
+    const {Loading} = useApiInitData()
     const {setShareMsg} = useShareMsg()
     const [show, setShow] = useState(false)
     const cardList = useCardList()
@@ -72,6 +71,7 @@ const Index = () => {
     })
     // 列表拖拽
     const dragListStart = (e: DragEvent, listValue: CARD_LIST_TYPE) => {
+        if (!listValue.isMenber) return
         const dom = e.target as HTMLElement
         dom.id = 'dragList'
         setTimeout(() => {
@@ -84,8 +84,8 @@ const Index = () => {
         const dragList = document.getElementById('dragList')
         e.preventDefault()
         // if(e.nativeEvent.layer)
-        console.log(e.nativeEvent);
-        
+        console.log(e.nativeEvent)
+
         if (e.nativeEvent.offsetX > 135) {
             dragList && e.currentTarget.parentNode?.insertBefore(dragList, e.currentTarget)
         } else {
@@ -124,13 +124,21 @@ const Index = () => {
             ChangeCardListSortAction(newCardList)
         }
     }
+    const launchFullscreen = (e) => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen()
+        }
+        if (document.fullscreenElement) {
+            document.exitFullscreen()
+        }
+    }
     console.log(Loading)
-    if ( Loading ) return <LoadingComp/>
+    if (Loading) return <LoadingComp />
     return (
-        <div className="pc-board">
+        <div className="pc-board" onDoubleClick={launchFullscreen}>
             {cardList.map((item, index) => (
                 <div
-                 className='mr10'
+                    className="mr10"
                     draggable="true"
                     onDragStart={(e) => dragListStart(e, item)}
                     onDragOver={(e) => e.preventDefault()}

@@ -13,7 +13,7 @@ export interface CheckList {
 
 const Index: FC = () => {
     const {shareMsg, setShareMsg} = useShareMsg()
-    const {card, commentList, inventoryList} = shareMsg
+    const {card, commentList, inventoryList, orgUserList} = shareMsg
     const onChange = (e: any, index: number) => {
         const newInventoryList = JSON.parse(JSON.stringify(inventoryList))
         const newCheckList: CheckList = newInventoryList[index]
@@ -27,6 +27,7 @@ const Index: FC = () => {
             setShareMsg({
                 card,
                 commentList,
+                orgUserList,
                 inventoryList: newInventoryList,
             })
         })

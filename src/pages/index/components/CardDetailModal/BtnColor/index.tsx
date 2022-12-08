@@ -9,7 +9,7 @@ const Index: FC = () => {
     const {shareMsg, setShareMsgAction} = useShareMsg()
     const [open, setOpen] = useState(false)
     const onChange = (color: string) => {
-        const {card, commentList, inventoryList} = shareMsg
+        const {card, commentList, inventoryList, orgUserList} = shareMsg
         apiCardUpdate({
             id: card.id,
             color: color,
@@ -20,7 +20,7 @@ const Index: FC = () => {
                     color: color,
                 },
                 commentList,
-                inventoryList,
+                inventoryList,orgUserList
             })
             setOpen(false)
         })

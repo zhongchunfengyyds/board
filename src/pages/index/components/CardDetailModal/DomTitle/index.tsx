@@ -1,9 +1,9 @@
-import {memo, FC, useState} from 'react'
-import {Avatar, Input, Button} from 'antd'
+import {memo, FC, useState, useMemo} from 'react'
+import {Avatar, Input, Button, Popconfirm} from 'antd'
 import {CreditCardOutlined} from '@ant-design/icons'
 import {useShareMsg} from '@/store/useShareMsg'
 import {CARD_DETAIL_TYPE} from '@/data/type'
-import {apiCardUpdate} from '@/common/js/api'
+import {apiCardUpdate, apiMemberDelete} from '@/common/js/api'
 
 const Index: FC = () => {
     const {shareMsg, setShareMsgAction} = useShareMsg()
@@ -11,7 +11,7 @@ const Index: FC = () => {
     const [title, setTitle] = useState(shareMsg.card.title)
     const changTitle = () => {
         setEditorTitle(false)
-        const {card, commentList, inventoryList} = shareMsg
+        const {card, commentList, inventoryList, orgUserList} = shareMsg
         apiCardUpdate({
             id: card.id,
             title: title,
@@ -23,6 +23,23 @@ const Index: FC = () => {
                 },
                 commentList,
                 inventoryList,
+                orgUserList,
+            })
+        })
+    }
+    const confirm = (e: any) => {
+        apiMemberDelete({id: e.memberId}).then((res) => {
+            const {card, commentList, inventoryList, orgUserList} = shareMsg
+            const newOrgUserList = orgUserList.filter((item: any) => {
+                return item.memberId !== e.memberId
+            })
+            setShareMsgAction({
+                card: {
+                    ...card,
+                },
+                commentList,
+                inventoryList,
+                orgUserList: newOrgUserList,
             })
         })
     }
@@ -65,13 +82,24 @@ const Index: FC = () => {
                 {shareMsg.card.expireTime?.length > 0 && (
                     <div className="desc pt10">到期时间：{shareMsg.card.expireTime}</div>
                 )}
-                {/* {memberList.length > 0 && (
+                {shareMsg.orgUserList?.length > 0 && (
                     <Avatar.Group className="mt20">
-                        {memberList.map((item, index) => {
-                            return <Avatar key={index} src={item.head} />
+                        {shareMsg.orgUserList.map((item, index) => {
+                            return (
+                                <Popconfirm
+                                    title="移除此用户？"
+                                    placement="topLeft"
+                                    okText="确认"
+                                    cancelText="取消"
+                                    onConfirm={() => {
+                                        confirm(item)
+                                    }}>
+                                    <Avatar className="cursor-pointer" key={index} src={item.head} />
+                                </Popconfirm>
+                            )
                         })}
                     </Avatar.Group>
-                )} */}
+                )}
             </div>
         </div>
     )

@@ -86,17 +86,53 @@ export const apiCommentUpdate = (params: apiCommentUpdateParams) => {
     return request.post('/oa/comment/saveOrUpdate', params);
 }
 
+export const apiFindByUserName = (name: string) => {
+    request.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+    return request.post('/oa/orgUser/findByUserName', {
+        name
+    });
+}
+
+interface apiSaveMemberParams {
+    tabulatedId: string;
+    userId: string;
+    cardId: string;
+}
+export const apiSaveMember = (params: apiSaveMemberParams) => {
+    request.defaults.headers['Content-Type'] = 'application/json;charset=UTF-8';
+    return request.post('/oa/member/save', params);
+}
+
+
+
 // 删除接口
 
 interface apiDeleteParams {
     id: string;
 }
 // 清单删除
-export const apiCheckBoxDelete = (params: apiDeleteParams) => request.post('/oa/inventory/removeById', params);
+export const apiCheckBoxDelete = (params: apiDeleteParams) => {
+    request.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+    return request.post('/oa/inventory/removeById', params);
+}
 // 卡片删除
-export const apiCardDelete = (params: apiDeleteParams) => request.post('/oa/card/removeById', params);
+export const apiCardDelete = (params: apiDeleteParams) => {
+    request.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+    return request.post('/oa/card/removeById', params);
+}
 // 评论删除
-export const apiCommonDelete = (params: apiDeleteParams) => request.post('/oa/comment/removeById', params);
+export const apiCommonDelete = (params: apiDeleteParams) => {
+    request.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+    return request.post('/oa/comment/removeById', params);
+}
 // 列表删除
-export const apiListDelete = (params: apiDeleteParams) => request.post('/oa/tabulated/removeById', params);
+export const apiListDelete = (params: apiDeleteParams) => {
+    request.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+    return request.post('/oa/tabulated/removeById', params);
+}
+// 成员删除
+export const apiMemberDelete = (params: apiDeleteParams) => {
+    request.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+    return request.post('/oa/member/removeById', params);
+}
 

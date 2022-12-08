@@ -17,10 +17,11 @@ const Index: FC = () => {
             isAccomplish: 0,
             cardId: shareMsg.card.id,
         }).then((res) => {
-            const {card, commentList, inventoryList} = shareMsg
+            const {card, commentList, inventoryList, orgUserList} = shareMsg
             setShareMsg({
                 card,
                 commentList,
+                orgUserList,
                 inventoryList: [...inventoryList, res.data.result],
             })
             setCheckListInput('')

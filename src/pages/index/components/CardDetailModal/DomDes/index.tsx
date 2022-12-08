@@ -8,7 +8,7 @@ import {useShareMsg} from '@/store/useShareMsg'
 import {apiCardUpdate} from '@/common/js/api'
 const Index: FC = () => {
     const {shareMsg, setShareMsg} = useShareMsg()
-    const {card, commentList, inventoryList} = shareMsg
+    const {card, commentList, inventoryList, orgUserList} = shareMsg
     const onChange = (html: string) => {
         const newCard = JSON.parse(JSON.stringify(card))
         newCard.details = html
@@ -16,6 +16,7 @@ const Index: FC = () => {
             setShareMsg({
                 card: newCard,
                 commentList,
+                orgUserList,
                 inventoryList,
             })
         })

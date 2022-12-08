@@ -16,11 +16,15 @@ export const useApiInitData = () => {
         const result = res.data.result
         setUserInfoData(user)
         const list = result.map((item: any, index: number) => {
+            if(!item.tabulated){
+                item.tabulated = {}
+            }
             return {
                 listName: item.tabulated.listName,
                 cardItem: item.listCard,
                 id: item.tabulated.id,
-                sort: item.tabulated.sort || index + 1
+                sort: item.tabulated.sort || index + 1,
+                isMenber: item.isMenber
             }
         })
         setCardList(list)

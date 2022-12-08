@@ -28,6 +28,7 @@ const Index: FC<CommentProps> = ({commentList = []}) => {
             setShareMsg({
                 card: shareMsg.card,
                 inventoryList: shareMsg.inventoryList,
+                orgUserList: shareMsg.orgUserList,
                 commentList: [res.data.result, ...shareMsg.commentList],
             })
             setCommentValue('')

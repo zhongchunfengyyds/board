@@ -23,11 +23,13 @@ export interface CARD_LIST_TYPE {
     cardItem: CARD_ITEM_TYPE[]
     id: string
     sort: number
+    isMenber: boolean
 }
 export interface CARD_DETAIL_TYPE {
     card: CARD_ITEM_TYPE
     commentList: any[]
     inventoryList: any[]
+    orgUserList: any[]
 }
 export interface UserValue {
     label: string

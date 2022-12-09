@@ -66,7 +66,6 @@ async function fetchUserList(username: string): Promise<UserValue[]> {
                 key: item.id,
                 label: item.fullname,
                 value: item.id,
-                head: '/sys/sysFile/previewImage?fileId=' + item.head || item.photo,
             }
         })
     })

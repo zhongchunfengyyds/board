@@ -90,11 +90,12 @@ const Index: FC = () => {
                                     title="移除此用户？"
                                     placement="topLeft"
                                     okText="确认"
+                                    key={index} 
                                     cancelText="取消"
                                     onConfirm={() => {
                                         confirm(item)
                                     }}>
-                                    <Avatar className="cursor-pointer" key={index} src={item.head} />
+                                    <Avatar className="cursor-pointer" key={index} src={'/sys/sysFile/previewImage?fileId=' +item.photo} />
                                 </Popconfirm>
                             )
                         })}

@@ -34,5 +34,5 @@ export interface CARD_DETAIL_TYPE {
 export interface UserValue {
     label: string
     value: string
-    head: string
+    photo?: string
 }

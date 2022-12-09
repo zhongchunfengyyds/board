@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom'
 import './index.scss'
 
 interface PropsType {
+  
   show: boolean
   children?: React.ReactElement | React.ReactElement[]
   onClose?: () => void

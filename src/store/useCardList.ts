@@ -31,7 +31,7 @@ export const useCardListAction = () => {
         console.log(val, 'val');
         const newVal: CARD_LIST_TYPE[] = JSON.parse(JSON.stringify(val))
         newVal.forEach((item, index) => {
-            if (item.sort <= newVal[index - 1]?.sort) {
+            if (item.sort < newVal[index - 1]?.sort) {
                 let temp = item.sort
                 item.sort = newVal[index - 1].sort
                 newVal[index - 1].sort = temp
@@ -46,6 +46,12 @@ export const useCardListAction = () => {
                     sort: newVal[index - 1].sort
                 })
 
+            } else if (item.sort == newVal[index - 1]?.sort) {
+                apiListUpdate({
+                    id: item.id,
+                    listName: item.listName,
+                    sort: item.sort + 1
+                })
             }
             item.cardItem.forEach((card, cardIndex) => {
                 if (card.sort <= item.cardItem[cardIndex - 1]?.sort) {
